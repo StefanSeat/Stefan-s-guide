@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Unos Google ocena · Stefanov vodič</title>
+  <style>
+    :root { --bg: #f3ead8; --ink: #161213; --red: #ad1f2d; --green: #2f9a5f; --line: #d8ccb6; --paper: #fffdf8; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, sans-serif; }
+    header { position: sticky; top: 0; z-index: 2; background: var(--ink); color: var(--bg); padding: 0.8rem 1rem; display: flex; flex-wrap: wrap; gap: 0.6rem 1rem; align-items: center; justify-content: space-between; }
+    header h1 { font-size: 1.05rem; margin: 0; }
+    .progress { font-weight: 600; color: #f0c043; }
+    .actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    button, .open { font: inherit; font-size: 0.85rem; font-weight: 600; padding: 0.45rem 0.8rem; border: 2px solid var(--ink); background: var(--paper); color: var(--ink); cursor: pointer; text-decoration: none; white-space: nowrap; }
+    .primary { background: var(--green); border-color: var(--green); color: #fff; }
+    main { max-width: 860px; margin: 0 auto; padding: 1rem; }
+    .help { background: var(--paper); border: 2px solid var(--ink); padding: 0.8rem 1rem; margin-bottom: 1rem; }
+    .help ol { margin: 0.3rem 0 0; padding-left: 1.2rem; }
+    h2 { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; margin: 1.5rem 0 0.5rem; color: var(--red); }
+    .row { display: grid; grid-template-columns: 1fr auto auto auto; gap: 0.5rem; align-items: center; background: var(--paper); border: 1px solid var(--line); padding: 0.55rem 0.7rem; margin-bottom: 0.4rem; }
+    .row.done { border-color: var(--green); box-shadow: inset 4px 0 0 var(--green); }
+    .name { font-weight: 600; min-width: 0; }
+    .name small { display: block; font-weight: 400; color: #6c625a; }
+    input { font: inherit; width: 5.2rem; padding: 0.4rem 0.5rem; border: 1px solid #999; background: #fff; color: var(--ink); }
+    label.f { display: flex; flex-direction: column; font-size: 0.7rem; color: #6c625a; }
+    textarea { width: 100%; height: 8rem; font: 12px/1.4 monospace; margin-top: 0.5rem; }
+    @media (max-width: 560px) {
+      .row { grid-template-columns: 1fr 1fr; }
+      .name { grid-column: 1 / -1; }
+      .open { grid-column: 1 / -1; text-align: center; }
+      input { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Unos Google ocena</h1>
+    <span class="progress" id="progress"></span>
+    <div class="actions">
+      <button class="primary" id="copy">Kopiraj rezultat</button>
+    </div>
+  </header>
+  <main>
+    <div class="help">
+      Za svako mesto:
+      <ol>
+        <li>klikni <b>Google Maps</b>, otvoriće se to mesto</li>
+        <li>prepiši ocenu (npr. 4.7) i broj recenzija (npr. 145)</li>
+      </ol>
+      Sve se čuva u ovom browseru dok radiš, pa možeš da staneš i nastaviš kasnije.
+      Kad završiš (ili deo), klikni <b>Kopiraj rezultat</b> i nalepi tekst Claude-u.
+      <textarea id="out" readonly hidden aria-label="Rezultat"></textarea>
+    </div>
+    <div id="rows"></div>
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/lists.js"></script>
+  <script>
+    (function () {
+      const KEY = "sv-google-ocene";
+      let saved = {};
+      try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch {}
+      const store = () => { try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch {} };
+      const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+      const url = (l) => l.mapsUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(l.name + ", " + (l.address || "Beograd"))}`;
+
+      // Prvo mesta sa top lista (redom kako se pojavljuju), pa sva ostala
+      const onLists = [];
+      (typeof LISTS !== "undefined" ? LISTS : []).forEach((L) => L.places.forEach((p) => { if (!onLists.includes(p.id)) onLists.push(p.id); }));
+      const byId = Object.fromEntries(LOCATIONS.map((l) => [l.id, l]));
+      const first = onLists.map((id) => byId[id]).filter(Boolean);
+      const rest = LOCATIONS.filter((l) => !onLists.includes(l.id)).sort((a, b) => a.name.localeCompare(b.name, "sr"));
+
+      LOCATIONS.forEach((l) => {
+        if (l.googleRating && !saved[l.id]) saved[l.id] = { r: String(l.googleRating), c: String(l.googleReviews || "") };
+      });
+
+      const row = (l) => {
+        const v = saved[l.id] || {};
+        return `<div class="row" data-id="${esc(l.id)}">
+          <div class="name">${esc(l.name)}<small>${esc(l.area)} · ${esc(l.address || "")}</small></div>
+          <a class="open" href="${esc(url(l))}" target="_blank" rel="noopener">Google Maps</a>
+          <label class="f">Ocena<input inputmode="decimal" data-k="r" value="${esc(v.r || "")}" placeholder="4.7" /></label>
+          <label class="f">Recenzija<input inputmode="numeric" data-k="c" value="${esc(v.c || "")}" placeholder="145" /></label>
+        </div>`;
+      };
+      document.getElementById("rows").innerHTML =
+        `<h2>Mesta sa top lista (${first.length})</h2>` + first.map(row).join("") +
+        `<h2>Ostala mesta (${rest.length})</h2>` + rest.map(row).join("");
+
+      const valid = (v) => v && /^[1-5]([.,]\d)?$/.test((v.r || "").trim()) && /^\d[\d.,\s]*$/.test((v.c || "").trim());
+      function update() {
+        let n = 0;
+        document.querySelectorAll(".row").forEach((r) => {
+          const ok = valid(saved[r.dataset.id]);
+          r.classList.toggle("done", ok);
+          if (ok) n++;
+        });
+        document.getElementById("progress").textContent = `Uneto ${n} od ${LOCATIONS.length}`;
+      }
+      document.getElementById("rows").addEventListener("input", (e) => {
+        const inp = e.target.closest("input");
+        if (!inp) return;
+        const id = inp.closest(".row").dataset.id;
+        saved[id] = { ...(saved[id] || {}), [inp.dataset.k]: inp.value };
+        store();
+        update();
+      });
+      document.getElementById("copy").addEventListener("click", async () => {
+        const lines = Object.entries(saved)
+          .filter(([, v]) => valid(v))
+          .map(([id, v]) => `${id}|${v.r.trim().replace(",", ".")}|${v.c.trim().replace(/[.,\s]/g, "")}`);
+        const text = "GOOGLE OCENE\n" + lines.join("\n");
+        const out = document.getElementById("out");
+        out.value = text;
+        out.hidden = false;
+        out.select();
+        try { await navigator.clipboard.writeText(text); document.getElementById("copy").textContent = `Kopirano (${lines.length}) ✓`; }
+        catch { document.getElementById("copy").textContent = "Označeno, kopiraj ručno"; }
+        setTimeout(() => (document.getElementById("copy").textContent = "Kopiraj rezultat"), 3000);
+      });
+      update();
+    })();
+  </script>
+</body>
+</html>

@@ -77,8 +77,9 @@
   function imageHtml(l) {
     const file = l.image ? `<small class="ph-file">📷 ${esc(l.image)}</small>` : "";
     const ph = `<div class="placeholder ${patternFor(l)}" style="--dot:${COLORS[l.category] || "var(--orange)"}"><span class="ico">${iconFor(l)}</span>${file}</div>`;
-    const local = l.image && !missingLocal.has(l.id)
-      ? `<img class="photo" src="${esc(l.image)}" alt="${esc(l.name)}" loading="lazy" data-local="${esc(l.id)}" />`
+    // Slika se traži u images/ pod imenom mesta (npr. images/paninoteca.jpg), osim ako je u data.js upisana druga
+    const local = !missingLocal.has(l.id)
+      ? `<img class="photo" src="${esc(l.image || `images/${l.id}.jpg`)}" alt="${esc(l.name)}" loading="lazy" data-local="${esc(l.id)}" />`
       : "";
     return ph + local;
   }
@@ -282,9 +283,9 @@
       })
       .join("");
     $("grid").querySelectorAll("[data-save]").forEach(setSaveBtn);
-    // Mesta bez sopstvene slike odmah traže fotografiju sa Google Maps
+    // Mesta za koja već znamo da nemaju sliku u images/ odmah traže fotografiju sa Google Maps
     list.forEach((l, i) => {
-      if (!l.image || missingLocal.has(l.id)) requestGooglePhoto($("grid").children[i].querySelector(".card-img"), l.id);
+      if (missingLocal.has(l.id)) requestGooglePhoto($("grid").children[i].querySelector(".card-img"), l.id);
     });
     const rest = all.length - list.length;
     $("moreBtn").hidden = rest <= 0;
@@ -325,7 +326,7 @@
           <button class="btn btn-ghost" data-show-map="${esc(l.id)}">Prikaži na mapi</button>
         </div>
       </div>`;
-    if (!l.image || missingLocal.has(l.id)) fillGooglePhoto($("detailImg"), l.id, true);
+    if (missingLocal.has(l.id)) fillGooglePhoto($("detailImg"), l.id, true);
     $("detail").showModal();
     history.replaceState(null, "", "#" + l.id);
   }
@@ -334,10 +335,11 @@
     if ($("detail").open) $("detail").close();
   }
 
-  /* Mapa
-     Bez API ključa: ugrađena Google mapa prikazuje izabrano mesto, a lista pored nje menja mesto.
-     Sa ključem: jedna mapa sa pinovima za sva mesta. */
-  let gmap, infoWindow;
+  /* Mapa sa pinovima za sva mesta
+     Bez API ključa: besplatna mapa (Leaflet + OpenStreetMap) sa pinom za svako mesto.
+     Sa Google ključem u js/config.js: Google mapa sa pinovima.
+     Ako ni jedna ne može da se učita: ugrađena Google mapa za izabrano mesto. */
+  let gmap, infoWindow, lmap, cluster;
   const markers = {};
   let currentId = null;
   let mapList = [];
@@ -349,19 +351,49 @@
 
   function popupHtml(l) {
     return `<div class="popup-title">${esc(l.name)}</div>
+      ${l.rating ? `<div class="popup-stars">${stars(l.rating)}</div>` : ""}
       <div class="popup-text">${esc(l.short)}</div>
       <button class="popup-link" data-open="${esc(l.id)}">Detalji →</button>`;
   }
 
   function initMap() {
-    if (API_KEY) loadGoogle().then(initGoogleMap).catch(initEmbedMap);
-    else initEmbedMap();
+    if (API_KEY) loadGoogle().then(initGoogleMap).catch(initFreeMap);
+    else initFreeMap();
+  }
+
+  function initFreeMap() {
+    if (typeof L === "undefined") return initEmbedMap();
+    $("map").innerHTML = "";
+    lmap = L.map("map", { scrollWheelZoom: false, zoomControl: true }).setView([44.8125, 20.4612], 13);
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: "abcd",
+      maxZoom: 20,
+    }).addTo(lmap);
+    // Bliska mesta se spajaju u krug sa brojem dok ne zumiraš
+    cluster = L.markerClusterGroup
+      ? L.markerClusterGroup({ showCoverageOnHover: false, maxClusterRadius: 36, spiderfyOnMaxZoom: true })
+      : L.layerGroup();
+    lmap.addLayer(cluster);
+    LOCATIONS.forEach((l) => {
+      const icon = L.divIcon({
+        className: "",
+        html: `<div class="pin" style="--pc:${COLORS[l.category] || "var(--orange)"}"><span>${iconFor(l)}</span></div>`,
+        iconSize: [34, 34],
+        iconAnchor: [17, 17],
+        popupAnchor: [0, -16],
+      });
+      const m = L.marker([l.lat, l.lng], { icon, title: l.name }).bindPopup(popupHtml(l), { maxWidth: 240 });
+      m.on("click", () => markActive(l.id));
+      markers[l.id] = m;
+    });
+    updateMarkers(mapList);
   }
 
   function initEmbedMap() {
     gmap = null;
-    $("map").innerHTML = `<p class="map-fallback">Mapa se ovde ne prikazuje.<br />Otvori mesto direktno u Google Maps.</p>
-      <iframe id="mapFrame" title="Google mapa" loading="lazy"
+    lmap = null;
+    $("map").innerHTML = `<iframe id="mapFrame" title="Google mapa" loading="lazy"
       referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>`;
     if (mapList.length) selectOnMap(currentId || mapList[0].id);
   }
@@ -379,7 +411,7 @@
       const m = new google.maps.Marker({
         position: { lat: l.lat, lng: l.lng },
         title: l.name,
-        label: { text: CATEGORIES[l.category]?.icon || "📍", fontSize: "16px" },
+        label: { text: iconFor(l), fontSize: "16px" },
       });
       m.addListener("click", () => selectOnMap(l.id));
       markers[l.id] = m;
@@ -390,17 +422,27 @@
   function renderMapList() {
     $("mapList").innerHTML = mapList
       .map((l) => `<li><button class="map-item${l.id === currentId ? " active" : ""}" data-map-id="${esc(l.id)}">
-          <span class="map-item-icon">${CATEGORIES[l.category]?.icon || "📍"}</span>
+          <span class="map-item-icon">${iconFor(l)}</span>
           <span><strong>${esc(l.name)}</strong><small>${esc(l.area)}</small></span>
         </button></li>`)
       .join("");
+  }
+
+  function markActive(id) {
+    currentId = id;
+    document.querySelectorAll(".map-item").forEach((b) => b.classList.toggle("active", b.dataset.mapId === id));
   }
 
   function updateMarkers(list) {
     mapList = list;
     if (!list.some((l) => l.id === currentId)) currentId = list[0]?.id || null;
     renderMapList();
-    if (gmap) {
+    if (lmap) {
+      cluster.clearLayers();
+      list.forEach((l) => cluster.addLayer(markers[l.id]));
+      if (list.length === 1) lmap.setView([list[0].lat, list[0].lng], 16);
+      else if (list.length) lmap.fitBounds(L.latLngBounds(list.map((l) => [l.lat, l.lng])), { padding: [30, 30], maxZoom: 15 });
+    } else if (gmap) {
       infoWindow.close();
       const bounds = new google.maps.LatLngBounds();
       LOCATIONS.forEach((l) => {
@@ -422,9 +464,16 @@
   function selectOnMap(id) {
     const l = byId(id);
     if (!l) return;
-    currentId = id;
-    document.querySelectorAll(".map-item").forEach((b) => b.classList.toggle("active", b.dataset.mapId === id));
-    if (gmap) {
+    markActive(id);
+    if (lmap) {
+      const m = markers[id];
+      if (!cluster.hasLayer(m)) cluster.addLayer(m);
+      if (cluster.zoomToShowLayer) cluster.zoomToShowLayer(m, () => m.openPopup());
+      else {
+        lmap.setView([l.lat, l.lng], 16);
+        m.openPopup();
+      }
+    } else if (gmap) {
       markers[id].setMap(gmap);
       gmap.panTo({ lat: l.lat, lng: l.lng });
       gmap.setZoom(16);

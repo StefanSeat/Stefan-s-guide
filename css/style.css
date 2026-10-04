@@ -580,3 +580,30 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
 @media (max-width: 600px) {
   .placeholder { font-size: 2.8rem; }
 }
+
+/* Pinovi na mapi */
+.pin {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--black);
+  border: 3px solid var(--pc, var(--orange));
+  box-shadow: 0 0 0 2px var(--cream), 0 3px 8px rgba(0, 0, 0, 0.45);
+  font-size: 16px;
+  line-height: 1;
+  transition: transform 0.15s ease;
+}
+.pin:hover { transform: scale(1.15); }
+.popup-stars { color: var(--orange); letter-spacing: 0.08em; margin: 0.1rem 0 0.3rem; }
+.leaflet-popup-content { font-family: var(--sans); margin: 12px 14px; }
+.leaflet-container { font-family: var(--sans); background: #2a2324; }
+.marker-cluster-small, .marker-cluster-medium, .marker-cluster-large { background: rgba(236, 122, 37, 0.35); }
+.marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div {
+  background: var(--black);
+  color: var(--cream);
+  font-family: var(--sans);
+  font-weight: 600;
+  border: 2px solid var(--orange);
+}

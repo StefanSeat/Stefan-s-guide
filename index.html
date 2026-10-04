@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stefanov vodič · Beograd</title>
+  <meta name="description" content="Stefanove lične preporuke za Beograd: gde jesti, piti kafu, izaći i šta videti." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="nav">
+    <a class="logo" href="#top">Stefanov <em>vodič</em></a>
+    <nav>
+      <a href="#vodic">Vodič</a>
+      <a href="#mapa">Mapa</a>
+      <a href="#o-meni">O meni</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="top">
+    <div class="hero-inner">
+      <p class="eyebrow">Beograd · lične preporuke</p>
+      <h1>Grad kakav ja volim.<br /><em>Mesto po mesto.</em></h1>
+      <p class="lead">Kafane, kafa, zalasci sunca i skrivena mesta koja pokazujem prijateljima kad dođu u Beograd.</p>
+      <div class="hero-cta">
+        <a class="btn" href="#vodic">Otvori vodič</a>
+        <a class="btn btn-ghost" href="#mapa">Pogledaj mapu</a>
+      </div>
+      <ul class="stats" id="stats"></ul>
+    </div>
+  </section>
+
+  <section class="section" id="vodic">
+    <div class="section-head">
+      <p class="eyebrow">Vodič</p>
+      <h2>Moja mesta u Beogradu</h2>
+    </div>
+
+    <div class="toolbar">
+      <div class="chips" id="categoryChips" role="tablist" aria-label="Kategorije"></div>
+      <div class="filters">
+        <select id="areaSelect" aria-label="Kraj grada"></select>
+        <input id="search" type="search" placeholder="Pretraži mesta…" aria-label="Pretraga" />
+        <label class="fav-toggle"><input type="checkbox" id="favOnly" /> Samo favoriti</label>
+      </div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+    <p class="empty" id="empty" hidden>Nema mesta za ovaj izbor. Probaj drugi filter.</p>
+  </section>
+
+  <section class="section map-section" id="mapa">
+    <div class="section-head">
+      <p class="eyebrow">Mapa</p>
+      <h2>Sve na jednom mestu</h2>
+    </div>
+    <div id="map" aria-label="Mapa lokacija"></div>
+  </section>
+
+  <section class="section about" id="o-meni">
+    <div class="about-photo">
+      <img src="images/stefan.jpg" alt="Stefan" onerror="this.parentElement.classList.add('no-img'); this.remove();" />
+    </div>
+    <div class="about-text">
+      <p class="eyebrow">O meni</p>
+      <h2>Ćao, ja sam Stefan</h2>
+      <p>Rođen sam i živim u Beogradu. Ovaj vodič je spisak mesta koja godinama šaljem prijateljima u porukama, sada na jednom mestu. Ništa ovde nije plaćeno, sve sam lično probao.</p>
+      <p>Imaš preporuku koju bi trebalo da probam? Javi mi.</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>Stefanov vodič · Beograd · <span id="year"></span></p>
+  </footer>
+
+  <dialog id="detail" class="detail">
+    <button class="close" id="closeDetail" aria-label="Zatvori">×</button>
+    <div id="detailBody"></div>
+  </dialog>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

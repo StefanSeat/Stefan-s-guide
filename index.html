@@ -26,8 +26,8 @@
 
   <header class="nav" id="top">
     <nav class="nav-links nav-left">
-      <a href="#vodic">Vodič</a>
-      <a href="#kategorije">Kategorije</a>
+      <a href="#liste">Top liste</a>
+      <a href="#vodic">Sva mesta</a>
     </nav>
     <a class="logo" href="#top">STEFANOV <em>vodič</em></a>
     <nav class="nav-links nav-right">
@@ -49,7 +49,7 @@
       <p class="kicker">Lične preporuke · est. Beograd</p>
       <h1><span class="big">&bdquo;BEOGRAD&ldquo;</span><em>po Stefanu</em></h1>
       <p class="lead">Kafane, kafa, zalasci i skrivena mesta koja pokazujem prijateljima.</p>
-      <a class="btn btn-green" href="#vodic">Otvori vodič</a>
+      <a class="btn btn-green" href="#liste">Top liste</a>
     </div>
 
     <figure class="poster side s3 ph"><span>images/traka-3.jpg</span><img src="images/traka-3.jpg" alt="" onerror="this.remove()" /></figure>
@@ -83,19 +83,49 @@
   </section>
 
   <!-- Kategorije kao pločice sa fotografijom -->
-  <section class="band band-cream" id="kategorije">
-    <h2 class="band-title">Otkrij Beograd</h2>
+  <!-- Deljena lista (otvara se preko linka koji je neko poslao) -->
+  <section class="band band-black shared" id="deljena" hidden>
+    <div class="list-head">
+      <p class="kicker">Deljena top lista</p>
+      <h2 class="list-title" id="sharedTitle"></h2>
+      <p class="compare" id="sharedCompare"></p>
+    </div>
+    <ol class="ranked" id="sharedItems"></ol>
+    <div class="list-actions">
+      <button class="btn btn-green" id="adoptTop">Sačuvaj kao moju listu</button>
+      <a class="btn btn-ghost" href="#liste">Pogledaj Stefanove liste</a>
+    </div>
+  </section>
+
+  <!-- Stefanove top liste -->
+  <section class="band band-cream" id="liste">
+    <h2 class="band-title">Top liste</h2>
+    <p class="band-intro">Male liste po temama, svako mesto sa razlogom zašto je tu.</p>
     <div class="tiles" id="tiles"></div>
+  </section>
+
+  <!-- Izabrana lista -->
+  <section class="band wall" id="lista" hidden>
+    <div class="list-head">
+      <p class="kicker" id="listKicker">Top lista</p>
+      <h2 class="list-title" id="listTitle"></h2>
+      <p class="list-intro" id="listIntro"></p>
+    </div>
+    <ol class="ranked" id="listItems"></ol>
+    <div class="list-actions">
+      <button class="btn btn-green" id="listToMap">Prikaži listu na mapi</button>
+      <a class="btn btn-ghost" href="#liste">Sve top liste</a>
+    </div>
   </section>
 
   <!-- Vodič (raspored kao Rexby) -->
   <section class="band wall" id="vodic">
-    <h2 class="band-title">Moja mesta u Beogradu</h2>
+    <h2 class="band-title">Sva mesta</h2>
 
     <div class="spots">
       <div class="tabs" role="tablist">
         <button class="tab active" data-view="sve" role="tab">Sva mesta <small id="countAll"></small></button>
-        <button class="tab" data-view="lista" role="tab">Moja lista <small id="countSaved"></small></button>
+        <button class="tab" data-view="lista" role="tab">Moja top 10 <small id="countSaved"></small></button>
       </div>
 
       <div class="searchbar">
@@ -122,6 +152,22 @@
       </div>
 
       <div class="chips" id="categoryChips" role="tablist" aria-label="Kategorije"></div>
+
+      <!-- Moja top 10: poređaj sačuvana mesta i podeli listu -->
+      <div class="mytop" id="myTop" hidden>
+        <div class="mytop-head">
+          <label class="mytop-name">Ime tvoje liste
+            <input id="myTopName" type="text" maxlength="40" placeholder="npr. Markova top 10" />
+          </label>
+          <button class="btn btn-green" id="shareTop">Podeli listu</button>
+        </div>
+        <p class="mytop-hint">Dodaj mesta dugmetom + na karticama i poređaj ih strelicama. U deljenu listu ulazi prvih 10, a ko otvori link videće koliko se poklapa sa Stefanovim izborom.</p>
+        <div class="share-box" id="shareBox" hidden>
+          <input id="shareLink" type="text" readonly aria-label="Link za deljenje" />
+          <button class="btn" id="copyLink">Kopiraj link</button>
+        </div>
+        <ol class="ranked" id="myTopItems"></ol>
+      </div>
 
       <div class="grid" id="grid"></div>
       <div class="more"><button class="btn" id="moreBtn" hidden>Prikaži još</button></div>
@@ -157,6 +203,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
   <script src="js/config.js"></script>
   <script src="js/data.js"></script>
+  <script src="js/lists.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

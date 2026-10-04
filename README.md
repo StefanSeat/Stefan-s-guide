@@ -12,6 +12,12 @@ Lične preporuke za Beograd: gde jesti, piti kafu, izaći i šta videti. Statič
 - Sekciju "O meni"
 - Direktan link na lokaciju, npr. `.../#kalemegdan`
 
+## Top liste
+
+Naslovna strana prikazuje Stefanove tematske liste (npr. "Najbolja kafa", "Prvi dan u Beogradu"). Liste se uređuju u `js/lists.js`: redosled mesta je rang, a uz svako mesto može da stoji rečenica zašto je na listi.
+
+Posetioci prave svoju top 10 (dugme + i strelice pod "Moja top 10") i dele je linkom. Ko otvori link vidi tu listu i koliko se poklapa sa Stefanovim listama. Sve radi bez servera.
+
 ## Odakle su mesta
 
 Mesta su uvezena iz Stefanovih Google Maps recenzija (Google Takeout, fajl `Reviews.json`): samo Beograd, samo ocene 4 i 5, bez servisa i prodavnica. Za svako mesto sajt prikazuje ocenu, recenziju i link ka mestu na Google Maps.

@@ -145,20 +145,26 @@
         const knownId = l.placeId || store.get("sv-pid-" + l.id, "");
         if (knownId) {
           place = new Place({ id: knownId });
-          await place.fetchFields({ fields: ["photos"] });
+          await place.fetchFields({ fields: ["photos", "rating", "userRatingCount"] });
         } else {
           const { places } = await Place.searchByText({
             textQuery: `${l.name}, ${l.address || "Beograd"}`,
-            fields: ["id", "photos"],
+            fields: ["id", "photos", "rating", "userRatingCount"],
             locationBias: { lat: l.lat, lng: l.lng },
           });
           place = places && places[0];
           if (place) store.set("sv-pid-" + l.id, place.id);
         }
-        const photo = place?.photos?.[0];
-        if (!photo) return null;
-        const author = photo.authorAttributions?.[0];
-        return { url: photo.getURI({ maxWidth: 900 }), author: author?.displayName || "", authorUri: author?.uri || "" };
+        if (!place) return null;
+        const photo = place.photos?.[0];
+        const author = photo?.authorAttributions?.[0];
+        return {
+          url: photo ? photo.getURI({ maxWidth: 900 }) : "",
+          author: author?.displayName || "",
+          authorUri: author?.uri || "",
+          rating: place.rating || null,
+          count: place.userRatingCount || 0,
+        };
       })().catch(() => null);
     }
     return photoCache[l.id];
@@ -182,9 +188,30 @@
     else fillGooglePhoto(box, id, false);
   }
 
+  const fmtCount = (n) => n.toLocaleString("sr-RS");
+  // 1 recenzija, 2-4 recenzije, 5+ recenzija
+  const reviewsWord = (n) => (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? "recenzije" : "recenzija");
+  function googleRatingText(p, long) {
+    if (!p?.rating) return "";
+    return long
+      ? `${stars(Math.round(p.rating))} ${p.rating.toFixed(1)} · ${fmtCount(p.count)} ${reviewsWord(p.count)} na Google Maps`
+      : `${p.rating.toFixed(1)}★ (${fmtCount(p.count)})`;
+  }
+
+  // Google prosek i broj recenzija zamenjuju lokalnu ocenu svuda gde se mesto prikazuje
+  function showGoogleRating(id, p) {
+    if (!p?.rating) return;
+    document.querySelectorAll(`[data-grating="${id}"]`).forEach((el) => {
+      el.textContent = (el.classList.contains("rank-stars") ? "· " : "") + googleRatingText(p, el.dataset.long === "1");
+      el.hidden = false;
+    });
+  }
+
   async function fillGooglePhoto(box, id, withLink) {
     const p = await getGooglePhoto(byId(id));
-    if (!p || !box.isConnected || box.querySelector(".photo")) return;
+    if (!p) return;
+    showGoogleRating(id, p);
+    if (!p.url || !box.isConnected || box.querySelector(".photo")) return;
     const credit = p.author
       ? `<span class="credit">📷 ${withLink && p.authorUri ? `<a href="${esc(p.authorUri)}" target="_blank" rel="noopener">${esc(p.author)}</a>` : esc(p.author)} · Google</span>`
       : "";
@@ -234,11 +261,15 @@
       <button class="rank-thumb" data-open="${esc(l.id)}" aria-label="${esc(l.name)}">${imageHtml(l)}</button>
       <div class="rank-body">
         <h3><button class="rank-name" data-open="${esc(l.id)}">${esc(l.name)}</button></h3>
-        <p class="rank-meta">${cat ? cat.icon + " " + esc(cat.label) : ""} · ${esc(l.area)}${l.rating ? ` · <span class="rank-stars">${l.rating}★</span>` : ""}</p>
+        <p class="rank-meta">${cat ? cat.icon + " " + esc(cat.label) : ""} · ${esc(l.area)} <span class="rank-stars" data-grating="${esc(l.id)}" ${l.rating ? "" : "hidden"}>${l.rating ? "· " + l.rating + "★" : ""}</span></p>
         ${extra}
       </div>
       ${controls || `<button class="save" data-save="${esc(l.id)}"></button>`}
     </li>`;
+  }
+
+  function requestRankPhotos(container) {
+    container.querySelectorAll(".rank-thumb").forEach((b) => requestGooglePhoto(b, b.dataset.open));
   }
 
   function openList(id, scroll = true) {
@@ -249,9 +280,10 @@
     $("listTitle").textContent = L.title;
     $("listIntro").textContent = L.intro || "";
     $("listItems").innerHTML = places
-      .map(({ l, note }, i) => rankedItem(l, i + 1, `<p class="rank-note">${esc(note || l.short)}</p>`))
+      .map(({ l, note }, i) => rankedItem(l, i + 1, note || l.short ? `<p class="rank-note">${esc(note || l.short)}</p>` : ""))
       .join("");
     $("listItems").querySelectorAll("[data-save]").forEach(setSaveBtn);
+    requestRankPhotos($("listItems"));
     $("lista").hidden = false;
     $("lista").dataset.list = L.id;
     document.querySelectorAll(".list-tile").forEach((t) => t.classList.toggle("active", t.dataset.list === L.id));
@@ -278,6 +310,7 @@
       .join("");
     $("myTopItems").querySelectorAll(".ctl[data-save]").forEach((b) => (b.textContent = "✕"));
     $("shareTop").disabled = ids.length === 0;
+    requestRankPhotos($("myTopItems"));
   }
 
   function shareUrl() {
@@ -305,11 +338,12 @@
         const st = stefanRanks[id];
         const extra = st
           ? `<p class="rank-note match">✓ I Stefan ga ima: #${st[0].rank} na listi „${esc(st[0].list.title)}“</p>`
-          : `<p class="rank-note">${esc(byId(id).short)}</p>`;
+          : "";
         return rankedItem(byId(id), i + 1, extra);
       })
       .join("");
     $("sharedItems").querySelectorAll("[data-save]").forEach(setSaveBtn);
+    requestRankPhotos($("sharedItems"));
     $("deljena").hidden = false;
     $("deljena").dataset.ids = ids.join(",");
     $("adoptTop").textContent = saved.size ? "Zameni moju listu ovom" : "Sačuvaj kao moju listu";
@@ -404,7 +438,7 @@
           <button class="card-open" data-open="${esc(l.id)}">
             <span class="card-img" style="display:block">
               ${imageHtml(l)}
-              ${l.rating ? `<span class="fav">${l.rating}★</span>` : ""}
+              <span class="fav" data-grating="${esc(l.id)}" ${l.rating ? "" : "hidden"}>${l.rating ? l.rating + "★" : ""}</span>
             </span>
             <span class="poster-title" style="--tc:${COLORS[l.category] || "var(--green)"}">
               <span class="pt-name">${esc(l.name)}</span>
@@ -418,7 +452,7 @@
     $("grid").querySelectorAll("[data-save]").forEach(setSaveBtn);
     // Mesta za koja već znamo da nemaju sliku u images/ odmah traže fotografiju sa Google Maps
     list.forEach((l, i) => {
-      if (missingLocal.has(l.id)) requestGooglePhoto($("grid").children[i].querySelector(".card-img"), l.id);
+      requestGooglePhoto($("grid").children[i].querySelector(".card-img"), l.id);
     });
     const rest = all.length - list.length;
     $("moreBtn").hidden = rest <= 0;
@@ -446,8 +480,8 @@
       <div class="detail-content">
         <p class="eyebrow">${cat ? cat.icon + " " + esc(cat.label) : ""} · ${esc(l.area)}</p>
         <h3>${esc(l.name)}</h3>
-        ${l.rating ? `<p class="review-stars" aria-label="Ocena ${l.rating} od 5">${stars(l.rating)} <small>moja Google recenzija${l.date ? " · " + esc(l.date.slice(0, 4)) : ""}</small></p>` : ""}
-        ${l.rating ? `<p class="review">„${esc(l.description || l.short)}“</p>` : `<p>${esc(l.description || l.short)}</p>`}
+        <p class="review-stars" data-grating="${esc(l.id)}" data-long="1" ${l.rating ? "" : "hidden"}>${l.rating ? `${stars(l.rating)} ${l.rating}.0` : ""}</p>
+        ${l.description || l.short ? `<p>${esc(l.description || l.short)}</p>` : ""}
         ${l.tip ? `<div class="tip"><strong>Stefanov savet:</strong> ${esc(l.tip)}</div>` : ""}
         <div class="detail-info">
           ${l.address ? `<span>📍 ${esc(l.address)}</span>` : ""}
@@ -459,7 +493,7 @@
           <button class="btn btn-ghost" data-show-map="${esc(l.id)}">Prikaži na mapi</button>
         </div>
       </div>`;
-    if (missingLocal.has(l.id)) fillGooglePhoto($("detailImg"), l.id, true);
+    if (API_KEY) fillGooglePhoto($("detailImg"), l.id, true);
     $("detail").showModal();
     history.replaceState(null, "", "#" + l.id);
   }
@@ -485,7 +519,7 @@
   function popupHtml(l) {
     return `<div class="popup-title">${esc(l.name)}</div>
       ${l.rating ? `<div class="popup-stars">${stars(l.rating)}</div>` : ""}
-      <div class="popup-text">${esc(l.short)}</div>
+      ${l.short ? `<div class="popup-text">${esc(l.short)}</div>` : ""}
       <button class="popup-link" data-open="${esc(l.id)}">Detalji →</button>`;
   }
 

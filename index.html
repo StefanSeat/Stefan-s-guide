@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -58,7 +57,10 @@
       <p class="eyebrow">Mapa</p>
       <h2>Sve na jednom mestu</h2>
     </div>
-    <div id="map" aria-label="Mapa lokacija"></div>
+    <div class="map-wrap">
+      <ul class="map-list" id="mapList" aria-label="Mesta na mapi"></ul>
+      <div id="map" aria-label="Google mapa"></div>
+    </div>
   </section>
 
   <section class="section about" id="o-meni">
@@ -82,7 +84,7 @@
     <div id="detailBody"></div>
   </dialog>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="js/config.js"></script>
   <script src="js/data.js"></script>
   <script src="js/app.js"></script>
 </body>

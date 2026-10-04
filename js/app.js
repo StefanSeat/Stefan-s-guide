@@ -129,57 +129,120 @@
     $("detail").close();
   }
 
-  /* Mapa */
-  let map, markerLayer;
+  /* Mapa (Google Maps)
+     Bez API ključa: ugrađena Google mapa prikazuje izabrano mesto, a lista pored nje menja mesto.
+     Sa ključem u js/config.js: jedna mapa sa pinovima za sva mesta. */
+  const API_KEY = (typeof GOOGLE_MAPS_API_KEY !== "undefined" && GOOGLE_MAPS_API_KEY) || "";
+  let gmap, infoWindow;
   const markers = {};
+  let currentId = null;
+  let mapList = [];
+
+  function embedUrl(l) {
+    const q = encodeURIComponent(`${l.name}, ${l.address || "Beograd"}`);
+    return `https://maps.google.com/maps?q=${q}&ll=${l.lat},${l.lng}&z=16&hl=sr&output=embed`;
+  }
+
+  function popupHtml(l) {
+    return `<div class="popup-title">${esc(l.name)}</div>
+      <div class="popup-text">${esc(l.short)}</div>
+      <button class="popup-link" data-id="${esc(l.id)}">Detalji →</button>`;
+  }
 
   function initMap() {
-    if (typeof L === "undefined") {
-      $("map").innerHTML = '<p class="empty" style="padding:2rem">Mapa trenutno nije dostupna.</p>';
-      return;
+    if (API_KEY) {
+      window.__initGoogleMap = initGoogleMap;
+      const s = document.createElement("script");
+      s.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(API_KEY)}&callback=__initGoogleMap&loading=async`;
+      s.async = true;
+      s.onerror = initEmbedMap;
+      document.head.appendChild(s);
+    } else {
+      initEmbedMap();
     }
-    map = L.map("map", { scrollWheelZoom: false }).setView([44.8125, 20.4612], 13);
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-      attribution: '&copy; OpenStreetMap &copy; CARTO',
-      maxZoom: 19,
-    }).addTo(map);
-    markerLayer = L.layerGroup().addTo(map);
+  }
 
-    LOCATIONS.forEach((l) => {
-      const icon = L.divIcon({
-        className: "",
-        html: `<div class="map-pin"><span>${CATEGORIES[l.category]?.icon || "📍"}</span></div>`,
-        iconSize: [34, 34],
-        iconAnchor: [17, 34],
-        popupAnchor: [0, -32],
-      });
-      markers[l.id] = L.marker([l.lat, l.lng], { icon }).bindPopup(
-        `<div class="popup-title">${esc(l.name)}</div>
-         <div>${esc(l.short)}</div>
-         <button class="popup-link" data-id="${esc(l.id)}">Detalji →</button>`
-      );
+  function initEmbedMap() {
+    gmap = null;
+    $("map").innerHTML = `<iframe id="mapFrame" title="Google mapa" loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>`;
+    if (mapList.length) selectOnMap(mapList[0].id);
+  }
+
+  function initGoogleMap() {
+    gmap = new google.maps.Map($("map"), {
+      center: { lat: 44.8125, lng: 20.4612 },
+      zoom: 13,
+      mapTypeControl: false,
+      streetViewControl: false,
+      gestureHandling: "cooperative",
     });
+    infoWindow = new google.maps.InfoWindow();
+    LOCATIONS.forEach((l) => {
+      const m = new google.maps.Marker({
+        position: { lat: l.lat, lng: l.lng },
+        title: l.name,
+        label: { text: CATEGORIES[l.category]?.icon || "📍", fontSize: "16px" },
+      });
+      m.addListener("click", () => selectOnMap(l.id));
+      markers[l.id] = m;
+    });
+    updateMarkers(mapList);
+  }
+
+  function renderMapList() {
+    $("mapList").innerHTML = mapList
+      .map((l) => `<li><button class="map-item${l.id === currentId ? " active" : ""}" data-map-id="${esc(l.id)}">
+          <span class="map-item-icon">${CATEGORIES[l.category]?.icon || "📍"}</span>
+          <span><strong>${esc(l.name)}</strong><small>${esc(l.area)}</small></span>
+        </button></li>`)
+      .join("");
   }
 
   function updateMarkers(list) {
-    if (!map) return;
-    markerLayer.clearLayers();
-    list.forEach((l) => markers[l.id] && markerLayer.addLayer(markers[l.id]));
-    if (list.length) {
-      map.fitBounds(L.latLngBounds(list.map((l) => [l.lat, l.lng])), { padding: [40, 40], maxZoom: 15 });
+    mapList = list;
+    if (!list.some((l) => l.id === currentId)) currentId = list[0]?.id || null;
+    renderMapList();
+    if (gmap) {
+      infoWindow.close();
+      const bounds = new google.maps.LatLngBounds();
+      LOCATIONS.forEach((l) => {
+        const visible = list.includes(l);
+        markers[l.id].setMap(visible ? gmap : null);
+        if (visible) bounds.extend(markers[l.id].getPosition());
+      });
+      if (list.length === 1) {
+        gmap.setCenter(bounds.getCenter());
+        gmap.setZoom(15);
+      } else if (list.length) {
+        gmap.fitBounds(bounds, 40);
+      }
+    } else if (currentId && $("mapFrame")) {
+      selectOnMap(currentId);
+    }
+  }
+
+  function selectOnMap(id) {
+    const l = LOCATIONS.find((x) => x.id === id);
+    if (!l) return;
+    currentId = id;
+    document.querySelectorAll(".map-item").forEach((b) => b.classList.toggle("active", b.dataset.mapId === id));
+    if (gmap) {
+      markers[id].setMap(gmap);
+      gmap.panTo({ lat: l.lat, lng: l.lng });
+      gmap.setZoom(16);
+      infoWindow.setContent(popupHtml(l));
+      infoWindow.open({ map: gmap, anchor: markers[id] });
+    } else if ($("mapFrame")) {
+      const src = embedUrl(l);
+      if ($("mapFrame").getAttribute("src") !== src) $("mapFrame").setAttribute("src", src);
     }
   }
 
   function showOnMap(id) {
     closeDetail();
-    const l = LOCATIONS.find((x) => x.id === id);
-    if (!map || !l) return;
-    if (!markerLayer.hasLayer(markers[id])) markerLayer.addLayer(markers[id]);
     $("mapa").scrollIntoView({ behavior: "smooth" });
-    setTimeout(() => {
-      map.setView([l.lat, l.lng], 16);
-      markers[id].openPopup();
-    }, 450);
+    selectOnMap(id);
   }
 
   /* Događaji */
@@ -212,6 +275,8 @@
       if (link) openDetail(link.dataset.id);
       const show = e.target.closest("[data-show-map]");
       if (show) showOnMap(show.dataset.showMap);
+      const item = e.target.closest("[data-map-id]");
+      if (item) selectOnMap(item.dataset.mapId);
     });
     $("closeDetail").addEventListener("click", closeDetail);
     $("detail").addEventListener("click", (e) => {

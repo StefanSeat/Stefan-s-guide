@@ -1,5 +1,6 @@
 (function () {
-  const state = { view: "sve", category: "sve", area: "sve", query: "", favOnly: false, sort: "preporuka" };
+  const PAGE = 24;
+  const state = { view: "sve", category: "sve", area: "sve", query: "", favOnly: false, sort: "preporuka", limit: PAGE };
 
   // Boja tačkica i naslova za svaku kategoriju (kao na starim posterima)
   const COLORS = {
@@ -65,8 +66,10 @@
   }
 
   function mapsUrl(l) {
-    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(l.name + ", Beograd")}`;
+    return l.mapsUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(l.name + ", Beograd")}`;
   }
+
+  const stars = (n) => "★".repeat(n) + "☆".repeat(5 - n);
 
   /* Google Maps i Places (sa ključem iz js/config.js) */
   const API_KEY = (typeof GOOGLE_MAPS_API_KEY !== "undefined" && GOOGLE_MAPS_API_KEY) || "";
@@ -147,11 +150,11 @@
   function renderStats() {
     if (!$("stats")) return;
     const areas = new Set(LOCATIONS.map((l) => l.area));
-    const favs = LOCATIONS.filter((l) => l.favorite).length;
+    const top = LOCATIONS.filter((l) => l.rating === 5).length;
     $("stats").innerHTML = [
       [LOCATIONS.length, "mesta"],
       [areas.size, "krajeva"],
-      [favs, "favorita"],
+      [top, "ocena 5★"],
     ]
       .map(([n, t]) => `<li><strong>${n}</strong><span>${t}</span></li>`)
       .join("");
@@ -175,13 +178,13 @@
   function setCategory(cat) {
     state.category = cat;
     document.querySelectorAll(".chip").forEach((c) => c.classList.toggle("active", c.dataset.cat === cat));
-    renderGrid();
+    refresh();
   }
 
   function setView(view) {
     state.view = view;
     document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.view === view));
-    renderGrid();
+    refresh();
   }
 
   /* Filteri */
@@ -213,7 +216,7 @@
       if (state.view === "lista" && !saved.has(l.id)) return false;
       if (state.category !== "sve" && l.category !== state.category) return false;
       if (state.area !== "sve" && l.area !== state.area) return false;
-      if (state.favOnly && !l.favorite) return false;
+      if (state.favOnly && l.rating !== 5) return false;
       if (q) {
         const hay = [l.name, l.area, l.short, l.description, ...(l.tags || [])].join(" ").toLowerCase();
         if (!hay.includes(q)) return false;
@@ -222,12 +225,13 @@
     });
     if (state.sort === "az") return list.sort((a, b) => a.name.localeCompare(b.name, "sr"));
     if (state.sort === "kraj") return list.sort((a, b) => a.area.localeCompare(b.area, "sr") || a.name.localeCompare(b.name, "sr"));
-    return list.sort((a, b) => (b.favorite === true) - (a.favorite === true));
+    return list.sort((a, b) => (b.rating || 0) - (a.rating || 0) || String(b.date).localeCompare(String(a.date)));
   }
 
   /* Kartice kao posteri */
   function renderGrid() {
-    const list = filtered();
+    const all = filtered();
+    const list = all.slice(0, state.limit);
     $("grid").innerHTML = list
       .map((l) => {
         const cat = CATEGORIES[l.category];
@@ -235,7 +239,7 @@
           <button class="card-open" data-open="${esc(l.id)}">
             <span class="card-img" style="display:block">
               ${imageHtml(l)}
-              ${l.favorite ? `<span class="fav">Favorit</span>` : ""}
+              ${l.rating ? `<span class="fav">${l.rating}★</span>` : ""}
             </span>
             <span class="poster-title" style="--tc:${COLORS[l.category] || "var(--green)"}">
               <span class="pt-name">${esc(l.name)}</span>
@@ -251,11 +255,20 @@
     list.forEach((l, i) => {
       if (!l.image || missingLocal.has(l.id)) requestGooglePhoto($("grid").children[i].querySelector(".card-img"), l.id);
     });
-    $("empty").hidden = list.length > 0;
+    const rest = all.length - list.length;
+    $("moreBtn").hidden = rest <= 0;
+    $("moreBtn").textContent = `Prikaži još (${rest})`;
+    $("empty").hidden = all.length > 0;
     $("empty").textContent = state.view === "lista" && saved.size === 0
       ? "Tvoja lista je prazna. Klikni + na mestu da ga dodaš."
       : "Nema mesta za ovaj izbor.";
-    updateMarkers(list);
+    updateMarkers(all);
+  }
+
+  /* Svaka promena filtera počinje od prve strane */
+  function refresh() {
+    state.limit = PAGE;
+    renderGrid();
   }
 
   /* Prozor sa detaljima */
@@ -268,11 +281,12 @@
       <div class="detail-content">
         <p class="eyebrow">${cat ? cat.icon + " " + esc(cat.label) : ""} · ${esc(l.area)}</p>
         <h3>${esc(l.name)}</h3>
-        <p>${esc(l.description || l.short)}</p>
+        ${l.rating ? `<p class="review-stars" aria-label="Ocena ${l.rating} od 5">${stars(l.rating)} <small>moja Google recenzija${l.date ? " · " + esc(l.date.slice(0, 4)) : ""}</small></p>` : ""}
+        <p class="review">„${esc(l.description || l.short)}“</p>
         ${l.tip ? `<div class="tip"><strong>Stefanov savet:</strong> ${esc(l.tip)}</div>` : ""}
         <div class="detail-info">
           ${l.address ? `<span>📍 ${esc(l.address)}</span>` : ""}
-          <span>💰 ${l.price ? esc(l.price) : "Besplatno"}</span>
+          ${l.price ? `<span>💰 ${esc(l.price)}</span>` : ""}
         </div>
         ${l.tags?.length ? `<div class="tags">${l.tags.map((t) => `<span class="tag">#${esc(t)}</span>`).join("")}</div>` : ""}
         <div class="detail-actions">
@@ -432,19 +446,19 @@
     });
     $("sortSelect").addEventListener("change", (e) => {
       state.sort = e.target.value;
-      renderGrid();
+      refresh();
     });
     $("areaSelect").addEventListener("change", (e) => {
       state.area = e.target.value;
-      renderGrid();
+      refresh();
     });
     $("search").addEventListener("input", (e) => {
       state.query = e.target.value;
-      renderGrid();
+      refresh();
     });
     $("favOnly").addEventListener("change", (e) => {
       state.favOnly = e.target.checked;
-      renderGrid();
+      refresh();
     });
     document.addEventListener("click", (e) => {
       const save = e.target.closest("[data-save]");
@@ -455,6 +469,10 @@
       if (show) return showOnMap(show.dataset.showMap);
       const item = e.target.closest("[data-map-id]");
       if (item) selectOnMap(item.dataset.mapId);
+    });
+    $("moreBtn").addEventListener("click", () => {
+      state.limit += PAGE;
+      renderGrid();
     });
     $("closeDetail").addEventListener("click", closeDetail);
     $("detail").addEventListener("click", (e) => {

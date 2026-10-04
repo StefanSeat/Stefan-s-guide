@@ -106,7 +106,7 @@
         <label class="icon-btn sort" title="Sortiraj">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v16M8 20l-3-3M8 20l3-3M16 20V4M16 4l-3 3M16 4l3 3" /></svg>
           <select id="sortSelect" aria-label="Sortiraj">
-            <option value="preporuka">Preporuka</option>
+            <option value="preporuka">Najbolje ocenjeno</option>
             <option value="az">Naziv A–Ž</option>
             <option value="kraj">Kraj grada</option>
           </select>
@@ -115,12 +115,13 @@
 
       <div class="filter-panel" id="filterPanel" hidden>
         <select id="areaSelect" aria-label="Kraj grada"></select>
-        <label class="fav-toggle"><input type="checkbox" id="favOnly" /> Samo Stefanovi favoriti</label>
+        <label class="fav-toggle"><input type="checkbox" id="favOnly" /> Samo ocene 5★</label>
       </div>
 
       <div class="chips" id="categoryChips" role="tablist" aria-label="Kategorije"></div>
 
       <div class="grid" id="grid"></div>
+      <div class="more"><button class="btn" id="moreBtn" hidden>Prikaži još</button></div>
       <p class="empty" id="empty" hidden>Nema mesta za ovaj izbor.</p>
     </div>
 

@@ -12,6 +12,10 @@ Lične preporuke za Beograd: gde jesti, piti kafu, izaći i šta videti. Statič
 - Sekciju "O meni"
 - Direktan link na lokaciju, npr. `.../#kalemegdan`
 
+## Odakle su mesta
+
+Mesta su uvezena iz Stefanovih Google Maps recenzija (Google Takeout, fajl `Reviews.json`): samo Beograd, samo ocene 4 i 5, bez servisa i prodavnica. Za svako mesto sajt prikazuje ocenu, recenziju i link ka mestu na Google Maps.
+
 ## Kako da dodaš ili izmeniš lokaciju
 
 Sve lokacije su u fajlu `js/data.js`. Kopiraj jedan postojeći blok `{ ... }`, promeni vrednosti i sačuvaj. Objašnjenje svih polja je na vrhu fajla.

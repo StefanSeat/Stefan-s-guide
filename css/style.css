@@ -557,3 +557,9 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
   .swirl circle { transform: none; }
 }
 .hero { overflow-x: clip; }
+
+/* Recenzija u detaljima i dugme za još mesta */
+.review-stars { color: var(--orange); font-size: 1.15rem; letter-spacing: 0.1em; margin: 0 0 0.4rem; }
+.review-stars small { color: var(--muted); font-size: 0.75rem; letter-spacing: 0.04em; margin-left: 0.4rem; }
+.review { font-family: var(--script); font-style: italic; font-size: 1.15rem; line-height: 1.5; margin: 0 0 1rem; }
+.more { display: flex; justify-content: center; margin-top: 2.5rem; }

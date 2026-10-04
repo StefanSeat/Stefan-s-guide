@@ -39,13 +39,44 @@
     btn.title = on ? "Ukloni iz moje liste" : "Dodaj u moju listu";
   }
 
-  /* Slike: tvoja slika iz images/, ako je nema onda fotografija sa Google Maps, ako ni nje nema onda poster sa tačkicama */
+  /* Slike: tvoja slika iz images/, ako je nema onda fotografija sa Google Maps, ako ni nje nema onda poster sa ilustracijom */
   const missingLocal = new Set();
 
+  // Ilustracija za poster prema tome šta je mesto (prvo pravilo koje se poklopi pobeđuje)
+  const ICON_RULES = [
+    [/9¾|harry/, "⚡"], [/bunny|zec/, "🐰"], [/karting/, "🏎️"], [/padel/, "🎾"], [/escape/, "🗝️"],
+    [/board game|drustven|društven|igre/, "🎲"], [/muzej|museum|paranormal/, "🖼️"], [/botani|jevremovac/, "🌿"],
+    [/hram|umetni|galerij/, "🎨"], [/bubble tea/, "🧋"], [/stroopwafel/, "🧇"], [/gelato|sladoled/, "🍦"],
+    [/ramen/, "🍜"], [/sushi|wagokoro/, "🍣"], [/kinesk|vok\b|wok|makao|chinese/, "🥡"], [/kebab/, "🥙"],
+    [/pizz|pica\b|picerij/, "🍕"], [/burger|diner/, "🍔"], [/barbecue|bbq|rodizio|meat|morava|na vatri|cevap|ćevap|rostilj|roštilj/, "🥩"],
+    [/rizoto|risotto|pasta|lazanj|italian|pane e vino|sentimenti|da luca/, "🍝"], [/panin|sendvic|sendvič/, "🥪"],
+    [/uštip|ustip/, "🍩"], [/palacink|palačink|kaiserschmarrn/, "🥞"], [/brekky|dorucak|doručak|breakfast|brunch/, "🍳"],
+    [/kolac|kolač|torta|cake|dessert|desert|poslast|smokvic|alisa|fenisa|mama goca|koštana|kostana/, "🍰"],
+    [/fit|plant|avocado|green|salat/, "🥗"], [/kafana|zavičaj|zavicaj|skadarlij|5 glava|ciribu|ćiribu|jagnet/, "🍲"],
+    [/riblj|fish|meze|elliniko|piatakia|greek/, "🐟"], [/splav|reka\b|kej/, "🛶"], [/rooftop|view|pogled/, "🌇"],
+    [/guinness|pub|pivo|beer|brew|draft|bure piva|pivokrat/, "🍺"], [/vino|wine/, "🍷"], [/rakij|shoot/, "🥃"],
+    [/muzik|music|live/, "🎷"], [/sah|šah|chess/, "♟️"], [/koktel|cocktail|coctail/, "🍸"],
+    [/kafa|coffee|espresso|kafeterij|caf[eé]|pržion|przion|kapucino/, "☕"],
+  ];
+  const PATTERNS = ["pat-dots", "pat-rays", "pat-stripes", "pat-rings"];
+
+  function iconFor(l) {
+    // Prvo se gleda naziv mesta, pa tek onda tekst recenzije
+    const name = l.name.toLowerCase();
+    const text = (l.description || "").toLowerCase();
+    const hit = ICON_RULES.find(([re]) => re.test(name)) || ICON_RULES.find(([re]) => re.test(text));
+    return l.icon || (hit ? hit[1] : CATEGORIES[l.category]?.icon || "📍");
+  }
+
+  function patternFor(l) {
+    let h = 0;
+    for (const c of l.id) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+    return PATTERNS[h % PATTERNS.length];
+  }
+
   function imageHtml(l) {
-    const icon = CATEGORIES[l.category]?.icon || "📍";
     const file = l.image ? `<small class="ph-file">📷 ${esc(l.image)}</small>` : "";
-    const ph = `<div class="placeholder" style="--dot:${COLORS[l.category] || "var(--orange)"}"><span class="ico">${icon}</span>${file}</div>`;
+    const ph = `<div class="placeholder ${patternFor(l)}" style="--dot:${COLORS[l.category] || "var(--orange)"}"><span class="ico">${iconFor(l)}</span>${file}</div>`;
     const local = l.image && !missingLocal.has(l.id)
       ? `<img class="photo" src="${esc(l.image)}" alt="${esc(l.name)}" loading="lazy" data-local="${esc(l.id)}" />`
       : "";

@@ -563,3 +563,20 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
 .review-stars small { color: var(--muted); font-size: 0.75rem; letter-spacing: 0.04em; margin-left: 0.4rem; }
 .review { font-family: var(--script); font-style: italic; font-size: 1.15rem; line-height: 1.5; margin: 0 0 1rem; }
 .more { display: flex; justify-content: center; margin-top: 2.5rem; }
+
+/* Posteri bez fotografije: četiri šare i velika ilustracija */
+.placeholder { font-size: 4.2rem; }
+.placeholder .ico { width: 1.7em; height: 1.7em; box-shadow: 0 0 0 6px var(--black), 0 0 0 9px var(--dot, var(--orange)); }
+.placeholder.pat-rays {
+  background:
+    repeating-conic-gradient(from 0deg at 50% 50%, var(--dot, var(--orange)) 0deg 9deg, var(--black) 9deg 18deg);
+}
+.placeholder.pat-stripes {
+  background: repeating-linear-gradient(135deg, var(--dot, var(--orange)) 0 14px, var(--black) 14px 28px);
+}
+.placeholder.pat-rings {
+  background: repeating-radial-gradient(circle at 50% 50%, var(--dot, var(--orange)) 0 10px, var(--black) 10px 22px);
+}
+@media (max-width: 600px) {
+  .placeholder { font-size: 2.8rem; }
+}

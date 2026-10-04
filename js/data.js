@@ -15,7 +15,10 @@
     short       (opciono) jedna rečenica o mestu
     description (opciono) duži opis u detaljima
     tip         (opciono) poseban Stefanov savet
-    rating      ocena sa Google Maps (1 do 5); sa Google ključem sajt prikazuje Google prosek i broj recenzija
+    rating      Stefanova ocena (1 do 5), prikazuje se kao "Stefanova ocena" dok nema Google ocene
+    googleRating  (opciono) prosečna ocena mesta na Google Maps, npr. 4.7
+    googleReviews (opciono) broj recenzija na Google Maps, npr. 145
+                  Prepiši ih sa Google Maps za mesta koja želiš. Sa Google ključem stižu same.
     date        datum recenzije
     price       "€", "€€", "€€€" ili "" ako nije poznato
     address     adresa
@@ -173,7 +176,9 @@ const LOCATIONS = [
     "lat": 44.827493,
     "lng": 20.471522,
     "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x0:0xef5dbc86abbdfb78",
-    "tags": []
+    "tags": [],
+    "googleRating": 4.7,
+    "googleReviews": 145
   },
   {
     "id": "loch-ness-belgrade",

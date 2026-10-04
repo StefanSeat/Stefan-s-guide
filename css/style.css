@@ -679,11 +679,18 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
   .list-tile .tile-label { font-size: 1rem; flex-direction: column; gap: 0; }
 }
 
-/* Google kartica mesta u opisu pina i u detaljima */
-.popup-gmap { display: block; width: 100%; height: 230px; border: 0; margin: 0.4rem 0 0.5rem; background: var(--cream); }
+/* Opis pina u stilu Google kartice */
+.gpopup .leaflet-popup-content-wrapper { padding: 0; border-radius: 12px; overflow: hidden; }
+.gpopup .leaflet-popup-content { margin: 0; width: 280px !important; }
+.gpopup a.leaflet-popup-close-button { color: #fff; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); z-index: 2; }
+.gcard-img { position: relative; height: 150px; overflow: hidden; background: var(--black); }
+.gcard-img .placeholder { font-size: 2.6rem; }
+.gcard-img .ph-file { display: none; }
+.gcard-body { padding: 0.7rem 0.9rem 0.8rem; font-family: "Roboto", Arial, sans-serif; color: #202124; }
+.gcard-name { font-size: 1.15rem; line-height: 1.3; margin-bottom: 0.15rem; }
+.gcard-rating { display: flex; align-items: center; gap: 0.3rem; font-size: 0.88rem; color: #70757a; }
+.gcard-rating b { color: #202124; font-weight: 400; }
+.gstars { color: #fbbc04; letter-spacing: 0.02em; }
+.gcard-type { font-size: 0.88rem; color: #70757a; margin: 0.1rem 0 0.6rem; }
 .popup-row { display: flex; justify-content: space-between; gap: 1rem; }
 .popup-row a.popup-link { text-decoration: none; }
-.detail-gmap { display: block; width: 100%; height: 280px; border: 2px solid var(--black); margin: 0.5rem 0 1.25rem; background: var(--cream); }
-@media (max-width: 600px) {
-  .popup-gmap { height: 200px; }
-}

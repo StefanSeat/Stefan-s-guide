@@ -191,18 +191,34 @@
   const fmtCount = (n) => n.toLocaleString("sr-RS");
   // 1 recenzija, 2-4 recenzije, 5+ recenzija
   const reviewsWord = (n) => (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? "recenzije" : "recenzija");
-  function googleRatingText(p, long) {
-    if (!p?.rating) return "";
-    return long
-      ? `${stars(Math.round(p.rating))} ${p.rating.toFixed(1)} · ${fmtCount(p.count)} ${reviewsWord(p.count)} na Google Maps`
-      : `${p.rating.toFixed(1)}★ (${fmtCount(p.count)})`;
+  // Ocena mesta: Google prosek i broj recenzija (iz API-ja ili upisani u data.js), a ako ih nema, Stefanova ocena
+  function ratingHtml(l, mode, live) {
+    const g = live?.rating ? live : l.googleRating ? { rating: l.googleRating, count: l.googleReviews || 0 } : null;
+    if (g) {
+      const r = g.rating.toFixed(1);
+      const c = g.count ? fmtCount(g.count) : "";
+      if (mode === "card") return `<b>${r}</b> <span class="gstars">${stars(Math.round(g.rating))}</span>${c ? ` <span class="gcount">(${c})</span>` : ""}`;
+      if (mode === "long") return `<span class="gstars">${stars(Math.round(g.rating))}</span> ${r}${c ? ` · ${c} ${reviewsWord(g.count)} na Google Maps` : " na Google Maps"}`;
+      if (mode === "meta") return `· ${r}★${c ? ` (${c})` : ""}`;
+      return `${r}★${c ? ` (${c})` : ""}`;
+    }
+    if (!l.rating) return "";
+    if (mode === "card") return `<span class="gstars">${stars(l.rating)}</span> <span class="gcount">Stefanova ocena</span>`;
+    if (mode === "long") return `<span class="gstars">${stars(l.rating)}</span> Stefanova ocena`;
+    if (mode === "meta") return `· ${l.rating}★`;
+    return `${l.rating}★`;
   }
 
-  // Google prosek i broj recenzija zamenjuju lokalnu ocenu svuda gde se mesto prikazuje
+  function ratingAttrs(l, mode) {
+    return `data-grating="${esc(l.id)}" data-mode="${mode}" ${ratingHtml(l, mode) ? "" : "hidden"}`;
+  }
+
+  // Kada stignu podaci sa Google-a, osveži ocenu svuda gde se mesto prikazuje
   function showGoogleRating(id, p) {
     if (!p?.rating) return;
+    const l = byId(id);
     document.querySelectorAll(`[data-grating="${id}"]`).forEach((el) => {
-      el.textContent = (el.classList.contains("rank-stars") ? "· " : "") + googleRatingText(p, el.dataset.long === "1");
+      el.innerHTML = ratingHtml(l, el.dataset.mode, p);
       el.hidden = false;
     });
   }
@@ -261,7 +277,7 @@
       <button class="rank-thumb" data-open="${esc(l.id)}" aria-label="${esc(l.name)}">${imageHtml(l)}</button>
       <div class="rank-body">
         <h3><button class="rank-name" data-open="${esc(l.id)}">${esc(l.name)}</button></h3>
-        <p class="rank-meta">${cat ? cat.icon + " " + esc(cat.label) : ""} · ${esc(l.area)} <span class="rank-stars" data-grating="${esc(l.id)}" ${l.rating ? "" : "hidden"}>${l.rating ? "· " + l.rating + "★" : ""}</span></p>
+        <p class="rank-meta">${cat ? cat.icon + " " + esc(cat.label) : ""} · ${esc(l.area)} <span class="rank-stars" ${ratingAttrs(l, "meta")}>${ratingHtml(l, "meta")}</span></p>
         ${extra}
       </div>
       ${controls || `<button class="save" data-save="${esc(l.id)}"></button>`}
@@ -438,7 +454,7 @@
           <button class="card-open" data-open="${esc(l.id)}">
             <span class="card-img" style="display:block">
               ${imageHtml(l)}
-              <span class="fav" data-grating="${esc(l.id)}" ${l.rating ? "" : "hidden"}>${l.rating ? l.rating + "★" : ""}</span>
+              <span class="fav" ${ratingAttrs(l, "badge")}>${ratingHtml(l, "badge")}</span>
             </span>
             <span class="poster-title" style="--tc:${COLORS[l.category] || "var(--green)"}">
               <span class="pt-name">${esc(l.name)}</span>
@@ -480,7 +496,7 @@
       <div class="detail-content">
         <p class="eyebrow">${cat ? cat.icon + " " + esc(cat.label) : ""} · ${esc(l.area)}</p>
         <h3>${esc(l.name)}</h3>
-        <p class="review-stars" data-grating="${esc(l.id)}" data-long="1" ${l.rating ? "" : "hidden"}>${l.rating ? `${stars(l.rating)} ${l.rating}.0` : ""}</p>
+        <p class="review-stars" ${ratingAttrs(l, "long")}>${ratingHtml(l, "long")}</p>
         ${l.description || l.short ? `<p>${esc(l.description || l.short)}</p>` : ""}
         ${l.tip ? `<div class="tip"><strong>Stefanov savet:</strong> ${esc(l.tip)}</div>` : ""}
         <div class="detail-info">
@@ -488,7 +504,6 @@
           ${l.price ? `<span>💰 ${esc(l.price)}</span>` : ""}
         </div>
         ${l.tags?.length ? `<div class="tags">${l.tags.map((t) => `<span class="tag">#${esc(t)}</span>`).join("")}</div>` : ""}
-        ${googleCard(l, "detail-gmap")}
         <div class="detail-actions">
           <a class="btn" href="${mapsUrl(l)}" target="_blank" rel="noopener">Otvori u Google Maps</a>
           <button class="btn btn-ghost" data-show-map="${esc(l.id)}">Prikaži na mapi</button>
@@ -517,19 +532,21 @@
     return `https://maps.google.com/maps?q=${q}&ll=${l.lat},${l.lng}&z=16&hl=sr&output=embed`;
   }
 
-  // Mala ugrađena Google mapa: Google u njoj sam prikazuje karticu mesta sa ocenom i brojem recenzija
-  function googleCard(l, cls) {
-    return `<iframe class="${cls}" src="${esc(embedUrl(l))}" title="${esc(l.name)} na Google Maps"
-      loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
-  }
-
+  // Opis pina u stilu Google kartice: slika, naziv, ocena sa brojem recenzija i tip mesta
   function popupHtml(l) {
-    return `<div class="popup-title">${esc(l.name)}</div>
-      ${googleCard(l, "popup-gmap")}
-      <div class="popup-row">
-        <button class="popup-link" data-open="${esc(l.id)}">Detalji →</button>
-        <a class="popup-link" href="${esc(mapsUrl(l))}" target="_blank" rel="noopener">Google Maps ↗</a>
-      </div>`;
+    const cat = CATEGORIES[l.category];
+    return `<div class="gcard">
+      <div class="gcard-img" data-gcard="${esc(l.id)}">${imageHtml(l)}</div>
+      <div class="gcard-body">
+        <div class="gcard-name">${esc(l.name)}</div>
+        <div class="gcard-rating" ${ratingAttrs(l, "card")}>${ratingHtml(l, "card")}</div>
+        <div class="gcard-type">${cat ? esc(cat.label) : ""} · ${esc(l.area)}</div>
+        <div class="popup-row">
+          <button class="popup-link" data-open="${esc(l.id)}">Detalji →</button>
+          <a class="popup-link" href="${esc(mapsUrl(l))}" target="_blank" rel="noopener">Google Maps ↗</a>
+        </div>
+      </div>
+    </div>`;
   }
 
   function initMap() {
@@ -559,8 +576,13 @@
         iconAnchor: [17, 17],
         popupAnchor: [0, -16],
       });
-      const m = L.marker([l.lat, l.lng], { icon, title: l.name }).bindPopup(() => popupHtml(l), { maxWidth: 320, minWidth: 300 });
+      const m = L.marker([l.lat, l.lng], { icon, title: l.name }).bindPopup(() => popupHtml(l), { maxWidth: 280, minWidth: 280, className: "gpopup" });
       m.on("click", () => markActive(l.id));
+      // Sa Google ključem kartica dobija pravu fotografiju, ocenu i broj recenzija
+      m.on("popupopen", (e) => {
+        const box = e.popup.getElement()?.querySelector(".gcard-img");
+        if (box && API_KEY) fillGooglePhoto(box, l.id, false);
+      });
       markers[l.id] = m;
     });
     updateMarkers(mapList);

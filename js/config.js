@@ -1,14 +1,12 @@
 /*
   Google Maps podešavanje
   -----------------------
-  Bez ključa sajt prikazuje ugrađenu Google mapu za jedno izabrano mesto.
-  Sa ključem prikazuje jednu mapu sa pinovima za sva mesta.
+  Bez ključa: ugrađena Google mapa za jedno izabrano mesto, a mesta bez tvoje slike prikazuju poster sa tačkicama.
+  Sa ključem: mapa sa pinovima za sva mesta, a mesta bez tvoje slike dobijaju fotografiju sa Google Maps.
 
-  Kako do ključa (uputstvo je i u README.md):
-  1. console.cloud.google.com > napravi projekat
-  2. APIs & Services > Library > uključi "Maps JavaScript API"
-  3. APIs & Services > Credentials > Create credentials > API key
-  4. Ograniči ključ na adresu svog sajta (Website restrictions)
-  5. Nalepi ključ ispod između navodnika
+  U Google Cloud projektu uključi DVA API-ja:
+    - Maps JavaScript API
+    - Places API (New)
+  Ključ ograniči na adresu svog sajta (Website restrictions). Uputstvo je u README.md.
 */
 const GOOGLE_MAPS_API_KEY = "";

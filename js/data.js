@@ -9,7 +9,8 @@
     category    jedna od: "jelo", "kafa", "pice", "vidi", "radi", "noc"
     area        kraj grada (npr. "Dorćol", "Zemun", "Vračar")
     image       putanja do slike u folderu images/ (npr. "images/kalemegdan.jpg")
-                ako slika ne postoji, sajt prikazuje lepu zamenu
+                ako slika ne postoji, sajt uzima fotografiju sa Google Maps (potreban ključ)
+    placeId     (opciono) Google Place ID, ako Google nađe pogrešno mesto po nazivu
     short       jedna rečenica za karticu
     description duži opis za prozor sa detaljima
     tip         tvoj lični savet (opciono)

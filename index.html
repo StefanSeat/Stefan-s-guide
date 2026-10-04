@@ -7,7 +7,7 @@
   <meta name="description" content="Stefanove lične preporuke za Beograd: gde jesti, piti kafu, izaći i šta videti." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@600&family=Playfair+Display:ital,wght@1,700;1,800&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -26,23 +26,35 @@
       <a href="#vodic">Vodič</a>
       <a href="#kategorije">Kategorije</a>
     </nav>
-    <a class="logo" href="#top">Stefanov vodič</a>
+    <a class="logo" href="#top">STEFANOV <em>vodič</em></a>
     <nav class="nav-links nav-right">
       <a href="#mapa">Mapa</a>
       <a href="#o-meni">O meni</a>
     </nav>
   </header>
 
-  <!-- Traka sa 4 fotografije na vrhu -->
-  <section class="strip" aria-label="Fotografije Beograda">
-    <figure class="ph"><span>images/traka-1.jpg</span><img src="images/traka-1.jpg" alt="" onerror="this.remove()" /></figure>
-    <figure class="ph"><span>images/traka-2.jpg</span><img src="images/traka-2.jpg" alt="" onerror="this.remove()" /></figure>
-    <figure class="ph"><span>images/traka-3.jpg</span><img src="images/traka-3.jpg" alt="" onerror="this.remove()" /></figure>
-    <figure class="ph"><span>images/traka-4.jpg</span><img src="images/traka-4.jpg" alt="" onerror="this.remove()" /></figure>
+  <!-- Naslovni deo: zid sa posterima -->
+  <section class="wall hero" aria-label="Stefanov vodič">
+    <figure class="poster side s1 ph"><span>images/traka-1.jpg</span><img src="images/traka-1.jpg" alt="" onerror="this.remove()" /></figure>
+    <figure class="poster side s2 ph"><span>images/traka-2.jpg</span><img src="images/traka-2.jpg" alt="" onerror="this.remove()" /></figure>
+
+    <div class="poster main">
+      <svg class="swirl" viewBox="0 0 240 200" aria-hidden="true">
+        <path d="M30 150 C 10 90, 90 40, 150 60 S 230 140, 160 160 S 60 120, 110 80 S 210 40, 205 20" />
+        <circle cx="205" cy="20" r="9" />
+      </svg>
+      <p class="kicker">Lične preporuke · est. Beograd</p>
+      <h1><span class="big">&bdquo;BEOGRAD&ldquo;</span><em>po Stefanu</em></h1>
+      <p class="lead">Kafane, kafa, zalasci i skrivena mesta koja pokazujem prijateljima.</p>
+      <a class="btn btn-green" href="#vodic">Otvori vodič</a>
+    </div>
+
+    <figure class="poster side s3 ph"><span>images/traka-3.jpg</span><img src="images/traka-3.jpg" alt="" onerror="this.remove()" /></figure>
+    <figure class="poster side s4 ph"><span>images/traka-4.jpg</span><img src="images/traka-4.jpg" alt="" onerror="this.remove()" /></figure>
   </section>
 
   <!-- O meni, sa polaroid kolažom -->
-  <section class="band band-green" id="o-meni">
+  <section class="band band-black" id="o-meni">
     <div class="intro">
       <div class="polaroids">
         <figure class="polaroid p1">
@@ -59,7 +71,7 @@
         </figure>
       </div>
       <div class="intro-text">
-        <h1>Ćao, ja sam Stefan 👋</h1>
+        <h2 class="intro-title">Ćao, ja sam <em>Stefan</em></h2>
         <p><strong>Rođen sam i živim u Beogradu.</strong> Ovaj vodič je spisak mesta koja godinama šaljem prijateljima u porukama: gde na doručak, koja kafana, gde gledati zalazak i gde izaći.</p>
         <p>Ništa ovde nije plaćeno. Sva mesta sam lično probao i u svakom ti ostavljam svoj savet.</p>
         <ul class="stats" id="stats"></ul>
@@ -68,30 +80,58 @@
   </section>
 
   <!-- Kategorije kao pločice sa fotografijom -->
-  <section class="band band-stone" id="kategorije">
+  <section class="band band-cream" id="kategorije">
     <h2 class="band-title">Otkrij Beograd</h2>
     <div class="tiles" id="tiles"></div>
   </section>
 
-  <!-- Vodič -->
-  <section class="band band-white" id="vodic">
+  <!-- Vodič (raspored kao Rexby) -->
+  <section class="band wall" id="vodic">
     <h2 class="band-title">Moja mesta u Beogradu</h2>
 
-    <div class="toolbar">
-      <div class="chips" id="categoryChips" role="tablist" aria-label="Kategorije"></div>
-      <div class="filters">
-        <select id="areaSelect" aria-label="Kraj grada"></select>
-        <input id="search" type="search" placeholder="Pretraži mesta…" aria-label="Pretraga" />
-        <label class="fav-toggle"><input type="checkbox" id="favOnly" /> Samo favoriti</label>
+    <div class="spots">
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-view="sve" role="tab">Sva mesta <small id="countAll"></small></button>
+        <button class="tab" data-view="lista" role="tab">Moja lista <small id="countSaved"></small></button>
       </div>
+
+      <div class="searchbar">
+        <label class="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+          <input id="search" type="search" placeholder="Pretraži mesta…" aria-label="Pretraga" />
+        </label>
+        <button class="icon-btn" id="filterToggle" aria-expanded="false" aria-controls="filterPanel" title="Filteri">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16l-6 7.5V19l-4-2v-4.5z" /></svg>
+        </button>
+        <label class="icon-btn sort" title="Sortiraj">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v16M8 20l-3-3M8 20l3-3M16 20V4M16 4l-3 3M16 4l3 3" /></svg>
+          <select id="sortSelect" aria-label="Sortiraj">
+            <option value="preporuka">Preporuka</option>
+            <option value="az">Naziv A–Ž</option>
+            <option value="kraj">Kraj grada</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="filter-panel" id="filterPanel" hidden>
+        <select id="areaSelect" aria-label="Kraj grada"></select>
+        <label class="fav-toggle"><input type="checkbox" id="favOnly" /> Samo Stefanovi favoriti</label>
+      </div>
+
+      <div class="chips" id="categoryChips" role="tablist" aria-label="Kategorije"></div>
+
+      <div class="grid" id="grid"></div>
+      <p class="empty" id="empty" hidden>Nema mesta za ovaj izbor.</p>
     </div>
 
-    <div class="grid" id="grid"></div>
-    <p class="empty" id="empty" hidden>Nema mesta za ovaj izbor. Probaj drugi filter.</p>
+    <a class="map-pill" id="mapPill" href="#mapa" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2zM9 4v14M15 6v14" /></svg>
+      Pogledaj mapu
+    </a>
   </section>
 
   <!-- Mapa -->
-  <section class="band band-green" id="mapa">
+  <section class="band band-black" id="mapa">
     <h2 class="band-title">Sve na jednoj mapi</h2>
     <div class="map-wrap">
       <ul class="map-list" id="mapList" aria-label="Mesta na mapi"></ul>
@@ -100,7 +140,7 @@
   </section>
 
   <footer class="footer">
-    <span class="footer-logo">Stefanov vodič</span>
+    <span class="footer-logo">STEFANOV <em>vodič</em></span>
     <p>Beograd · <span id="year"></span></p>
   </footer>
 

@@ -7,7 +7,7 @@
   <meta name="description" content="Stefanove lične preporuke za Beograd: gde jesti, piti kafu, izaći i šta videti." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Jost:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@600&family=Playfair+Display:ital,wght@1,700;1,800&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -26,38 +26,53 @@
       <a href="#vodic">Vodič</a>
       <a href="#kategorije">Kategorije</a>
     </nav>
-    <a class="logo" href="#top"><i class="logo-dot"></i>STEFANOV <em>VODIČ</em></a>
+    <a class="logo" href="#top">STEFANOV <em>vodič</em></a>
     <nav class="nav-links nav-right">
       <a href="#mapa">Mapa</a>
       <a href="#o-meni">O meni</a>
     </nav>
   </header>
 
-  <!-- Naslovni deo: tekst levo, "planeta" od fotografija desno -->
-  <section class="hero" aria-label="Stefanov vodič">
-    <div class="hero-text">
-      <p class="kicker">Guida personale · Beograd</p>
-      <h1>STEFANOV<span>VODIČ</span></h1>
-      <p class="lead">Kafane, kafa, zalasci i skrivena mesta koja pokazujem prijateljima kad dođu u Beograd.</p>
-      <div class="hero-cta">
-        <a class="btn" href="#vodic">Otvori vodič</a>
-        <a class="btn btn-line" href="#mapa">Mapa</a>
+  <!-- Naslovni deo: zid sa posterima -->
+  <section class="wall hero" aria-label="Stefanov vodič">
+    <figure class="poster side s1 ph"><span>images/traka-1.jpg</span><img src="images/traka-1.jpg" alt="" onerror="this.remove()" /></figure>
+    <figure class="poster side s2 ph"><span>images/traka-2.jpg</span><img src="images/traka-2.jpg" alt="" onerror="this.remove()" /></figure>
+
+    <div class="poster main">
+      <div class="stamp" aria-hidden="true">
+        <svg viewBox="0 0 120 120">
+          <defs><path id="stampPath" d="M60,60 m-45,0 a45,45 0 1,1 90,0 a45,45 0 1,1 -90,0" /></defs>
+          <circle class="stamp-bg" cx="60" cy="60" r="58" />
+          <text><textPath href="#stampPath" textLength="280" lengthAdjust="spacing">STEFANOV VODIČ ✦ BEOGRAD ✦ PREPORUKE ✦</textPath></text>
+        </svg>
+        <span class="stamp-center">★</span>
       </div>
+      <svg class="swirl" viewBox="0 0 240 200" aria-hidden="true">
+        <path pathLength="1" d="M30 150 C 10 90, 90 40, 150 60 S 230 140, 160 160 S 60 120, 110 80 S 210 40, 205 20" />
+        <circle cx="205" cy="20" r="9" />
+      </svg>
+      <p class="kicker">Lične preporuke · est. Beograd</p>
+      <h1><span class="big">&bdquo;BEOGRAD&ldquo;</span><em>po Stefanu</em></h1>
+      <p class="lead">Kafane, kafa, zalasci i skrivena mesta koja pokazujem prijateljima.</p>
+      <a class="btn btn-green" href="#vodic">Otvori vodič</a>
     </div>
-    <div class="orbit" aria-hidden="true">
-      <figure class="port big ph"><span>images/traka-1.jpg</span><img src="images/traka-1.jpg" alt="" onerror="this.remove()" /></figure>
-      <figure class="port moon m1 ph"><span>traka-2.jpg</span><img src="images/traka-2.jpg" alt="" onerror="this.remove()" /></figure>
-      <figure class="port moon m2 ph"><span>traka-3.jpg</span><img src="images/traka-3.jpg" alt="" onerror="this.remove()" /></figure>
-      <figure class="port moon m3 ph"><span>traka-4.jpg</span><img src="images/traka-4.jpg" alt="" onerror="this.remove()" /></figure>
-      <div class="satellite"><i></i></div>
-    </div>
+
+    <figure class="poster side s3 ph"><span>images/traka-3.jpg</span><img src="images/traka-3.jpg" alt="" onerror="this.remove()" /></figure>
+    <figure class="poster side s4 ph"><span>images/traka-4.jpg</span><img src="images/traka-4.jpg" alt="" onerror="this.remove()" /></figure>
   </section>
-  <div class="stripes" aria-hidden="true"></div>
 
   <!-- O meni, sa polaroid kolažom -->
-  <section class="band band-brown" id="o-meni">
+  <section class="band band-black" id="o-meni">
     <div class="intro">
       <div class="polaroids">
+        <div class="stamp stamp-about" aria-hidden="true">
+          <svg viewBox="0 0 120 120">
+            <defs><path id="stampPath2" d="M60,60 m-45,0 a45,45 0 1,1 90,0 a45,45 0 1,1 -90,0" /></defs>
+            <circle class="stamp-bg" cx="60" cy="60" r="58" />
+            <text><textPath href="#stampPath2" textLength="280" lengthAdjust="spacing">100% LIČNO ✦ NIŠTA PLAĆENO ✦ SVE PROBANO ✦</textPath></text>
+          </svg>
+          <span class="stamp-center">♥</span>
+        </div>
         <figure class="polaroid p1">
           <div class="ph"><span>images/stefan.jpg</span><img src="images/stefan.jpg" alt="Stefan" onerror="this.remove()" /></div>
           <figcaption>to sam ja</figcaption>
@@ -87,7 +102,7 @@
   </section>
 
   <!-- Vodič (raspored kao Rexby) -->
-  <section class="band band-paper" id="vodic">
+  <section class="band wall" id="vodic">
     <h2 class="band-title">Moja mesta u Beogradu</h2>
 
     <div class="spots">
@@ -132,7 +147,7 @@
   </section>
 
   <!-- Mapa -->
-  <section class="band band-petrol" id="mapa">
+  <section class="band band-black" id="mapa">
     <h2 class="band-title">Sve na jednoj mapi</h2>
     <div class="map-wrap">
       <ul class="map-list" id="mapList" aria-label="Mesta na mapi"></ul>
@@ -140,9 +155,8 @@
     </div>
   </section>
 
-  <div class="stripes" aria-hidden="true"></div>
   <footer class="footer">
-    <span class="footer-logo">STEFANOV <em>VODIČ</em></span>
+    <span class="footer-logo">STEFANOV <em>vodič</em></span>
     <p>Beograd · <span id="year"></span></p>
   </footer>
 

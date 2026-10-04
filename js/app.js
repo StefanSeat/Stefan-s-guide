@@ -1,14 +1,14 @@
 (function () {
   const state = { view: "sve", category: "sve", area: "sve", query: "", favOnly: false, sort: "preporuka" };
 
-  // Boja krugova i oznake za svaku kategoriju
+  // Boja tačkica i naslova za svaku kategoriju (kao na starim posterima)
   const COLORS = {
     jelo: "var(--orange)",
-    kafa: "var(--brown)",
-    pice: "var(--petrol)",
-    vidi: "var(--ochre)",
-    radi: "var(--olive)",
-    noc: "var(--navy)",
+    kafa: "var(--yellow)",
+    pice: "var(--green)",
+    vidi: "var(--cream)",
+    radi: "var(--sky)",
+    noc: "var(--yellow)",
   };
 
   const $ = (id) => document.getElementById(id);
@@ -165,8 +165,8 @@
       .map(([k, v]) => {
         const file = `images/kategorija-${k}.jpg`;
         return `<button class="tile" data-tile="${k}">
-          <div class="ph" style="--dot:${COLORS[k] || "var(--orange)"}"><span>${file}</span><b class="tile-ico">${v.icon}</b><img src="${file}" alt="" loading="lazy" onerror="this.remove()" /></div>
-          <span class="tile-label">${esc(v.label)}</span>
+          <div class="ph" style="--dot:${COLORS[k] || "var(--orange)"}"><span>${file}</span><img src="${file}" alt="" loading="lazy" onerror="this.remove()" /></div>
+          <span class="tile-label">${v.icon} ${esc(v.label)}</span>
         </button>`;
       })
       .join("");

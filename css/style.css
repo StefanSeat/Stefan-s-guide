@@ -452,7 +452,10 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
 .map-item strong { display: block; font-weight: 600; }
 .map-item small { color: var(--muted); font-size: 0.8rem; }
 #map { height: 540px; overflow: hidden; background: #2a2324; border: 6px solid var(--cream); min-width: 0; }
-#map iframe { width: 100%; height: 100%; border: 0; display: block; }
+#map { position: relative; }
+#map iframe { position: relative; z-index: 1; width: 100%; height: 100%; border: 0; display: block; }
+.map-fallback { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; color: var(--cream); margin: 0; padding: 1rem; }
+.map-open { position: absolute; left: 1rem; bottom: 1rem; z-index: 2; }
 .popup-title { font-family: var(--display); font-size: 1.2rem; text-transform: uppercase; color: var(--ink); }
 .popup-text { max-width: 220px; color: var(--ink); }
 .popup-link { color: var(--red); cursor: pointer; font-weight: 600; background: none; border: 0; padding: 0; margin-top: 0.4rem; font: inherit; }

@@ -315,8 +315,10 @@
 
   function initEmbedMap() {
     gmap = null;
-    $("map").innerHTML = `<iframe id="mapFrame" title="Google mapa" loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>`;
+    $("map").innerHTML = `<p class="map-fallback">Mapa se ovde ne prikazuje.<br />Otvori mesto direktno u Google Maps.</p>
+      <iframe id="mapFrame" title="Google mapa" loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      <a class="map-open btn" id="mapOpen" target="_blank" rel="noopener">Otvori u Google Maps ↗</a>`;
     if (mapList.length) selectOnMap(currentId || mapList[0].id);
   }
 
@@ -387,6 +389,7 @@
     } else if ($("mapFrame")) {
       const src = embedUrl(l);
       if ($("mapFrame").getAttribute("src") !== src) $("mapFrame").setAttribute("src", src);
+      $("mapOpen").href = mapsUrl(l);
     }
   }
 

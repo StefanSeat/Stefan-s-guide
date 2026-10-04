@@ -2,12 +2,12 @@
   const state = { category: "sve", area: "sve", query: "", favOnly: false };
 
   const PALETTES = {
-    jelo: ["#f2d0b5", "#b5563a"],
-    kafa: ["#e9d8c4", "#7a5135"],
-    pice: ["#e6c3c7", "#8a3b4a"],
-    vidi: ["#d9dccb", "#5f6f4e"],
-    radi: ["#cfe0dd", "#3f6f6a"],
-    noc: ["#c9c6dd", "#3d3a64"],
+    jelo: ["#d4a98a", "#a4553f"],
+    kafa: ["#c9b29a", "#7a5a43"],
+    pice: ["#c9a0a0", "#7f4646"],
+    vidi: ["#b9c2ac", "#5d6e54"],
+    radi: ["#a9bdb3", "#4d6a59"],
+    noc: ["#9a9db0", "#43465c"],
   };
 
   const $ = (id) => document.getElementById(id);
@@ -18,7 +18,8 @@
     const [a, b] = PALETTES[loc.category] || PALETTES.jelo;
     const icon = CATEGORIES[loc.category]?.icon || "📍";
     // Obojena pozadina sa ikonicom ostaje ispod slike; ako slika ne postoji, ona se vidi
-    const ph = `<div class="placeholder" style="--ph-a:${a};--ph-b:${b}">${icon}</div>`;
+    const file = loc.image ? `<small class="ph-file">📷 ${esc(loc.image)}</small>` : "";
+    const ph = `<div class="placeholder" style="--ph-a:${a};--ph-b:${b}">${icon}${file}</div>`;
     if (!loc.image) return ph;
     return `${ph}<img class="photo" src="${esc(loc.image)}" alt="${esc(loc.name)}" loading="lazy" onerror="this.remove()" />`;
   }
@@ -29,6 +30,7 @@
 
   /* Statistika u hero delu */
   function renderStats() {
+    if (!$("stats")) return;
     const areas = new Set(LOCATIONS.map((l) => l.area));
     const favs = LOCATIONS.filter((l) => l.favorite).length;
     $("stats").innerHTML = [
@@ -38,6 +40,28 @@
     ]
       .map(([n, t]) => `<li><strong>${n}</strong><span>${t}</span></li>`)
       .join("");
+  }
+
+  /* Pločice kategorija (slike: images/kategorija-<kategorija>.jpg) */
+  function renderTiles() {
+    const used = new Set(LOCATIONS.map((l) => l.category));
+    $("tiles").innerHTML = Object.entries(CATEGORIES)
+      .filter(([k]) => used.has(k))
+      .map(([k, v]) => {
+        const [a, b] = PALETTES[k] || PALETTES.jelo;
+        const file = `images/kategorija-${k}.jpg`;
+        return `<button class="tile" data-tile="${k}">
+          <div class="ph" style="--ph-a:${a};--ph-b:${b}"><span>${file}</span><img src="${file}" alt="" loading="lazy" onerror="this.remove()" /></div>
+          <span class="tile-label">${esc(v.label)}</span>
+        </button>`;
+      })
+      .join("");
+  }
+
+  function setCategory(cat) {
+    state.category = cat;
+    document.querySelectorAll(".chip").forEach((c) => c.classList.toggle("active", c.dataset.cat === cat));
+    renderGrid();
   }
 
   /* Filteri */
@@ -250,9 +274,13 @@
     $("categoryChips").addEventListener("click", (e) => {
       const btn = e.target.closest(".chip");
       if (!btn) return;
-      state.category = btn.dataset.cat;
-      document.querySelectorAll(".chip").forEach((c) => c.classList.toggle("active", c === btn));
-      renderGrid();
+      setCategory(btn.dataset.cat);
+    });
+    $("tiles").addEventListener("click", (e) => {
+      const tile = e.target.closest(".tile");
+      if (!tile) return;
+      setCategory(tile.dataset.tile);
+      $("vodic").scrollIntoView({ behavior: "smooth" });
     });
     $("areaSelect").addEventListener("change", (e) => {
       state.area = e.target.value;
@@ -288,6 +316,7 @@
   }
 
   renderStats();
+  renderTiles();
   renderFilters();
   initMap();
   bindEvents();

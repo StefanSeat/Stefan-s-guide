@@ -1,14 +1,14 @@
 (function () {
   const state = { view: "sve", category: "sve", area: "sve", query: "", favOnly: false, sort: "preporuka" };
 
-  // Boja tačkica i naslova za svaku kategoriju (kao na starim posterima)
+  // Boja zamenske pozadine za svaku kategoriju dok nema fotografije
   const COLORS = {
-    jelo: "var(--orange)",
-    kafa: "var(--yellow)",
-    pice: "var(--green)",
-    vidi: "var(--cream)",
-    radi: "var(--sky)",
-    noc: "var(--yellow)",
+    jelo: "var(--t-red)",
+    kafa: "var(--t-sand)",
+    pice: "var(--t-wine)",
+    vidi: "var(--t-olive)",
+    radi: "var(--t-sky)",
+    noc: "var(--t-night)",
   };
 
   const $ = (id) => document.getElementById(id);
@@ -44,7 +44,7 @@
   function imageHtml(l) {
     const icon = CATEGORIES[l.category]?.icon || "📍";
     const file = l.image ? `<small class="ph-file">📷 ${esc(l.image)}</small>` : "";
-    const ph = `<div class="placeholder" style="--dot:${COLORS[l.category] || "var(--orange)"}"><span class="ico">${icon}</span>${file}</div>`;
+    const ph = `<div class="placeholder" style="--dot:${COLORS[l.category] || "var(--t-wine)"}"><span class="ico">${icon}</span>${file}</div>`;
     const local = l.image && !missingLocal.has(l.id)
       ? `<img class="photo" src="${esc(l.image)}" alt="${esc(l.name)}" loading="lazy" data-local="${esc(l.id)}" />`
       : "";
@@ -157,16 +157,24 @@
       .join("");
   }
 
-  /* Pločice kategorija (slike: images/kategorija-<kategorija>.jpg) */
+  /* Kategorije: red na vrhu i pločice sa fotografijama (images/kategorija-<kategorija>.jpg) */
+  function categoryCounts() {
+    const counts = {};
+    LOCATIONS.forEach((l) => (counts[l.category] = (counts[l.category] || 0) + 1));
+    return Object.entries(CATEGORIES).filter(([k]) => counts[k]).map(([k, v]) => [k, v, counts[k]]);
+  }
+
   function renderTiles() {
-    const used = new Set(LOCATIONS.map((l) => l.category));
-    $("tiles").innerHTML = Object.entries(CATEGORIES)
-      .filter(([k]) => used.has(k))
-      .map(([k, v]) => {
+    const cats = categoryCounts();
+    $("catRow").innerHTML = cats
+      .map(([k, v, n]) => `<a href="#vodic" data-tile="${k}">${esc(v.label)}<small>${n} ${n === 1 ? "mesto" : "mesta"}</small></a>`)
+      .join("");
+    $("tiles").innerHTML = cats
+      .map(([k, v, n]) => {
         const file = `images/kategorija-${k}.jpg`;
         return `<button class="tile" data-tile="${k}">
-          <div class="ph" style="--dot:${COLORS[k] || "var(--orange)"}"><span>${file}</span><img src="${file}" alt="" loading="lazy" onerror="this.remove()" /></div>
-          <span class="tile-label">${v.icon} ${esc(v.label)}</span>
+          <div class="ph" style="--ph-b:${COLORS[k] || "var(--t-wine)"}"><span>${file}</span><b class="tile-ico">${v.icon}</b><img src="${file}" alt="" loading="lazy" onerror="this.remove()" /></div>
+          <span class="tile-name">${esc(v.label)} <small>${n}</small></span>
         </button>`;
       })
       .join("");
@@ -237,9 +245,9 @@
               ${imageHtml(l)}
               ${l.favorite ? `<span class="fav">Favorit</span>` : ""}
             </span>
-            <span class="poster-title" style="--tc:${COLORS[l.category] || "var(--green)"}">
+            <span class="poster-title" style="--tc:${COLORS[l.category] || "var(--t-wine)"}">
               <span class="pt-name">${esc(l.name)}</span>
-              <span class="pt-sub">${cat ? esc(cat.label) : ""} · ${esc(l.area)}</span>
+              <span class="pt-sub">${cat ? esc(cat.label) : ""} · ${esc(l.area)}${l.price ? " · " + esc(l.price) : ""}</span>
             </span>
           </button>
           <button class="save" data-save="${esc(l.id)}"></button>
@@ -418,12 +426,15 @@
       const btn = e.target.closest(".chip");
       if (btn) setCategory(btn.dataset.cat);
     });
-    $("tiles").addEventListener("click", (e) => {
-      const tile = e.target.closest(".tile");
+    const pickCategory = (e) => {
+      const tile = e.target.closest("[data-tile]");
       if (!tile) return;
+      e.preventDefault();
       setCategory(tile.dataset.tile);
       $("vodic").scrollIntoView({ behavior: "smooth" });
-    });
+    };
+    $("tiles").addEventListener("click", pickCategory);
+    $("catRow").addEventListener("click", pickCategory);
     $("filterToggle").addEventListener("click", () => {
       const open = $("filterPanel").hidden;
       $("filterPanel").hidden = !open;

@@ -7,103 +7,100 @@
   <meta name="description" content="Stefanove lične preporuke za Beograd: gde jesti, piti kafu, izaći i šta videti." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@600&family=Playfair+Display:ital,wght@1,700;1,800&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <!--
-    SLIKE: svaka siva/obojena površina sa nazivom fajla je mesto za tvoju fotografiju.
+    SLIKE: svako polje sa nazivom fajla je mesto za tvoju fotografiju.
     Ubaci sliku sa tim imenom u folder images/ i ona će se automatski pojaviti.
   -->
 
-  <div class="topbar">
-    <span>Beograd · lične preporuke</span>
-    <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
-  </div>
-
   <header class="nav" id="top">
-    <nav class="nav-links nav-left">
-      <a href="#vodic">Vodič</a>
-      <a href="#kategorije">Kategorije</a>
-    </nav>
-    <a class="logo" href="#top">STEFANOV <em>vodič</em></a>
-    <nav class="nav-links nav-right">
+    <a class="logo" href="#top">Stefanov vodič</a>
+    <nav class="nav-links">
+      <a href="#vodic">Mesta</a>
       <a href="#mapa">Mapa</a>
       <a href="#o-meni">O meni</a>
+      <a class="btn-small" href="#vodic">Otvori vodič</a>
     </nav>
   </header>
 
-  <!-- Naslovni deo: zid sa posterima -->
-  <section class="wall hero" aria-label="Stefanov vodič">
-    <figure class="poster side s1 ph"><span>images/traka-1.jpg</span><img src="images/traka-1.jpg" alt="" onerror="this.remove()" /></figure>
-    <figure class="poster side s2 ph"><span>images/traka-2.jpg</span><img src="images/traka-2.jpg" alt="" onerror="this.remove()" /></figure>
+  <!-- Red sa kategorijama, kao red sa radnim vremenom -->
+  <nav class="cat-row" id="catRow" aria-label="Kategorije"></nav>
 
-    <div class="poster main">
-      <div class="stamp" aria-hidden="true">
-        <svg viewBox="0 0 120 120">
-          <defs><path id="stampPath" d="M60,60 m-45,0 a45,45 0 1,1 90,0 a45,45 0 1,1 -90,0" /></defs>
-          <circle class="stamp-bg" cx="60" cy="60" r="58" />
-          <text><textPath href="#stampPath" textLength="280" lengthAdjust="spacing">STEFANOV VODIČ ✦ BEOGRAD ✦ PREPORUKE ✦</textPath></text>
-        </svg>
-        <span class="stamp-center">★</span>
-      </div>
-      <svg class="swirl" viewBox="0 0 240 200" aria-hidden="true">
-        <path pathLength="1" d="M30 150 C 10 90, 90 40, 150 60 S 230 140, 160 160 S 60 120, 110 80 S 210 40, 205 20" />
-        <circle cx="205" cy="20" r="9" />
+  <!-- Naslov i niz fotografija od ivice do ivice -->
+  <section class="hero" aria-label="Stefanov vodič">
+    <h1>Stefanov vodič</h1>
+    <p class="hero-sub"><em>Beograd, mesto po mesto</em></p>
+  </section>
+
+  <div class="strip-wrap">
+  <section class="strip" aria-label="Fotografije Beograda">
+    <figure class="ph"><span>images/traka-1.jpg</span><img src="images/traka-1.jpg" alt="" onerror="this.remove()" /></figure>
+    <figure class="ph"><span>images/traka-2.jpg</span><img src="images/traka-2.jpg" alt="" onerror="this.remove()" /></figure>
+    <figure class="ph"><span>images/traka-3.jpg</span><img src="images/traka-3.jpg" alt="" onerror="this.remove()" /></figure>
+    <figure class="ph"><span>images/traka-4.jpg</span><img src="images/traka-4.jpg" alt="" onerror="this.remove()" /></figure>
+    <figure class="ph"><span>images/traka-5.jpg</span><img src="images/traka-5.jpg" alt="" onerror="this.remove()" /></figure>
+  </section>
+    <div class="stamp" aria-hidden="true">
+      <svg viewBox="0 0 120 120">
+        <defs><path id="stampPath" d="M60,60 m-45,0 a45,45 0 1,1 90,0 a45,45 0 1,1 -90,0" /></defs>
+        <circle class="stamp-bg" cx="60" cy="60" r="58" />
+        <text><textPath href="#stampPath" textLength="280" lengthAdjust="spacing">STEFANOV VODIČ · BEOGRAD · PREPORUKE ·</textPath></text>
       </svg>
-      <p class="kicker">Lične preporuke · est. Beograd</p>
-      <h1><span class="big">&bdquo;BEOGRAD&ldquo;</span><em>po Stefanu</em></h1>
-      <p class="lead">Kafane, kafa, zalasci i skrivena mesta koja pokazujem prijateljima.</p>
-      <a class="btn btn-green" href="#vodic">Otvori vodič</a>
+      <span class="stamp-center">★</span>
     </div>
+  </div>
 
-    <figure class="poster side s3 ph"><span>images/traka-3.jpg</span><img src="images/traka-3.jpg" alt="" onerror="this.remove()" /></figure>
-    <figure class="poster side s4 ph"><span>images/traka-4.jpg</span><img src="images/traka-4.jpg" alt="" onerror="this.remove()" /></figure>
-  </section>
-
-  <!-- O meni, sa polaroid kolažom -->
-  <section class="band band-black" id="o-meni">
-    <div class="intro">
-      <div class="polaroids">
-        <div class="stamp stamp-about" aria-hidden="true">
-          <svg viewBox="0 0 120 120">
-            <defs><path id="stampPath2" d="M60,60 m-45,0 a45,45 0 1,1 90,0 a45,45 0 1,1 -90,0" /></defs>
-            <circle class="stamp-bg" cx="60" cy="60" r="58" />
-            <text><textPath href="#stampPath2" textLength="280" lengthAdjust="spacing">100% LIČNO ✦ NIŠTA PLAĆENO ✦ SVE PROBANO ✦</textPath></text>
-          </svg>
-          <span class="stamp-center">♥</span>
-        </div>
-        <figure class="polaroid p1">
-          <div class="ph"><span>images/stefan.jpg</span><img src="images/stefan.jpg" alt="Stefan" onerror="this.remove()" /></div>
-          <figcaption>to sam ja</figcaption>
-        </figure>
-        <figure class="polaroid p2">
-          <div class="ph"><span>images/polaroid-2.jpg</span><img src="images/polaroid-2.jpg" alt="" onerror="this.remove()" /></div>
-          <figcaption>Dorćol</figcaption>
-        </figure>
-        <figure class="polaroid p3">
-          <div class="ph"><span>images/polaroid-3.jpg</span><img src="images/polaroid-3.jpg" alt="" onerror="this.remove()" /></div>
-          <figcaption>zalazak na Savi</figcaption>
-        </figure>
-      </div>
-      <div class="intro-text">
-        <h2 class="intro-title">Ćao, ja sam <em>Stefan</em></h2>
-        <p><strong>Rođen sam i živim u Beogradu.</strong> Ovaj vodič je spisak mesta koja godinama šaljem prijateljima u porukama: gde na doručak, koja kafana, gde gledati zalazak i gde izaći.</p>
-        <p>Ništa ovde nije plaćeno. Sva mesta sam lično probao i u svakom ti ostavljam svoj savet.</p>
-        <ul class="stats" id="stats"></ul>
+  <!-- Uvod i pitanja -->
+  <section class="duo">
+    <div class="duo-col">
+      <h2>Iz prve ruke, e basta</h2>
+      <p>Ovo su mesta koja godinama šaljem prijateljima u porukama kad dođu u Beograd: gde na doručak, koja kafana, gde gledati zalazak nad Savom i gde izaći kad padne mrak. Ništa ovde nije plaćeno. Svako mesto sam lično probao i uz svako ti ostavljam svoj savet.</p>
+      <ul class="stats" id="stats"></ul>
+      <a class="btn-small" href="#vodic">Pogledaj mesta</a>
+    </div>
+    <div class="duo-col">
+      <h2>Sva tvoja pitanja</h2>
+      <div class="faq">
+        <details>
+          <summary>Da li je neko platio da bude na listi?</summary>
+          <p>Ne. Na listi su samo mesta u koja i sam idem i koja bih preporučio prijatelju.</p>
+        </details>
+        <details>
+          <summary>Kako da sačuvam mesta koja mi se sviđaju?</summary>
+          <p>Klikni + na kartici mesta. Sačuvana mesta nađeš pod „Moja lista“. Lista ostaje u tvom browseru na ovom uređaju.</p>
+        </details>
+        <details>
+          <summary>Kada je najbolje doći u Beograd?</summary>
+          <p>Kasno proleće i rana jesen. Leti je toplo i grad živi na rekama i splavovima, a zimi su kafane najlepše.</p>
+        </details>
+        <details>
+          <summary>Kako se kretati po gradu?</summary>
+          <p>Centar se lako obilazi peške. Za Zemun, Adu i Novi Beograd uzmi taksi preko aplikacije ili gradski prevoz.</p>
+        </details>
+        <details>
+          <summary>Mogu li da ti pošaljem preporuku?</summary>
+          <p>Naravno. Piši mi na Instagramu, rado probam nova mesta.</p>
+        </details>
       </div>
     </div>
   </section>
 
-  <!-- Kategorije kao pločice sa fotografijom -->
-  <section class="band band-cream" id="kategorije">
-    <h2 class="band-title">Otkrij Beograd</h2>
+  <!-- Kategorije sa fotografijama -->
+  <section class="section" id="kategorije">
+    <div class="section-head">
+      <h2>Otkrij Beograd</h2>
+    </div>
     <div class="tiles" id="tiles"></div>
   </section>
 
   <!-- Vodič (raspored kao Rexby) -->
-  <section class="band wall" id="vodic">
-    <h2 class="band-title">Moja mesta u Beogradu</h2>
+  <section class="section" id="vodic">
+    <div class="section-head">
+      <h2>Mesta</h2>
+    </div>
 
     <div class="spots">
       <div class="tabs" role="tablist">
@@ -146,9 +143,21 @@
     </a>
   </section>
 
+  <!-- O meni -->
+  <section class="section about" id="o-meni">
+    <figure class="about-photo ph"><span>images/stefan.jpg</span><img src="images/stefan.jpg" alt="Stefan" onerror="this.remove()" /></figure>
+    <div class="about-text">
+      <h2>Ćao, ja sam Stefan</h2>
+      <p>Rođen sam i živim u Beogradu. Volim dobru kafu ujutru, dug ručak u kafani i šetnju kejom kad sunce zalazi. Ovaj vodič je moj način da ti pokažem grad onako kako ga ja vidim.</p>
+      <p><a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a></p>
+    </div>
+  </section>
+
   <!-- Mapa -->
-  <section class="band band-black" id="mapa">
-    <h2 class="band-title">Sve na jednoj mapi</h2>
+  <section class="section" id="mapa">
+    <div class="section-head">
+      <h2>Sve na jednoj mapi</h2>
+    </div>
     <div class="map-wrap">
       <ul class="map-list" id="mapList" aria-label="Mesta na mapi"></ul>
       <div id="map" aria-label="Google mapa"></div>
@@ -156,7 +165,7 @@
   </section>
 
   <footer class="footer">
-    <span class="footer-logo">STEFANOV <em>vodič</em></span>
+    <span class="footer-logo">Stefanov vodič</span>
     <p>Beograd · <span id="year"></span></p>
   </footer>
 

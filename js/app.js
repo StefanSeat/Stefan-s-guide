@@ -488,6 +488,7 @@
           ${l.price ? `<span>💰 ${esc(l.price)}</span>` : ""}
         </div>
         ${l.tags?.length ? `<div class="tags">${l.tags.map((t) => `<span class="tag">#${esc(t)}</span>`).join("")}</div>` : ""}
+        ${googleCard(l, "detail-gmap")}
         <div class="detail-actions">
           <a class="btn" href="${mapsUrl(l)}" target="_blank" rel="noopener">Otvori u Google Maps</a>
           <button class="btn btn-ghost" data-show-map="${esc(l.id)}">Prikaži na mapi</button>
@@ -516,11 +517,19 @@
     return `https://maps.google.com/maps?q=${q}&ll=${l.lat},${l.lng}&z=16&hl=sr&output=embed`;
   }
 
+  // Mala ugrađena Google mapa: Google u njoj sam prikazuje karticu mesta sa ocenom i brojem recenzija
+  function googleCard(l, cls) {
+    return `<iframe class="${cls}" src="${esc(embedUrl(l))}" title="${esc(l.name)} na Google Maps"
+      loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
+  }
+
   function popupHtml(l) {
     return `<div class="popup-title">${esc(l.name)}</div>
-      ${l.rating ? `<div class="popup-stars">${stars(l.rating)}</div>` : ""}
-      ${l.short ? `<div class="popup-text">${esc(l.short)}</div>` : ""}
-      <button class="popup-link" data-open="${esc(l.id)}">Detalji →</button>`;
+      ${googleCard(l, "popup-gmap")}
+      <div class="popup-row">
+        <button class="popup-link" data-open="${esc(l.id)}">Detalji →</button>
+        <a class="popup-link" href="${esc(mapsUrl(l))}" target="_blank" rel="noopener">Google Maps ↗</a>
+      </div>`;
   }
 
   function initMap() {
@@ -550,7 +559,7 @@
         iconAnchor: [17, 17],
         popupAnchor: [0, -16],
       });
-      const m = L.marker([l.lat, l.lng], { icon, title: l.name }).bindPopup(popupHtml(l), { maxWidth: 240 });
+      const m = L.marker([l.lat, l.lng], { icon, title: l.name }).bindPopup(() => popupHtml(l), { maxWidth: 320, minWidth: 300 });
       m.on("click", () => markActive(l.id));
       markers[l.id] = m;
     });

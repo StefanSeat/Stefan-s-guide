@@ -336,7 +336,7 @@
   }
 
   /* Mapa sa pinovima za sva mesta
-     Bez API ključa: besplatna mapa (Leaflet + OpenStreetMap) sa pinom za svako mesto.
+     Bez API ključa: besplatna mapa (Leaflet + OpenStreetMap podloga) sa pinom za svako mesto.
      Sa Google ključem u js/config.js: Google mapa sa pinovima.
      Ako ni jedna ne može da se učita: ugrađena Google mapa za izabrano mesto. */
   let gmap, infoWindow, lmap, cluster;
@@ -365,10 +365,10 @@
     if (typeof L === "undefined") return initEmbedMap();
     $("map").innerHTML = "";
     lmap = L.map("map", { scrollWheelZoom: false, zoomControl: true }).setView([44.8125, 20.4612], 13);
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-      subdomains: "abcd",
-      maxZoom: 20,
+    // Podloga sa OpenStreetMap servera (besplatna, bez ključa; potpis OpenStreetMap je obavezan)
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19,
     }).addTo(lmap);
     // Bliska mesta se spajaju u krug sa brojem dok ne zumiraš
     cluster = L.markerClusterGroup

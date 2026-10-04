@@ -314,7 +314,7 @@
         <p class="eyebrow">${cat ? cat.icon + " " + esc(cat.label) : ""} · ${esc(l.area)}</p>
         <h3>${esc(l.name)}</h3>
         ${l.rating ? `<p class="review-stars" aria-label="Ocena ${l.rating} od 5">${stars(l.rating)} <small>moja Google recenzija${l.date ? " · " + esc(l.date.slice(0, 4)) : ""}</small></p>` : ""}
-        <p class="review">„${esc(l.description || l.short)}“</p>
+        ${l.rating ? `<p class="review">„${esc(l.description || l.short)}“</p>` : `<p>${esc(l.description || l.short)}</p>`}
         ${l.tip ? `<div class="tip"><strong>Stefanov savet:</strong> ${esc(l.tip)}</div>` : ""}
         <div class="detail-info">
           ${l.address ? `<span>📍 ${esc(l.address)}</span>` : ""}

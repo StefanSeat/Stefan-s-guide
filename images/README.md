@@ -196,20 +196,39 @@ Ostale slike:
 
 | Mesto | Kraj | Fajl |
 |---|---|---|
+| Avalski toranj | Avala | `avalski-toranj.jpg` |
+| Gardoš kula | Zemun | `gardos-kula.jpg` |
 | Historical Museum of Serbia | Centar | `historical-museum-of-serbia.jpg` |
+| Hram Svetog Save | Vračar | `hram-svetog-save.jpg` |
 | Jevremovac Botanical Garden | Skadarlija | `jevremovac-botanical-garden.jpg` |
+| Kalemegdan i Beogradska tvrđava | Stari grad | `kalemegdan.jpg` |
 | Mali Hram | Skadarlija | `mali-hram.jpg` |
 | Museum of contemporary art | Savamala | `museum-of-contemporary-art.jpg` |
+| Muzej Jugoslavije | Savski venac | `muzej-jugoslavije.jpg` |
+| Muzej Nikole Tesle | Vračar | `muzej-nikole-tesle.jpg` |
 | Muzej paranormalnog | Stari grad | `muzej-paranormalnog.jpg` |
 
-## Radi
+## Aktivnosti
 
 | Mesto | Kraj | Fajl |
 |---|---|---|
 | 3D Board Game Pub | Zemun | `3d-board-game-pub.jpg` |
+| Atelje 212 | Centar | `atelje-212.jpg` |
+| Beogradski zoološki vrt | Stari grad | `zooloski-vrt.jpg` |
+| Bicikl oko Ade Ciganlije | Ada Ciganlija | `bicikl-ada-ciganlija.jpg` |
 | Big Padel | Ada Ciganlija | `big-padel.jpg` |
+| Bitef teatar | Dorćol | `bitef-teatar.jpg` |
+| Dom omladine Beograda | Centar | `dom-omladine.jpg` |
+| Jugoslovenska kinoteka | Stari grad | `jugoslovenska-kinoteka.jpg` |
+| Jugoslovensko dramsko pozorište | Centar | `jugoslovensko-dramsko-pozoriste.jpg` |
 | Klub za drustvene igre - "Groot" | Novi Beograd | `klub-za-drustvene-igre-groot.jpg` |
+| Kolarčeva zadužbina | Stari grad | `kolarceva-zaduzbina.jpg` |
+| Kombank dvorana | Centar | `kombank-dvorana.jpg` |
+| Krstarenje Savom i Dunavom | Savamala | `krstarenje-rekom.jpg` |
+| Madlenianum | Zemun | `madlenianum.jpg` |
 | MMR Escape Rooms: Lokacija 2 | Novi Beograd | `mmr-escape-rooms-lokacija-2.jpg` |
+| Narodno pozorište | Stari grad | `narodno-pozoriste.jpg` |
+| Pozorište na Terazijama | Centar | `pozoriste-na-terazijama.jpg` |
 | Turbomax Karting centar | Višnjica | `turbomax-karting-centar.jpg` |
 
 ## Noćni život

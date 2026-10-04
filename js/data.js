@@ -22,6 +22,8 @@
     lat, lng    koordinate
     mapsUrl     link ka mestu na Google Maps
     tags        lista kratkih oznaka
+    icon        (opciono) ilustracija za pin i poster (npr. "🎭")
+    source      "predlog" za mesta koja nisu iz tvojih recenzija
     placeId     (opciono) Google Place ID, ako Google nađe pogrešnu fotografiju
 */
 
@@ -30,7 +32,7 @@ const CATEGORIES = {
   kafa: { label: "Kafa i slatko", icon: "☕" },
   pice: { label: "Piće", icon: "🍸" },
   vidi: { label: "Vidi", icon: "🏛️" },
-  radi: { label: "Radi", icon: "🎯" },
+  radi: { label: "Aktivnosti", icon: "🎟️" },
   noc: { label: "Noćni život", icon: "🌙" },
 };
 
@@ -1756,7 +1758,7 @@ const LOCATIONS = [
     "id": "3d-board-game-pub",
     "name": "3D Board Game Pub",
     "category": "radi",
-    "area": "Zemun",
+    "area": "Novi Beograd",
     "image": "",
     "short": "Meni licno omiljeno board game mesto jer je zivo, ima dobro radno vreme i ljude.Pozdrav za Aleksandru i…",
     "description": "Meni licno omiljeno board game mesto jer je zivo, ima dobro radno vreme i ljude.Pozdrav za Aleksandru i ekipu koja je uvek raspolozena!",
@@ -3152,5 +3154,405 @@ const LOCATIONS = [
     "lng": 20.410032,
     "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x0:0x2c883d0c4cc14583",
     "tags": []
+  },
+  {
+    "id": "narodno-pozoriste",
+    "name": "Narodno pozorište",
+    "category": "radi",
+    "area": "Stari grad",
+    "image": "",
+    "short": "Opera, balet i drama u najlepšoj pozorišnoj zgradi u gradu, na Trgu republike.",
+    "description": "Najstarije i najveće pozorište u Srbiji. Program se smenjuje između opere, baleta i drame. Za balet ili operu nije potrebno znanje srpskog, pa je ovo odličan izbor i za goste iz inostranstva.",
+    "rating": null,
+    "source": "predlog",
+    "price": "€",
+    "address": "Francuska 3, Beograd",
+    "lat": 44.8166,
+    "lng": 20.4602,
+    "mapsUrl": "",
+    "tags": [
+      "pozorište",
+      "opera",
+      "balet"
+    ],
+    "icon": "🎭"
+  },
+  {
+    "id": "jugoslovensko-dramsko-pozoriste",
+    "name": "Jugoslovensko dramsko pozorište",
+    "category": "radi",
+    "area": "Centar",
+    "image": "",
+    "short": "Najjača drama u gradu, predstave se često rasprodaju danima unapred.",
+    "description": "Pozorište sa najpoznatijim glumcima i predstavama koje se igraju godinama. Karte kupi ranije, posebno za vikend.",
+    "rating": null,
+    "source": "predlog",
+    "price": "€",
+    "address": "Kralja Milana 50, Beograd",
+    "lat": 44.8063,
+    "lng": 20.4664,
+    "mapsUrl": "",
+    "tags": [
+      "pozorište",
+      "drama"
+    ],
+    "icon": "🎭"
+  },
+  {
+    "id": "atelje-212",
+    "name": "Atelje 212",
+    "category": "radi",
+    "area": "Centar",
+    "image": "",
+    "short": "Savremena drama u kultnom pozorištu u Svetogorskoj ulici.",
+    "description": "Pozorište koje je od šezdesetih poznato po hrabrom i savremenom repertoaru. Posle predstave Svetogorska je puna barova za piće.",
+    "rating": null,
+    "source": "predlog",
+    "price": "€",
+    "address": "Svetogorska 21, Beograd",
+    "lat": 44.8125,
+    "lng": 20.4718,
+    "mapsUrl": "",
+    "tags": [
+      "pozorište",
+      "drama"
+    ],
+    "icon": "🎭"
+  },
+  {
+    "id": "bitef-teatar",
+    "name": "Bitef teatar",
+    "category": "radi",
+    "area": "Dorćol",
+    "image": "",
+    "short": "Pozorište u nekadašnjoj crkvi, poznato po plesu i eksperimentalnim predstavama.",
+    "description": "Neobičan prostor i program koji se razlikuje od klasičnih pozorišta: savremeni ples, fizičko pozorište i gostovanja.",
+    "rating": null,
+    "source": "predlog",
+    "price": "€",
+    "address": "Skver Mire Trailović 1, Beograd",
+    "lat": 44.8175,
+    "lng": 20.473,
+    "mapsUrl": "",
+    "tags": [
+      "pozorište",
+      "ples"
+    ],
+    "icon": "🎭"
+  },
+  {
+    "id": "pozoriste-na-terazijama",
+    "name": "Pozorište na Terazijama",
+    "category": "radi",
+    "area": "Centar",
+    "image": "",
+    "short": "Mjuzikli u srcu grada, zabava i kad ne razumeš jezik.",
+    "description": "Glavna beogradska scena za mjuzikle. Muzika i ples nose predstavu, pa je dobar izbor za veče u gradu.",
+    "rating": null,
+    "source": "predlog",
+    "price": "€€",
+    "address": "Terazije 29, Beograd",
+    "lat": 44.8128,
+    "lng": 20.4613,
+    "mapsUrl": "",
+    "tags": [
+      "pozorište",
+      "mjuzikl"
+    ],
+    "icon": "🎭"
+  },
+  {
+    "id": "madlenianum",
+    "name": "Madlenianum",
+    "category": "radi",
+    "area": "Zemun",
+    "image": "",
+    "short": "Opera i mjuzikl u Zemunu, na Glavnoj ulici.",
+    "description": "Moderno pozorište u Zemunu sa operom, mjuziklima i dramom. Spoji predstavu sa šetnjom zemunskim kejom.",
+    "rating": null,
+    "source": "predlog",
+    "price": "€€",
+    "address": "Glavna 32, Zemun",
+    "lat": 44.8433,
+    "lng": 20.4094,
+    "mapsUrl": "",
+    "tags": [
+      "pozorište",
+      "opera"
+    ],
+    "icon": "🎭"
+  },
+  {
+    "id": "kolarceva-zaduzbina",
+    "name": "Kolarčeva zadužbina",
+    "category": "radi",
+    "area": "Stari grad",
+    "image": "",
+    "short": "Klasični koncerti u koncertnoj dvorani sa sjajnom akustikom.",
+    "description": "Jedna od glavnih koncertnih dvorana u gradu, čest dom Beogradske filharmonije. Proveri program za vikend koncerte.",
+    "rating": null,
+    "source": "predlog",
+    "price": "€",
+    "address": "Studentski trg 5, Beograd",
+    "lat": 44.8187,
+    "lng": 20.458,
+    "mapsUrl": "",
+    "tags": [
+      "koncert",
+      "klasična muzika"
+    ],
+    "icon": "🎻"
+  },
+  {
+    "id": "kombank-dvorana",
+    "name": "Kombank dvorana",
+    "category": "radi",
+    "area": "Centar",
+    "image": "",
+    "short": "Koncerti i stand-up u nekadašnjoj Dvorani Doma sindikata.",
+    "description": "Velika sala u samom centru grada sa koncertima, stand-up komedijom i festivalima. Pogledaj program pre dolaska.",
+    "rating": null,
+    "source": "predlog",
+    "price": "€€",
+    "address": "Dečanska 14, Beograd",
+    "lat": 44.8134,
+    "lng": 20.4652,
+    "mapsUrl": "",
+    "tags": [
+      "koncert",
+      "stand-up"
+    ],
+    "icon": "🎤"
+  },
+  {
+    "id": "jugoslovenska-kinoteka",
+    "name": "Jugoslovenska kinoteka",
+    "category": "radi",
+    "area": "Stari grad",
+    "image": "",
+    "short": "Klasici svetskog filma na velikom platnu i mali muzej filma.",
+    "description": "Za ljubitelje filma: retrospektive, klasici i restaurirane kopije po povoljnim cenama, u zgradi sa muzejem kinematografije.",
+    "rating": null,
+    "source": "predlog",
+    "price": "€",
+    "address": "Uzun Mirkova 1, Beograd",
+    "lat": 44.818,
+    "lng": 20.4555,
+    "mapsUrl": "",
+    "tags": [
+      "film",
+      "bioskop"
+    ],
+    "icon": "🎬"
+  },
+  {
+    "id": "dom-omladine",
+    "name": "Dom omladine Beograda",
+    "category": "radi",
+    "area": "Centar",
+    "image": "",
+    "short": "Koncerti, festivali i tribine, uvek nešto zanimljivo u programu.",
+    "description": "Kulturni centar sa koncertima manjih bendova, filmskim projekcijama i festivalima. Dobar izbor kad hoćeš nešto drugačije od kafane.",
+    "rating": null,
+    "source": "predlog",
+    "price": "€",
+    "address": "Makedonska 22, Beograd",
+    "lat": 44.8148,
+    "lng": 20.4637,
+    "mapsUrl": "",
+    "tags": [
+      "koncert",
+      "kultura"
+    ],
+    "icon": "🎸"
+  },
+  {
+    "id": "krstarenje-rekom",
+    "name": "Krstarenje Savom i Dunavom",
+    "category": "radi",
+    "area": "Savamala",
+    "image": "",
+    "short": "Sat vremena na reci uz najlepši pogled na tvrđavu i ušće.",
+    "description": "Brodići kreću sa pristaništa u Savamali i plove oko Velikog ratnog ostrva i ispod tvrđave. Najlepše je pred zalazak sunca.",
+    "rating": null,
+    "source": "predlog",
+    "price": "€€",
+    "address": "Pristanište, Karađorđeva, Beograd",
+    "lat": 44.8172,
+    "lng": 20.4489,
+    "mapsUrl": "",
+    "tags": [
+      "reka",
+      "zalazak"
+    ],
+    "icon": "⛴️"
+  },
+  {
+    "id": "bicikl-ada-ciganlija",
+    "name": "Bicikl oko Ade Ciganlije",
+    "category": "radi",
+    "area": "Ada Ciganlija",
+    "image": "",
+    "short": "Krug oko jezera biciklom, bicikl se iznajmljuje na samoj Adi.",
+    "description": "Ravna staza oko celog jezera, sa kafićima i plažama usput. Leti spoji sa kupanjem.",
+    "rating": null,
+    "source": "predlog",
+    "price": "€",
+    "address": "Ada Ciganlija, Beograd",
+    "lat": 44.787,
+    "lng": 20.414,
+    "mapsUrl": "",
+    "tags": [
+      "sport",
+      "leto"
+    ],
+    "icon": "🚲"
+  },
+  {
+    "id": "zooloski-vrt",
+    "name": "Beogradski zoološki vrt",
+    "category": "radi",
+    "area": "Stari grad",
+    "image": "",
+    "short": "Zoo vrt u okviru Beogradske tvrđave, dobar za porodice.",
+    "description": "Mali zoo vrt na Kalemegdanu. Posle obilaska nastavi šetnju zidinama tvrđave.",
+    "rating": null,
+    "source": "predlog",
+    "price": "€",
+    "address": "Mali Kalemegdan 8, Beograd",
+    "lat": 44.8247,
+    "lng": 20.4521,
+    "mapsUrl": "",
+    "tags": [
+      "porodica"
+    ],
+    "icon": "🦁"
+  },
+  {
+    "id": "kalemegdan",
+    "name": "Kalemegdan i Beogradska tvrđava",
+    "category": "vidi",
+    "area": "Stari grad",
+    "image": "",
+    "short": "Šetnja zidinama i zalazak sunca nad ušćem Save u Dunav.",
+    "description": "Srce grada: park, zidine, Pobednik i vidikovac iznad ušća. Dođi sat vremena pre zalaska sunca.",
+    "rating": null,
+    "source": "predlog",
+    "price": "",
+    "address": "Kalemegdan, Beograd",
+    "lat": 44.8231,
+    "lng": 20.4506,
+    "mapsUrl": "",
+    "tags": [
+      "pogled",
+      "zalazak",
+      "besplatno"
+    ],
+    "icon": "🏰"
+  },
+  {
+    "id": "hram-svetog-save",
+    "name": "Hram Svetog Save",
+    "category": "vidi",
+    "area": "Vračar",
+    "image": "",
+    "short": "Monumentalni hram, obavezno siđi u kriptu sa zlatnim mozaicima.",
+    "description": "Jedan od najvećih pravoslavnih hramova na svetu. Kripta je najmirnija ujutru, a plato ispred je odličan za odmor.",
+    "rating": null,
+    "source": "predlog",
+    "price": "",
+    "address": "Krušedolska 2a, Beograd",
+    "lat": 44.7981,
+    "lng": 20.4689,
+    "mapsUrl": "",
+    "tags": [
+      "arhitektura",
+      "besplatno"
+    ],
+    "icon": "⛪"
+  },
+  {
+    "id": "muzej-nikole-tesle",
+    "name": "Muzej Nikole Tesle",
+    "category": "vidi",
+    "area": "Vračar",
+    "image": "",
+    "short": "Vođene ture i demonstracija Teslinog kalema.",
+    "description": "Mali muzej sa vođenim turama i živim demonstracijama. Dođi ranije jer se ture brzo popune.",
+    "rating": null,
+    "source": "predlog",
+    "price": "€",
+    "address": "Krunska 51, Beograd",
+    "lat": 44.8059,
+    "lng": 20.4719,
+    "mapsUrl": "",
+    "tags": [
+      "muzej",
+      "kišni dan"
+    ],
+    "icon": "⚡"
+  },
+  {
+    "id": "muzej-jugoslavije",
+    "name": "Muzej Jugoslavije",
+    "category": "vidi",
+    "area": "Savski venac",
+    "image": "",
+    "short": "Kuća cveća i istorija Jugoslavije na jednom mestu.",
+    "description": "Kompleks sa Kućom cveća i stalnim izložbama o Jugoslaviji. Lepo uređen park i dobar pogled sa brda.",
+    "rating": null,
+    "source": "predlog",
+    "price": "€",
+    "address": "Botićeva 6, Beograd",
+    "lat": 44.7868,
+    "lng": 20.4512,
+    "mapsUrl": "",
+    "tags": [
+      "muzej",
+      "istorija"
+    ],
+    "icon": "🖼️"
+  },
+  {
+    "id": "gardos-kula",
+    "name": "Gardoš kula",
+    "category": "vidi",
+    "area": "Zemun",
+    "image": "",
+    "short": "Kula iznad Zemuna sa pogledom na Dunav i crvene krovove.",
+    "description": "Popni se uzanim zemunskim uličicama do kule. Spoji sa ručkom na zemunskom keju.",
+    "rating": null,
+    "source": "predlog",
+    "price": "",
+    "address": "Grobljanska, Zemun",
+    "lat": 44.8481,
+    "lng": 20.4097,
+    "mapsUrl": "",
+    "tags": [
+      "pogled",
+      "besplatno"
+    ],
+    "icon": "🏰"
+  },
+  {
+    "id": "avalski-toranj",
+    "name": "Avalski toranj",
+    "category": "vidi",
+    "area": "Avala",
+    "image": "",
+    "short": "Vidikovac na vrhu tornja sa pogledom na ceo Beograd.",
+    "description": "Izlet na planinu Avala, pola sata od centra. Šuma za šetnju i vidikovac na vrhu tornja.",
+    "rating": null,
+    "source": "predlog",
+    "price": "€",
+    "address": "Avala, Beograd",
+    "lat": 44.6955,
+    "lng": 20.515,
+    "mapsUrl": "",
+    "tags": [
+      "izlet",
+      "pogled"
+    ],
+    "icon": "🗼"
   }
 ];

@@ -195,7 +195,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
   width: 52%;
 }
 .polaroid .ph { aspect-ratio: 1; }
-.polaroid figcaption { font-family: var(--hand); font-size: 1.35rem; color: var(--ink); text-align: center; padding: 0.3rem 0 0.5rem; }
+.polaroid figcaption { font-family: var(--hand); font-size: 1.35rem; line-height: 1.1; color: var(--ink); text-align: center; padding: 0.3rem 0.3rem 0.5rem; }
 .p1 { left: 0; top: 40px; transform: rotate(-6deg); z-index: 2; }
 .p1 .ph { --dot: var(--orange); }
 .p2 { right: 4%; top: 0; transform: rotate(5deg); width: 44%; }

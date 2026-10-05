@@ -12,8 +12,8 @@
     area        kraj grada (npr. "Dorćol", "Zemun", "Vračar")
     image       (opciono) putanja do tvoje slike u folderu images/ (npr. "images/kalemegdan.jpg")
                 ako je prazno, sajt uzima fotografiju sa Google Maps (potreban ključ)
-    short       (opciono) jedna rečenica o mestu
-    description (opciono) duži opis u detaljima
+    short       (opciono) jedna rečenica o mestu (short_en: na engleskom)
+    description (opciono) duži opis u detaljima (description_en: na engleskom)
     tip         (opciono) poseban Stefanov savet
     rating      Stefanova ocena (1 do 5), prikazuje se kao "Stefanova ocena" dok nema Google ocene
     googleRating  (opciono) prosečna ocena mesta na Google Maps, npr. 4.7
@@ -1427,7 +1427,9 @@ const LOCATIONS = [
       "opera",
       "balet"
     ],
-    "icon": "🎭"
+    "icon": "🎭",
+    "short_en": "Opera, ballet and drama in the city's most beautiful theatre building, on Republic Square.",
+    "description_en": "Serbia's oldest and largest theatre. The programme alternates between opera, ballet and drama. Ballet and opera need no Serbian, so it's a great choice for visitors too."
   },
   {
     "id": "atelje-212",
@@ -1448,7 +1450,9 @@ const LOCATIONS = [
       "pozorište",
       "drama"
     ],
-    "icon": "🎭"
+    "icon": "🎭",
+    "short_en": "Contemporary drama in a cult theatre on Svetogorska street.",
+    "description_en": "A theatre known since the sixties for bold, contemporary plays. After the show, Svetogorska street is full of bars for a drink."
   },
   {
     "id": "jugoslovenska-kinoteka",
@@ -1469,7 +1473,9 @@ const LOCATIONS = [
       "film",
       "bioskop"
     ],
-    "icon": "🎬"
+    "icon": "🎬",
+    "short_en": "World film classics on the big screen and a small film museum.",
+    "description_en": "For film lovers: retrospectives, classics and restored prints at low prices, in a building with a cinema museum."
   },
   {
     "id": "krstarenje-rekom",
@@ -1490,7 +1496,9 @@ const LOCATIONS = [
       "reka",
       "zalazak"
     ],
-    "icon": "⛴️"
+    "icon": "⛴️",
+    "short_en": "An hour on the river with the best view of the fortress and the confluence.",
+    "description_en": "Boats leave from the Savamala pier and sail around Great War Island and under the fortress. Best just before sunset."
   },
   {
     "id": "kalemegdan",
@@ -1512,7 +1520,9 @@ const LOCATIONS = [
       "zalazak",
       "besplatno"
     ],
-    "icon": "🏰"
+    "icon": "🏰",
+    "short_en": "A walk on the walls and sunset over the meeting of the Sava and the Danube.",
+    "description_en": "The heart of the city: park, walls, the Victor monument and a viewpoint over the confluence. Come an hour before sunset."
   },
   {
     "id": "hram-svetog-save",
@@ -1533,7 +1543,9 @@ const LOCATIONS = [
       "arhitektura",
       "besplatno"
     ],
-    "icon": "⛪"
+    "icon": "⛪",
+    "short_en": "A monumental church; be sure to go down to the crypt with its golden mosaics.",
+    "description_en": "One of the largest Orthodox churches in the world. The crypt is quietest in the morning, and the plaza in front is great for a break."
   },
   {
     "id": "muzej-nikole-tesle",
@@ -1554,7 +1566,9 @@ const LOCATIONS = [
       "muzej",
       "kišni dan"
     ],
-    "icon": "⚡"
+    "icon": "⚡",
+    "short_en": "Guided tours and a live Tesla coil demonstration.",
+    "description_en": "A small museum with guided tours and live demonstrations. Come early, as tours fill up fast."
   },
   {
     "id": "gardos-kula",
@@ -1575,6 +1589,8 @@ const LOCATIONS = [
       "pogled",
       "besplatno"
     ],
-    "icon": "🏰"
+    "icon": "🏰",
+    "short_en": "A tower above Zemun with views of the Danube and red rooftops.",
+    "description_en": "Climb Zemun's narrow streets up to the tower. Combine it with lunch on the Zemun riverside."
   }
 ];

@@ -1,5 +1,8 @@
 (function () {
   let tab = "stefan";
+  const T = (k, v) => window.I18N.t(k, v);
+  const pick = (o, f) => window.I18N.pick(o, f);
+  const catLabel = (k) => window.I18N.catLabel(k);
 
   // Boja tačkica i naslova za svaku kategoriju (kao na starim posterima)
   const COLORS = {
@@ -52,7 +55,8 @@
     const on = saved.has(btn.dataset.save);
     btn.setAttribute("aria-pressed", on);
     btn.textContent = on ? "✓" : "+";
-    btn.title = on ? "Ukloni iz moje liste" : "Dodaj u moju listu";
+    btn.title = on ? T("save.remove") : T("save.add");
+    btn.setAttribute("aria-label", btn.title);
   }
 
   /* Slike: tvoja slika iz images/, ako je nema onda fotografija sa Google Maps, ako ni nje nema onda poster sa ilustracijom */
@@ -191,9 +195,12 @@
     else fillGooglePhoto(box, id, false);
   }
 
-  const fmtCount = (n) => n.toLocaleString("sr-RS");
+  const fmtCount = (n) => n.toLocaleString(window.I18N.lang === "en" ? "en-GB" : "sr-RS");
   // 1 recenzija, 2-4 recenzije, 5+ recenzija
-  const reviewsWord = (n) => (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? "recenzije" : "recenzija");
+  const reviewsWord = (n) =>
+    window.I18N.lang === "en"
+      ? T(n === 1 ? "rating.review1" : "rating.review5")
+      : T(n % 10 === 1 && n % 100 !== 11 ? "rating.review1" : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? "rating.review2" : "rating.review5");
   // Ocena mesta: Google prosek i broj recenzija (iz API-ja ili upisani u data.js), a ako ih nema, Stefanova ocena
   function ratingHtml(l, mode, live) {
     const g = live?.rating ? live : l.googleRating ? { rating: l.googleRating, count: l.googleReviews || 0 } : null;
@@ -201,13 +208,13 @@
       const r = g.rating.toFixed(1);
       const c = g.count ? fmtCount(g.count) : "";
       if (mode === "card") return `<b>${r}</b> <span class="gstars">${stars(Math.round(g.rating))}</span>${c ? ` <span class="gcount">(${c})</span>` : ""}`;
-      if (mode === "long") return `<span class="gstars">${stars(Math.round(g.rating))}</span> ${r}${c ? ` · ${c} ${reviewsWord(g.count)} na Google Maps` : " na Google Maps"}`;
+      if (mode === "long") return `<span class="gstars">${stars(Math.round(g.rating))}</span> ${r}${c ? ` · ${c} ${reviewsWord(g.count)} ${T("rating.onGoogle")}` : " " + T("rating.onGoogle")}`;
       if (mode === "meta") return `· ${r}★${c ? ` (${c})` : ""}`;
       return `${r}★${c ? ` (${c})` : ""}`;
     }
     if (!l.rating) return "";
-    if (mode === "card") return `<span class="gstars">${stars(l.rating)}</span> <span class="gcount">Stefanova ocena</span>`;
-    if (mode === "long") return `<span class="gstars">${stars(l.rating)}</span> Stefanova ocena`;
+    if (mode === "card") return `<span class="gstars">${stars(l.rating)}</span> <span class="gcount">${T("rating.stefan")}</span>`;
+    if (mode === "long") return `<span class="gstars">${stars(l.rating)}</span> ${T("rating.stefan")}`;
     if (mode === "meta") return `· ${l.rating}★`;
     return `${l.rating}★`;
   }
@@ -243,9 +250,9 @@
     const places = homePlaces();
     const areas = new Set(places.map((l) => l.area).filter(Boolean));
     $("stats").innerHTML = [
-      [(typeof LISTS !== "undefined" ? LISTS : []).length, "top lista"],
-      [places.length, "mesta"],
-      [areas.size, "krajeva"],
+      [(typeof LISTS !== "undefined" ? LISTS : []).length, T("stats.lists")],
+      [places.length, T("stats.places")],
+      [areas.size, T("stats.areas")],
     ]
       .map(([n, t]) => `<li><strong>${n}</strong><span>${t}</span></li>`)
       .join("");
@@ -266,7 +273,7 @@
         const colors = ["var(--orange)", "var(--green)", "var(--yellow)", "var(--sky)", "var(--red)"];
         return `<button class="tile list-tile" data-list="${esc(L.id)}">
           <div class="ph ${PATTERNS[i % PATTERNS.length]}" style="--dot:${colors[i % colors.length]}"><b class="tile-ico">${L.icon}</b></div>
-          <span class="tile-label">${esc(L.title)}<small>Top ${L.places.length}</small></span>
+          <span class="tile-label">${esc(pick(L, "title"))}<small>${T("tile.top", { n: L.places.length })}</small></span>
         </button>`;
       })
       .join("");
@@ -280,7 +287,7 @@
       <button class="rank-thumb" data-open="${esc(l.id)}" aria-label="${esc(l.name)}">${imageHtml(l)}</button>
       <div class="rank-body">
         <h3><button class="rank-name" data-open="${esc(l.id)}">${esc(l.name)}</button></h3>
-        <p class="rank-meta">${cat ? cat.icon + " " + esc(cat.label) : ""}${l.area ? " · " + esc(l.area) : ""} <span class="rank-stars" ${ratingAttrs(l, "meta")}>${ratingHtml(l, "meta")}</span></p>
+        <p class="rank-meta">${cat ? cat.icon + " " + esc(catLabel(l.category)) : ""}${l.area ? " · " + esc(l.area) : ""} <span class="rank-stars" ${ratingAttrs(l, "meta")}>${ratingHtml(l, "meta")}</span></p>
         <div class="vote" data-vote="${esc(l.id)}"></div>
         ${extra}
       </div>
@@ -301,11 +308,14 @@
 
   // Prikaz jedne rangirane liste (Stefanove ili korisnikove) sa mestima na mapi
   function showRanked({ hash, kicker, title, intro, items }, scroll = true) {
-    $("listKicker").textContent = kicker || "Top lista";
+    $("listKicker").textContent = kicker || T("list.default");
     $("listTitle").textContent = title;
     $("listIntro").textContent = intro || "";
     $("listItems").innerHTML = items
-      .map(({ l, note }, i) => rankedItem(l, i + 1, note || l.short ? `<p class="rank-note">${esc(note || l.short)}</p>` : ""))
+      .map(({ l, note }, i) => {
+        const text = note || pick(l, "short");
+        return rankedItem(l, i + 1, text ? `<p class="rank-note">${esc(text)}</p>` : "");
+      })
       .join("");
     $("listItems").querySelectorAll("[data-save]").forEach(setSaveBtn);
     requestRankPhotos($("listItems"));
@@ -324,10 +334,10 @@
     setTab("stefan");
     showRanked({
       hash: "lista-" + L.id,
-      kicker: `${L.icon} Stefanova top lista`,
-      title: L.title,
-      intro: L.intro,
-      items: L.places.map((p) => ({ l: byId(p.id), note: p.note })).filter((x) => x.l),
+      kicker: T("list.kickerStefan", { icon: L.icon }),
+      title: pick(L, "title"),
+      intro: pick(L, "intro"),
+      items: L.places.map((p) => ({ l: byId(p.id), note: pick(p, "note") })).filter((x) => x.l),
     }, scroll);
   }
 
@@ -350,11 +360,11 @@
       .map((id, i) => {
         const l = byId(id);
         const st = stefanRanks[id];
-        const badge = st ? `<p class="rank-note">Stefan: #${st[0].rank} na listi „${esc(st[0].list.title)}“</p>` : "";
+        const badge = st ? `<p class="rank-note">${esc(T("mine.stefanRank", { rank: st[0].rank, list: pick(st[0].list, "title") }))}</p>` : "";
         const controls = `<div class="rank-controls">
-            <button class="ctl" data-move="${esc(id)}" data-dir="-1" aria-label="Pomeri gore" ${i === 0 ? "disabled" : ""}>↑</button>
-            <button class="ctl" data-move="${esc(id)}" data-dir="1" aria-label="Pomeri dole" ${i === ids.length - 1 ? "disabled" : ""}>↓</button>
-            <button class="ctl" data-save="${esc(id)}" aria-label="Ukloni">✕</button>
+            <button class="ctl" data-move="${esc(id)}" data-dir="-1" aria-label="${T("mine.up")}" ${i === 0 ? "disabled" : ""}>↑</button>
+            <button class="ctl" data-move="${esc(id)}" data-dir="1" aria-label="${T("mine.down")}" ${i === ids.length - 1 ? "disabled" : ""}>↓</button>
+            <button class="ctl" data-save="${esc(id)}" aria-label="${T("mine.remove")}">✕</button>
           </div>`;
         return rankedItem(l, i + 1, badge, controls).replace('class="rank-item"', `class="rank-item${i >= 10 ? " beyond" : ""}"`);
       })
@@ -375,23 +385,23 @@
     return `${location.origin}${location.pathname}#${q.toString()}`;
   }
 
-  function showShared(params) {
+  function showShared(params, scroll = true) {
     const ids = (params.get("top") || "").split(",").filter((id) => byId(id)).slice(0, 10);
     if (!ids.length) return false;
     const name = (params.get("ime") || "").slice(0, 40);
-    $("sharedTitle").textContent = name || "Nečija top lista";
+    $("sharedTitle").textContent = name || T("shared.untitled");
     const onStefan = ids.filter((id) => stefanRanks[id]).length;
     const rated = ids.map((id) => byId(id).rating).filter(Boolean);
     const mine = ids.filter((id) => saved.has(id)).length;
-    const parts = [`Poklapanje sa Stefanovim top listama: <strong>${onStefan} od ${ids.length}</strong>.`];
-    if (rated.length) parts.push(`Stefan je ocenio ${rated.length} od ${ids.length} ovih mesta, prosečno ${(rated.reduce((a, b) => a + b, 0) / rated.length).toFixed(1)}★.`);
-    if (saved.size) parts.push(`Sa tvojom listom se poklapa ${mine} ${mine === 1 ? "mesto" : "mesta"}.`);
+    const parts = [T("shared.match", { n: onStefan, total: ids.length })];
+    if (rated.length) parts.push(esc(T("shared.rated", { n: rated.length, total: ids.length, avg: (rated.reduce((a, b) => a + b, 0) / rated.length).toFixed(1) })));
+    if (saved.size) parts.push(esc(T(mine === 1 ? "shared.mine1" : "shared.mineN", { n: mine })));
     $("sharedCompare").innerHTML = parts.join(" ");
     $("sharedItems").innerHTML = ids
       .map((id, i) => {
         const st = stefanRanks[id];
         const extra = st
-          ? `<p class="rank-note match">✓ I Stefan ga ima: #${st[0].rank} na listi „${esc(st[0].list.title)}“</p>`
+          ? `<p class="rank-note match">${esc(T("shared.alsoStefan", { rank: st[0].rank, list: pick(st[0].list, "title") }))}</p>`
           : "";
         return rankedItem(byId(id), i + 1, extra);
       })
@@ -400,9 +410,9 @@
     requestRankPhotos($("sharedItems"));
     $("deljena").hidden = false;
     $("deljena").dataset.ids = ids.join(",");
-    $("adoptTop").textContent = saved.size ? "Zameni moju listu ovom" : "Sačuvaj kao moju listu";
+    $("adoptTop").textContent = saved.size ? T("shared.replace") : T("shared.adopt");
     updateMarkers(ids.map(byId));
-    $("deljena").scrollIntoView();
+    if (scroll) $("deljena").scrollIntoView();
     emit("sv:render");
     return true;
   }
@@ -432,44 +442,46 @@
       $("placeResults").hidden = true;
       return;
     }
-    const hits = LOCATIONS.filter((l) => `${l.name} ${l.area} ${CATEGORIES[l.category]?.label || ""}`.toLowerCase().includes(q)).slice(0, 8);
+    const hits = LOCATIONS.filter((l) => `${l.name} ${l.area} ${CATEGORIES[l.category]?.label || ""} ${catLabel(l.category)}`.toLowerCase().includes(q)).slice(0, 8);
     $("placeResults").innerHTML = hits.length
       ? hits
           .map((l) => `<li><button class="save sr-add" data-save="${esc(l.id)}"></button>
             <button class="sr-name" data-open="${esc(l.id)}">${iconFor(l)} ${esc(l.name)}<small>${esc(l.area)}</small></button></li>`)
           .join("")
-      : `<li class="sr-empty">Nema tog mesta. Dodaj ga sa Google Maps (potrebna je prijava).</li>`;
+      : `<li class="sr-empty">${esc(T("mine.searchNone"))}</li>`;
     $("placeResults").querySelectorAll("[data-save]").forEach(setSaveBtn);
     $("placeResults").hidden = false;
   }
 
   /* Prozor sa detaljima */
+  let detailId = null;
   function openDetail(id) {
     const l = byId(id);
     if (!l) return;
+    detailId = id;
     const cat = CATEGORIES[l.category];
     $("detailBody").innerHTML = `
       <div class="detail-img" id="detailImg">${imageHtml(l)}</div>
       <div class="detail-content">
-        <p class="eyebrow">${cat ? cat.icon + " " + esc(cat.label) : ""} · ${esc(l.area)}</p>
+        <p class="eyebrow">${cat ? cat.icon + " " + esc(catLabel(l.category)) : ""}${l.area ? " · " + esc(l.area) : ""}</p>
         <h3>${esc(l.name)}</h3>
         <p class="review-stars" ${ratingAttrs(l, "long")}>${ratingHtml(l, "long")}</p>
-        ${l.description || l.short ? `<p>${esc(l.description || l.short)}</p>` : ""}
-        ${l.tip ? `<div class="tip"><strong>Stefanov savet:</strong> ${esc(l.tip)}</div>` : ""}
+        ${pick(l, "description") || pick(l, "short") ? `<p>${esc(pick(l, "description") || pick(l, "short"))}</p>` : ""}
+        ${l.tip ? `<div class="tip"><strong>${T("detail.tip")}</strong> ${esc(pick(l, "tip"))}</div>` : ""}
         <div class="vote vote-big" data-vote="${esc(l.id)}"></div>
         <div class="community-slot" data-community="${esc(l.id)}"></div>
         <div class="detail-info">
           ${l.address ? `<span>📍 ${esc(l.address)}</span>` : ""}
           ${l.price ? `<span>💰 ${esc(l.price)}</span>` : ""}
         </div>
-        ${l.tags?.length ? `<div class="tags">${l.tags.map((t) => `<span class="tag">#${esc(t)}</span>`).join("")}</div>` : ""}
+        ${l.tags?.length ? `<div class="tags">${l.tags.map((t) => `<span class="tag">#${esc(window.I18N.tag(t))}</span>`).join("")}</div>` : ""}
         <div class="detail-actions">
-          <a class="btn" href="${mapsUrl(l)}" target="_blank" rel="noopener">Otvori u Google Maps</a>
-          <button class="btn btn-ghost" data-show-map="${esc(l.id)}">Prikaži na mapi</button>
+          <a class="btn" href="${mapsUrl(l)}" target="_blank" rel="noopener">${T("detail.openGmaps")}</a>
+          <button class="btn btn-ghost" data-show-map="${esc(l.id)}">${T("detail.showMap")}</button>
         </div>
       </div>`;
     if (API_KEY) fillGooglePhoto($("detailImg"), l.id, true);
-    $("detail").showModal();
+    if (!$("detail").open) $("detail").showModal();
     emit("sv:render");
     history.replaceState(null, "", "#" + l.id);
   }
@@ -500,10 +512,10 @@
       <div class="gcard-body">
         <div class="gcard-name">${esc(l.name)}</div>
         <div class="gcard-rating" ${ratingAttrs(l, "card")}>${ratingHtml(l, "card")}</div>
-        <div class="gcard-type">${cat ? esc(cat.label) : ""}${l.area ? " · " + esc(l.area) : ""}</div>
+        <div class="gcard-type">${cat ? esc(catLabel(l.category)) : ""}${l.area ? " · " + esc(l.area) : ""}</div>
         <div class="vote" data-vote="${esc(l.id)}"></div>
         <div class="popup-row">
-          <button class="popup-link" data-open="${esc(l.id)}">Detalji →</button>
+          <button class="popup-link" data-open="${esc(l.id)}">${T("popup.details")}</button>
           <a class="popup-link" href="${esc(mapsUrl(l))}" target="_blank" rel="noopener">Google Maps ↗</a>
         </div>
       </div>
@@ -555,7 +567,7 @@
   function initEmbedMap() {
     gmap = null;
     lmap = null;
-    $("map").innerHTML = `<iframe id="mapFrame" title="Google mapa" loading="lazy"
+    $("map").innerHTML = `<iframe id="mapFrame" title="${T("map.iframe")}" loading="lazy"
       referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>`;
     if (mapList.length) selectOnMap(currentId || mapList[0].id);
   }
@@ -683,15 +695,15 @@
       $("shareLink").select();
       try {
         await navigator.clipboard.writeText($("shareLink").value);
-        $("copyLink").textContent = "Kopirano ✓";
+        $("copyLink").textContent = T("mine.copied");
       } catch {
-        $("copyLink").textContent = "Označeno, kopiraj ručno";
+        $("copyLink").textContent = T("mine.copyManual");
       }
-      setTimeout(() => ($("copyLink").textContent = "Kopiraj link"), 2500);
+      setTimeout(() => ($("copyLink").textContent = T("mine.copy")), 2500);
     });
     $("adoptTop").addEventListener("click", () => {
       setSaved($("deljena").dataset.ids.split(","));
-      $("adoptTop").textContent = "Sačuvano ✓";
+      $("adoptTop").textContent = T("shared.saved");
       setTab("moja");
       $("liste").scrollIntoView({ behavior: "smooth" });
     });
@@ -700,6 +712,21 @@
       if (mv) moveSaved(mv.dataset.move, Number(mv.dataset.dir));
     });
     window.addEventListener("hashchange", handleHash);
+    // Promena jezika: ponovo iscrtaj sve što pravi JavaScript
+    document.addEventListener("sv:lang", () => {
+      renderStats();
+      renderTiles();
+      updateCounts();
+      renderMyTop();
+      renderSearch();
+      renderMapList();
+      if (lmap) lmap.closePopup();
+      const h = !$("lista").hidden && $("lista").dataset.hash;
+      if (h && h.startsWith("lista-")) openList(h.slice(6), false);
+      if (!$("deljena").hidden && location.hash.startsWith("#top=")) showShared(new URLSearchParams(location.hash.slice(1)), false);
+      if ($("detail").open && detailId) openDetail(detailId);
+      document.querySelectorAll("[data-save]").forEach(setSaveBtn);
+    });
     document.addEventListener("click", (e) => {
       const save = e.target.closest("[data-save]");
       if (save) return toggleSaved(save.dataset.save);

@@ -10,6 +10,7 @@
   const SV = window.SV;
   const $ = (id) => document.getElementById(id);
   const esc = SV.esc;
+  const T = (k, v) => window.I18N.t(k, v);
   const SUPABASE_JS = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js";
 
   let sb = null;
@@ -121,7 +122,7 @@
   async function setUser(u) {
     const changed = (u?.id || null) !== (user?.id || null);
     user = u;
-    $("authBtn").textContent = user ? (profile?.display_name || "Moj nalog") : "Prijava";
+    $("authBtn").textContent = user ? (profile?.display_name || T("nav.account")) : T("nav.login");
     $("authOut").hidden = !!user;
     $("authIn").hidden = !user;
     if (!changed) return;
@@ -130,9 +131,9 @@
     currentList = null;
     $("cloudLists").hidden = !user;
     if (user) {
-      $("authWho").textContent = `Prijavljen si kao ${user.email}.`;
+      $("authWho").textContent = T("auth.who", { email: user.email });
       await Promise.all([loadProfile(), loadMyVotes(), loadLists()]);
-      $("authBtn").textContent = profile?.display_name || "Moj nalog";
+      $("authBtn").textContent = profile?.display_name || T("nav.account");
       if (!profile?.display_name) openAuth(); // prvi put: izaberi javno ime
     }
     renderVotes();
@@ -149,13 +150,13 @@
   async function sendLink(e) {
     e.preventDefault();
     const email = $("authEmail").value.trim();
-    msg("authMsg", "Šaljem…");
+    msg("authMsg", T("auth.sending"));
     const { error } = await sb.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: location.origin + location.pathname },
     });
-    if (error) msg("authMsg", "Slanje nije uspelo: " + error.message);
-    else msg("authMsg", `Poslali smo link na ${email}. Otvori mejl i klikni na link da se prijaviš.`, true);
+    if (error) msg("authMsg", T("auth.sendFail", { err: error.message }));
+    else msg("authMsg", T("auth.sent", { email }), true);
   }
 
   async function loadProfile() {
@@ -169,17 +170,17 @@
     const { error } = profile
       ? await sb.from("profiles").update({ display_name: name }).eq("id", user.id)
       : await sb.from("profiles").insert({ id: user.id, display_name: name });
-    if (error) return msg("profileMsg", "Čuvanje nije uspelo: " + error.message);
+    if (error) return msg("profileMsg", T("auth.saveFail", { err: error.message }));
     profile = { ...(profile || { id: user.id, is_admin: false }), display_name: name };
     names[user.id] = name;
     $("authBtn").textContent = name;
-    msg("profileMsg", "Sačuvano ✓", true);
+    msg("profileMsg", T("auth.saved"), true);
   }
 
   /* ---------- Glasanje ---------- */
   async function loadScores() {
     const { data, error } = await sb.from("place_scores").select("place_key, up, down, score");
-    if (error) toast("Glasovi nisu učitani: " + error.message);
+    if (error) toast(T("toast.votesLoad", { err: error.message }));
     scores = {};
     (data || []).forEach((r) => (scores[r.place_key] = r));
   }
@@ -192,9 +193,9 @@
   function voteHtml(key) {
     const s = scores[key] || { up: 0, down: 0, score: 0 };
     const mine = myVotes[key] || 0;
-    return `<button class="v-up${mine === 1 ? " on" : ""}" data-v="1" aria-label="Glas za" title="Glas za">▲</button>
-      <b class="v-score" title="${s.up} za, ${s.down} protiv">${s.score > 0 ? "+" : ""}${s.score}</b>
-      <button class="v-down${mine === -1 ? " on" : ""}" data-v="-1" aria-label="Glas protiv" title="Glas protiv">▼</button>`;
+    return `<button class="v-up${mine === 1 ? " on" : ""}" data-v="1" aria-label="${T("vote.up")}" title="${T("vote.up")}">▲</button>
+      <b class="v-score" title="${T("vote.title", { up: s.up, down: s.down })}">${s.score > 0 ? "+" : ""}${s.score}</b>
+      <button class="v-down${mine === -1 ? " on" : ""}" data-v="-1" aria-label="${T("vote.down")}" title="${T("vote.down")}">▼</button>`;
   }
   function renderVotes(root = document) {
     root.querySelectorAll("[data-vote]").forEach((el) => (el.innerHTML = voteHtml(el.dataset.vote)));
@@ -218,7 +219,7 @@
       ? await sb.from("votes").upsert({ user_id: user.id, place_key: key, value: next })
       : await sb.from("votes").delete().eq("user_id", user.id).eq("place_key", key);
     if (error) {
-      toast("Glas nije sačuvan: " + error.message);
+      toast(T("toast.vote", { err: error.message }));
       await Promise.all([loadScores(), loadMyVotes()]);
       renderVotes();
     }
@@ -239,7 +240,7 @@
 
   function fillAddForm() {
     $("addCategory").innerHTML = Object.entries(SV.CATEGORIES)
-      .map(([k, v]) => `<option value="${k}">${v.icon} ${esc(v.label)}</option>`)
+      .map(([k, v]) => `<option value="${k}">${v.icon} ${esc(window.I18N.catLabel(k))}</option>`)
       .join("");
     const areas = [...new Set(SV.LOCATIONS.map((l) => l.area).filter(Boolean))].sort((a, b) => a.localeCompare(b, "sr"));
     $("areaList").innerHTML = areas.map((a) => `<option value="${esc(a)}">`).join("");
@@ -259,7 +260,7 @@
     if (!u) return;
     let full = u;
     if (isShortLink(u)) {
-      msg("addMsg", "Otvaram kratki link…");
+      msg("addMsg", T("add.resolving"));
       try {
         const { data } = await sb.functions.invoke("resolve-maps", { body: { url: u } });
         if (data?.url) full = data.url;
@@ -270,15 +271,15 @@
     $("addUrl").dataset.full = full;
     $("addUrl").dataset.lat = p.lat ?? "";
     $("addUrl").dataset.lng = p.lng ?? "";
-    if (p.lat != null) msg("addMsg", "Link je prepoznat, mesto će imati pin na mapi.", true);
-    else if (isShortLink(u)) msg("addMsg", "Kratki link nije mogao da se otvori. Upiši naziv, a za pin na mapi otvori link u browseru i nalepi punu adresu.");
-    else msg("addMsg", "U linku nema lokacije, pa mesto neće imati pin na mapi. Ostalo radi.");
+    if (p.lat != null) msg("addMsg", T("add.okPin"), true);
+    else if (isShortLink(u)) msg("addMsg", T("add.shortFail"));
+    else msg("addMsg", T("add.noPin"));
   }
 
   async function submitAdd(e) {
     e.preventDefault();
     const url = $("addUrl").value.trim();
-    if (!isMapsLink(url)) return msg("addMsg", "To nije Google Maps link. Na Google Maps klikni Podeli i kopiraj link.");
+    if (!isMapsLink(url)) return msg("addMsg", T("add.notMaps"));
     if ($("addUrl").dataset.full === undefined) await onUrlChange();
     const lat = parseFloat($("addUrl").dataset.lat);
     const lng = parseFloat($("addUrl").dataset.lng);
@@ -293,14 +294,14 @@
     // Isto mesto već postoji?
     const dup = SV.LOCATIONS.find((l) => l.name.toLowerCase() === row.name.toLowerCase());
     if (dup) {
-      msg("addMsg", `„${dup.name}“ je već u vodiču. Dodao sam ga u tvoju listu.`, true);
+      msg("addMsg", T("add.dup", { name: dup.name }), true);
       if ($("addToList").checked) SV.setSaved([...SV.getSaved().filter((x) => x !== dup.id), dup.id]);
       return;
     }
     $("addSubmit").disabled = true;
     const { data, error } = await sb.from("places").insert(row).select().single();
     $("addSubmit").disabled = false;
-    if (error) return msg("addMsg", "Dodavanje nije uspelo: " + error.message);
+    if (error) return msg("addMsg", T("add.fail", { err: error.message }));
     userPlaces.unshift(data);
     names[user.id] = profile?.display_name || "";
     SV.addPlaces([toLocation(data)]);
@@ -319,7 +320,7 @@
     const btn = document.querySelector(`[data-del="${key}"]`);
     if (btn && btn.dataset.confirm !== "1") {
       btn.dataset.confirm = "1";
-      btn.textContent = "Sigurno obrisati? Klikni ponovo";
+      btn.textContent = T("place.confirmDelete");
       return;
     }
     const { error } = await sb.from("places").delete().eq("id", row.id);
@@ -336,8 +337,8 @@
       const row = userPlaces.find((p) => placeKey(p) === key);
       if (!row) return (el.innerHTML = "");
       const canDelete = user && (row.created_by === user.id || profile?.is_admin);
-      el.innerHTML = `<p class="added-by">Dodao/la: <b>${esc(names[row.created_by] || "član zajednice")}</b></p>
-        ${canDelete ? `<button class="btn btn-ghost" data-del="${esc(key)}">Obriši mesto</button>` : ""}`;
+      el.innerHTML = `<p class="added-by">${T("place.addedBy", { name: esc(names[row.created_by] || T("place.member")) })}</p>
+        ${canDelete ? `<button class="btn btn-ghost" data-del="${esc(key)}">${T("place.delete")}</button>` : ""}`;
     });
   }
 
@@ -352,18 +353,18 @@
     let rows;
     if (ctab === "new") {
       rows = userPlaces.map((p) => SV.byId(placeKey(p))).filter(Boolean).slice(0, 20);
-      $("communityEmpty").textContent = "Još niko nije dodao mesto. Budi prvi!";
+      $("communityEmpty").textContent = T("lists.allEmptyNew");
     } else {
       rows = Object.values(scores)
         .filter((s) => s.score > 0 && SV.byId(s.place_key))
         .sort((a, b) => b.score - a.score || b.up - a.up)
         .slice(0, 10)
         .map((s) => SV.byId(s.place_key));
-      $("communityEmpty").textContent = "Još nema glasova. Glasaj ▲ na mestima koja voliš.";
+      $("communityEmpty").textContent = T("lists.allEmptyTop");
     }
     $("communityList").innerHTML = rows
       .map((l, i) => {
-        const by = l.source === "zajednica" ? `<p class="rank-note">Dodao/la ${esc(names[l.addedBy] || "član zajednice")}</p>` : "";
+        const by = l.source === "zajednica" ? `<p class="rank-note">${esc(T("place.addedByShort", { name: names[l.addedBy] || T("place.member") }))}</p>` : "";
         return SV.rankedItem(l, i + 1, by);
       })
       .join("");
@@ -384,7 +385,7 @@
       .select("id, title, owner, created_at, list_items(place_key, rank)")
       .order("created_at", { ascending: false })
       .limit(100);
-    if (error) return toast("Liste korisnika nisu učitane: " + error.message);
+    if (error) return toast(T("toast.lists", { err: error.message }));
     publicLists = (data || [])
       .map((L) => ({ ...L, items: (L.list_items || []).sort((a, b) => a.rank - b.rank).map((i) => SV.byId(i.place_key)).filter(Boolean) }))
       .filter((L) => L.items.length > 0);
@@ -410,14 +411,14 @@
         const icon = SV.CATEGORIES[first.category]?.icon || "📍";
         return `<button class="tile list-tile" data-ulist="${esc(L.id)}">
           <div class="ph ${pats[i % pats.length]}" style="--dot:${colors[i % colors.length]}"><b class="tile-ico">${icon}</b></div>
-          <span class="tile-label">${esc(L.title)}<small>od ${esc(names[L.owner] || "člana")} · ${L.items.length}</small></span>
+          <span class="tile-label">${esc(L.title)}<small>${esc(T("tile.by", { name: names[L.owner] || T("place.memberOf"), n: L.items.length }))}</small></span>
         </button>`;
       })
       .join("");
     $("userListsEmpty").hidden = publicLists.length > 0;
   }
 
-  function openUserList(id) {
+  function openUserList(id, scroll = true) {
     const L = publicLists.find((x) => x.id === id);
     if (!L) {
       pendingUserList = id;
@@ -427,11 +428,11 @@
     SV.setTab("korisnici");
     SV.showRanked({
       hash: "korisnik-" + L.id,
-      kicker: `Lista korisnika · od ${names[L.owner] || "člana zajednice"}`,
+      kicker: T("list.kickerUser", { name: names[L.owner] || T("place.member") }),
       title: L.title,
       intro: "",
       items: L.items.map((l) => ({ l })),
-    });
+    }, scroll);
   }
 
   /* ---------- Liste u oblaku ---------- */
@@ -447,7 +448,7 @@
     lists = data || [];
     if (!lists.length) {
       // Prva lista: počni od onoga što je korisnik već sačuvao u browseru
-      const title = ($("myTopName").value || "").trim() || "Moja top 10";
+      const title = ($("myTopName").value || "").trim() || T("mine.defaultTitle");
       const { data: created } = await sb.from("lists").insert({ title }).select().single();
       if (created) {
         created.list_items = [];
@@ -474,7 +475,7 @@
     SV.setSaved(ids, true);
     $("myTopName").value = currentList.title;
     applying = false;
-    sync("Sačuvano u nalogu ✓");
+    sync(T("sync.saved"));
   }
 
   function sync(text) {
@@ -483,23 +484,23 @@
 
   async function pushItems(ids) {
     if (!currentList) return;
-    sync("Čuvam…");
+    sync(T("sync.saving"));
     const rows = ids.slice(0, 50).map((place_key, i) => ({ list_id: currentList.id, place_key, rank: i + 1 }));
     const del = await sb.from("list_items").delete().eq("list_id", currentList.id);
     const ins = rows.length ? await sb.from("list_items").insert(rows) : { error: null };
     if (del.error || ins.error) {
-      toast("Lista nije sačuvana: " + (del.error || ins.error).message);
-      return sync("Čuvanje nije uspelo, pokušaj ponovo.");
+      toast(T("toast.list", { err: (del.error || ins.error).message }));
+      return sync(T("sync.fail"));
     }
     currentList.list_items = rows.map(({ place_key, rank }) => ({ place_key, rank }));
-    sync("Sačuvano u nalogu ✓ · vidljivo pod Liste korisnika");
+    sync(T("sync.savedPublic"));
     refreshPublicLists();
   }
 
   async function newList() {
     const n = lists.length + 1;
-    const { data, error } = await sb.from("lists").insert({ title: `Moja lista ${n}` }).select().single();
-    if (error) return sync("Nova lista nije napravljena: " + error.message);
+    const { data, error } = await sb.from("lists").insert({ title: T("mine.numbered", { n }) }).select().single();
+    if (error) return sync(T("sync.newFail", { err: error.message }));
     data.list_items = [];
     lists.push(data);
     currentList = data;
@@ -543,6 +544,16 @@
       if (t) openUserList(t.dataset.ulist);
     });
     document.addEventListener("sv:open-user-list", (e) => openUserList(e.detail));
+    document.addEventListener("sv:lang", () => {
+      $("authBtn").textContent = user ? profile?.display_name || T("nav.account") : T("nav.login");
+      if (user) $("authWho").textContent = T("auth.who", { email: user.email });
+      renderVotes();
+      renderCommunity();
+      renderUserTiles();
+      renderCommunitySlots();
+      const h = !$("lista").hidden && $("lista").dataset.hash;
+      if (h && h.startsWith("korisnik-")) openUserList(h.slice(9), false);
+    });
     $("listSelect").addEventListener("change", (e) => {
       currentList = lists.find((L) => L.id === e.target.value) || currentList;
       applyList();
@@ -568,7 +579,7 @@
     document.addEventListener("sv:saved", (e) => {
       if (!user || applying) return;
       clearTimeout(pushTimer);
-      sync("Čuvam…");
+      sync(T("sync.saving"));
       pushTimer = setTimeout(() => pushItems(e.detail), 600);
     });
   }

@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.min.css" />
-  <link rel="stylesheet" href="css/style.css?v=202610050652" />
+  <link rel="stylesheet" href="css/style.css?v=202610051032" />
 </head>
 <body>
   <!--
@@ -20,19 +20,24 @@
   -->
 
   <div class="topbar">
-    <span>Beograd · lične preporuke</span>
-    <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
+    <span data-i18n="top.tagline">Beograd · lične preporuke</span>
+    <span class="topbar-right">
+      <span class="lang-switch" role="group" aria-label="Jezik / Language">
+        <button type="button" data-lang="sr" aria-pressed="true">SR</button><button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </span>
+      <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
+    </span>
   </div>
 
   <header class="nav" id="top">
     <nav class="nav-links nav-left">
-      <a href="#liste">Top liste</a>
-      <a href="#moja-lista">Moja lista</a>
+      <a href="#liste" data-i18n="nav.lists">Top liste</a>
+      <a href="#moja-lista" data-i18n="nav.mine">Moja lista</a>
     </nav>
-    <a class="logo" href="#top">STEFANOV <em>vodič</em></a>
+    <a class="logo" href="#top"><span data-i18n="logo.big">STEFANOV</span> <em data-i18n="logo.small">vodič</em></a>
     <nav class="nav-links nav-right">
-      <a href="#mapa">Mapa</a>
-      <a href="#o-meni">O meni</a>
+      <a href="#mapa" data-i18n="nav.map">Mapa</a>
+      <a href="#o-meni" data-i18n="nav.about">O meni</a>
       <button class="nav-auth" id="authBtn" type="button" hidden>Prijava</button>
     </nav>
   </header>
@@ -47,10 +52,10 @@
         <path pathLength="1" d="M30 150 C 10 90, 90 40, 150 60 S 230 140, 160 160 S 60 120, 110 80 S 210 40, 205 20" />
         <circle cx="205" cy="20" r="9" />
       </svg>
-      <p class="kicker">Lične preporuke · est. Beograd</p>
-      <h1><span class="big">&bdquo;BEOGRAD&ldquo;</span><em>po Stefanu</em></h1>
-      <p class="lead">Kafane, kafa, zalasci i skrivena mesta koja pokazujem prijateljima.</p>
-      <a class="btn btn-green" href="#liste">Top liste</a>
+      <p class="kicker" data-i18n="hero.kicker">Lične preporuke · est. Beograd</p>
+      <h1><span class="big" data-i18n="hero.big">&bdquo;BEOGRAD&ldquo;</span><em data-i18n="hero.by">po Stefanu</em></h1>
+      <p class="lead" data-i18n="hero.lead">Kafane, kafa, zalasci i skrivena mesta koja pokazujem prijateljima.</p>
+      <a class="btn btn-green" href="#liste" data-i18n="hero.cta">Top liste</a>
     </div>
 
     <figure class="poster side s3 ph"><span>images/traka-3.jpg</span><img src="images/traka-3.jpg" alt="" onerror="this.remove()" /></figure>
@@ -63,21 +68,21 @@
       <div class="polaroids">
         <figure class="polaroid p1">
           <div class="ph"><span>images/stefan.jpg</span><img src="images/stefan.jpg" alt="Stefan" onerror="this.remove()" /></div>
-          <figcaption>to sam ja</figcaption>
+          <figcaption data-i18n="about.cap1">to sam ja</figcaption>
         </figure>
         <figure class="polaroid p2">
           <div class="ph"><span>images/polaroid-2.jpg</span><img src="images/polaroid-2.jpg" alt="" onerror="this.remove()" /></div>
-          <figcaption>Dorćol</figcaption>
+          <figcaption data-i18n="about.cap2">Dorćol</figcaption>
         </figure>
         <figure class="polaroid p3">
           <div class="ph"><span>images/polaroid-3.jpg</span><img src="images/polaroid-3.jpg" alt="" onerror="this.remove()" /></div>
-          <figcaption>zalazak na Savi</figcaption>
+          <figcaption data-i18n="about.cap3">zalazak na Savi</figcaption>
         </figure>
       </div>
       <div class="intro-text">
-        <h2 class="intro-title">Ćao, ja sam <em>Stefan</em></h2>
-        <p><strong>Živim u Beogradu.</strong> Obišao sam mnogo mesta i o njima pisao recenzije. Godinama radim u Rome2Rio i pomažem putnicima, pa je ovaj vodič prirodan sledeći korak.</p>
-        <p>Ništa ovde nije plaćeno. Sva mesta sam lično probao.</p>
+        <h2 class="intro-title" data-i18n="about.title">Ćao, ja sam <em>Stefan</em></h2>
+        <p data-i18n="about.p1"><strong>Živim u Beogradu.</strong> Obišao sam mnogo mesta i o njima pisao recenzije. Godinama radim u Rome2Rio i pomažem putnicima, pa je ovaj vodič prirodan sledeći korak.</p>
+        <p data-i18n="about.p2">Ništa ovde nije plaćeno. Sva mesta sam lično probao.</p>
         <ul class="stats" id="stats"></ul>
       </div>
     </div>
@@ -87,48 +92,48 @@
   <!-- Deljena lista (otvara se preko linka koji je neko poslao) -->
   <section class="band band-black shared" id="deljena" hidden>
     <div class="list-head">
-      <p class="kicker">Deljena top lista</p>
+      <p class="kicker" data-i18n="shared.kicker">Deljena top lista</p>
       <h2 class="list-title" id="sharedTitle"></h2>
       <p class="compare" id="sharedCompare"></p>
     </div>
     <ol class="ranked" id="sharedItems"></ol>
     <div class="list-actions">
-      <button class="btn btn-green" id="adoptTop">Sačuvaj kao moju listu</button>
-      <a class="btn btn-ghost" href="#liste">Pogledaj Stefanove liste</a>
+      <button class="btn btn-green" id="adoptTop" data-i18n="shared.adopt">Sačuvaj kao moju listu</button>
+      <a class="btn btn-ghost" href="#liste" data-i18n="shared.seeStefan">Pogledaj Stefanove liste</a>
     </div>
   </section>
 
   <!-- Top liste: Stefanove, liste korisnika, rang lista svih po glasovima i pravljenje svoje liste -->
   <section class="band band-cream" id="liste">
-    <h2 class="band-title">Top liste</h2>
-    <div class="ltabs" role="tablist" aria-label="Vrste top lista">
-      <button class="ltab active" data-ltab="stefan" role="tab">Stefanove liste</button>
-      <button class="ltab" data-ltab="korisnici" role="tab" hidden>Liste korisnika</button>
-      <button class="ltab" data-ltab="zajednica" role="tab" hidden>Top lista svih ±</button>
-      <button class="ltab" data-ltab="moja" role="tab">Napravi svoju listu <small id="countSaved"></small></button>
+    <h2 class="band-title" data-i18n="lists.title">Top liste</h2>
+    <div class="ltabs" role="tablist" aria-label="Vrste top lista" data-i18n-aria="lists.tabsLabel">
+      <button class="ltab active" data-ltab="stefan" role="tab"><span data-i18n="tab.stefan">Stefanove liste</span></button>
+      <button class="ltab" data-ltab="korisnici" role="tab" hidden><span data-i18n="tab.users">Liste korisnika</span></button>
+      <button class="ltab" data-ltab="zajednica" role="tab" hidden><span data-i18n="tab.all">Top lista svih ±</span></button>
+      <button class="ltab" data-ltab="moja" role="tab"><span data-i18n="tab.mine">Napravi svoju listu</span> <small id="countSaved"></small></button>
     </div>
 
     <div class="lpanel" data-lpanel="stefan">
-      <p class="band-intro">Male liste po temama, svako mesto izabrano lično.</p>
+      <p class="band-intro" data-i18n="lists.stefanIntro">Male liste po temama, svako mesto izabrano lično.</p>
       <div class="tiles" id="tiles"></div>
     </div>
 
     <div class="lpanel" data-lpanel="korisnici" hidden>
-      <p class="band-intro">Top liste koje su napravili posetioci. Otvori listu i glasaj ▲ ili ▼ za mesta.</p>
+      <p class="band-intro" data-i18n="lists.usersIntro">Top liste koje su napravili posetioci. Otvori listu i glasaj ▲ ili ▼ za mesta.</p>
       <div class="tiles" id="userTiles"></div>
-      <p class="empty" id="userListsEmpty" hidden>Još niko nije objavio listu. Napravi prvu!</p>
+      <p class="empty" id="userListsEmpty" hidden data-i18n="lists.usersEmpty">Još niko nije objavio listu. Napravi prvu!</p>
     </div>
 
     <div class="lpanel" data-lpanel="zajednica" hidden>
-      <p class="band-intro">Jedna lista za sve: mesta rangirana po glasovima svih korisnika (▲ minus ▼).</p>
+      <p class="band-intro" data-i18n="lists.allIntro">Jedna lista za sve: mesta rangirana po glasovima svih korisnika (▲ minus ▼).</p>
       <div class="community-tabs" role="tablist">
-        <button class="chip active" data-ctab="top" role="tab">Najviše poena</button>
-        <button class="chip" data-ctab="new" role="tab">Novo od zajednice</button>
+        <button class="chip active" data-ctab="top" role="tab" data-i18n="lists.allTop">Najviše poena</button>
+        <button class="chip" data-ctab="new" role="tab" data-i18n="lists.allNew">Novo od zajednice</button>
       </div>
       <ol class="ranked" id="communityList"></ol>
       <p class="empty" id="communityEmpty" hidden></p>
       <div class="list-actions">
-        <button class="btn btn-green" id="addPlaceBtn" type="button">+ Dodaj mesto sa Google Maps</button>
+        <button class="btn btn-green" id="addPlaceBtn" type="button" data-i18n="lists.addPlace">+ Dodaj mesto sa Google Maps</button>
       </div>
     </div>
 
@@ -136,33 +141,33 @@
       <!-- Moja lista: dodaj mesta, poređaj ih i podeli -->
       <div class="mytop" id="myTop">
         <div class="cloud-lists" id="cloudLists" hidden>
-          <label class="mytop-name">Lista
+          <label class="mytop-name"><span data-i18n="mine.list">Lista</span>
             <select id="listSelect"></select>
           </label>
-          <button class="btn btn-ghost" id="newListBtn" type="button">Nova lista</button>
-          <button class="btn btn-ghost" id="addPlaceBtn2" type="button">+ Mesto sa Google Maps</button>
+          <button class="btn btn-ghost" id="newListBtn" type="button" data-i18n="mine.newList">Nova lista</button>
+          <button class="btn btn-ghost" id="addPlaceBtn2" type="button" data-i18n="mine.addGmaps">+ Mesto sa Google Maps</button>
           <span class="sync-status" id="syncStatus"></span>
         </div>
         <div class="mytop-head">
-          <label class="mytop-name">Ime tvoje liste
-            <input id="myTopName" type="text" maxlength="40" placeholder="npr. Markova top 10" />
+          <label class="mytop-name"><span data-i18n="mine.name">Ime tvoje liste</span>
+            <input id="myTopName" type="text" maxlength="40" placeholder="npr. Markova top 10" data-i18n-ph="mine.namePh" />
           </label>
-          <button class="btn btn-green" id="shareTop">Podeli listu</button>
+          <button class="btn btn-green" id="shareTop" data-i18n="mine.share">Podeli listu</button>
         </div>
-        <p class="mytop-hint">Dodaj mesta pretragom ispod, dugmetom + na bilo kojoj listi ili sa Google Maps, pa ih poređaj strelicama. U deljenu listu ulazi prvih 10.</p>
+        <p class="mytop-hint" data-i18n="mine.hint">Dodaj mesta pretragom ispod, dugmetom + na bilo kojoj listi ili sa Google Maps, pa ih poređaj strelicama. U deljenu listu ulazi prvih 10.</p>
         <div class="place-search">
           <label class="search">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
-            <input id="placeSearch" type="search" placeholder="Pronađi mesto i dodaj ga…" aria-label="Pronađi mesto" autocomplete="off" />
+            <input id="placeSearch" type="search" placeholder="Pronađi mesto i dodaj ga…" aria-label="Pronađi mesto" data-i18n-ph="mine.searchPh" data-i18n-aria="mine.searchAria" autocomplete="off" />
           </label>
           <ul class="search-results" id="placeResults" hidden></ul>
         </div>
         <div class="share-box" id="shareBox" hidden>
-          <input id="shareLink" type="text" readonly aria-label="Link za deljenje" />
-          <button class="btn" id="copyLink">Kopiraj link</button>
+          <input id="shareLink" type="text" readonly aria-label="Link za deljenje" data-i18n-aria="mine.shareAria" />
+          <button class="btn" id="copyLink" data-i18n="mine.copy">Kopiraj link</button>
         </div>
         <ol class="ranked" id="myTopItems"></ol>
-        <p class="empty" id="myTopEmpty">Tvoja lista je prazna. Pronađi mesto iznad ili klikni + na nekoj od lista.</p>
+        <p class="empty" id="myTopEmpty" data-i18n="mine.empty">Tvoja lista je prazna. Pronađi mesto iznad ili klikni + na nekoj od lista.</p>
       </div>
 
     </div>
@@ -177,82 +182,83 @@
     </div>
     <ol class="ranked" id="listItems"></ol>
     <div class="list-actions">
-      <button class="btn btn-green" id="listToMap">Prikaži listu na mapi</button>
-      <a class="btn btn-ghost" href="#liste">Sve top liste</a>
+      <button class="btn btn-green" id="listToMap" data-i18n="list.toMap">Prikaži listu na mapi</button>
+      <a class="btn btn-ghost" href="#liste" data-i18n="list.all">Sve top liste</a>
     </div>
   </section>
 
   <!-- Mapa -->
   <section class="band band-black" id="mapa">
-    <h2 class="band-title">Mapa top lista</h2>
+    <h2 class="band-title" data-i18n="map.title">Mapa top lista</h2>
     <div class="map-wrap">
-      <ul class="map-list" id="mapList" aria-label="Mesta na mapi"></ul>
-      <div id="map" aria-label="Google mapa"></div>
+      <ul class="map-list" id="mapList" aria-label="Mesta na mapi" data-i18n-aria="map.listAria"></ul>
+      <div id="map" aria-label="Mapa" data-i18n-aria="map.aria"></div>
     </div>
   </section>
 
   <footer class="footer">
-    <span class="footer-logo">STEFANOV <em>vodič</em></span>
-    <p>Beograd · <span id="year"></span></p>
+    <span class="footer-logo"><span data-i18n="logo.big">STEFANOV</span> <em data-i18n="logo.small">vodič</em></span>
+    <p><span data-i18n="footer.city">Beograd</span> · <span id="year"></span></p>
   </footer>
 
   <!-- Prijava mejlom -->
   <dialog id="authDialog" class="detail small-dialog">
-    <button class="close" data-close aria-label="Zatvori">×</button>
+    <button class="close" data-close aria-label="Zatvori" data-i18n-aria="detail.close">×</button>
     <div class="dialog-body">
       <div id="authOut">
-        <h3>Prijava</h3>
-        <p>Upiši mejl i poslaćemo ti link za prijavu. Lozinka nije potrebna.</p>
+        <h3 data-i18n="auth.title">Prijava</h3>
+        <p data-i18n="auth.text">Upiši mejl i poslaćemo ti link za prijavu. Lozinka nije potrebna.</p>
         <form id="authForm">
-          <label class="field">Mejl<input id="authEmail" type="email" required autocomplete="email" placeholder="ime@primer.com" /></label>
-          <button class="btn btn-green" type="submit">Pošalji link</button>
+          <label class="field"><span data-i18n="auth.email">Mejl</span><input id="authEmail" type="email" required autocomplete="email" placeholder="ime@primer.com" data-i18n-ph="auth.emailPh" /></label>
+          <button class="btn btn-green" type="submit" data-i18n="auth.send">Pošalji link</button>
         </form>
         <p class="form-msg" id="authMsg" role="status"></p>
-        <p class="fine">Mejl koristimo samo za prijavu. Javno se vidi samo ime koje izabereš.</p>
+        <p class="fine" data-i18n="auth.fine">Mejl koristimo samo za prijavu. Javno se vidi samo ime koje izabereš.</p>
       </div>
       <div id="authIn" hidden>
-        <h3>Tvoj nalog</h3>
+        <h3 data-i18n="auth.account">Tvoj nalog</h3>
         <p class="fine" id="authWho"></p>
         <form id="profileForm">
-          <label class="field">Javno ime<input id="profileName" type="text" minlength="2" maxlength="40" required placeholder="npr. Marko" /></label>
-          <button class="btn btn-green" type="submit">Sačuvaj ime</button>
+          <label class="field"><span data-i18n="auth.publicName">Javno ime</span><input id="profileName" type="text" minlength="2" maxlength="40" required placeholder="npr. Marko" data-i18n-ph="auth.namePh" /></label>
+          <button class="btn btn-green" type="submit" data-i18n="auth.saveName">Sačuvaj ime</button>
         </form>
         <p class="form-msg" id="profileMsg" role="status"></p>
-        <button class="btn btn-ghost" id="signOutBtn" type="button">Odjavi se</button>
+        <button class="btn btn-ghost" id="signOutBtn" type="button" data-i18n="auth.signOut">Odjavi se</button>
       </div>
     </div>
   </dialog>
 
   <!-- Dodavanje mesta sa Google Maps -->
   <dialog id="addDialog" class="detail small-dialog">
-    <button class="close" data-close aria-label="Zatvori">×</button>
+    <button class="close" data-close aria-label="Zatvori" data-i18n-aria="detail.close">×</button>
     <div class="dialog-body">
-      <h3>Dodaj mesto sa Google Maps</h3>
-      <p class="fine">Na Google Maps otvori mesto, klikni <b>Podeli</b> (Share) i kopiraj link. Nalepi ga ovde.</p>
+      <h3 data-i18n="add.title">Dodaj mesto sa Google Maps</h3>
+      <p class="fine" data-i18n="add.help">Na Google Maps otvori mesto, klikni <b>Podeli</b> (Share) i kopiraj link. Nalepi ga ovde.</p>
       <form id="addForm">
-        <label class="field">Google Maps link<input id="addUrl" type="url" required placeholder="https://maps.app.goo.gl/..." /></label>
-        <label class="field">Naziv mesta<input id="addName" type="text" required minlength="2" maxlength="120" /></label>
-        <label class="field">Kategorija<select id="addCategory" required></select></label>
-        <label class="field">Kraj grada (opciono)<input id="addArea" type="text" maxlength="60" list="areaList" placeholder="npr. Dorćol" /></label>
+        <label class="field"><span data-i18n="add.link">Google Maps link</span><input id="addUrl" type="url" required placeholder="https://maps.app.goo.gl/..." /></label>
+        <label class="field"><span data-i18n="add.name">Naziv mesta</span><input id="addName" type="text" required minlength="2" maxlength="120" /></label>
+        <label class="field"><span data-i18n="add.category">Kategorija</span><select id="addCategory" required></select></label>
+        <label class="field"><span data-i18n="add.area">Kraj grada (opciono)</span><input id="addArea" type="text" maxlength="60" list="areaList" placeholder="npr. Dorćol" data-i18n-ph="add.areaPh" /></label>
         <datalist id="areaList"></datalist>
-        <label class="check"><input id="addToList" type="checkbox" checked /> Dodaj i u moju listu</label>
-        <button class="btn btn-green" type="submit" id="addSubmit">Dodaj mesto</button>
+        <label class="check"><input id="addToList" type="checkbox" checked /> <span data-i18n="add.toList">Dodaj i u moju listu</span></label>
+        <button class="btn btn-green" type="submit" id="addSubmit" data-i18n="add.submit">Dodaj mesto</button>
       </form>
       <p class="form-msg" id="addMsg" role="status"></p>
     </div>
   </dialog>
 
   <dialog id="detail" class="detail">
-    <button class="close" id="closeDetail" aria-label="Zatvori">×</button>
+    <button class="close" id="closeDetail" aria-label="Zatvori" data-i18n-aria="detail.close">×</button>
     <div id="detailBody"></div>
   </dialog>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
-  <script src="js/config.js?v=202610050652"></script>
-  <script src="js/data.js?v=202610050652"></script>
-  <script src="js/lists.js?v=202610050652"></script>
-  <script src="js/app.js?v=202610050652"></script>
-  <script src="js/community.js?v=202610050652"></script>
+  <script src="js/config.js?v=202610051032"></script>
+  <script src="js/data.js?v=202610051032"></script>
+  <script src="js/lists.js?v=202610051032"></script>
+  <script src="js/i18n.js?v=202610051032"></script>
+  <script src="js/app.js?v=202610051032"></script>
+  <script src="js/community.js?v=202610051032"></script>
 </body>
 </html>

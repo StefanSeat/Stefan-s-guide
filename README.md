@@ -12,6 +12,12 @@ Lične preporuke za Beograd: gde jesti, piti kafu, izaći i šta videti. Statič
 - Sekciju "O meni"
 - Direktan link na lokaciju, npr. `.../#kalemegdan`
 
+## Jezici
+
+Sajt je na srpskom (latinica) i engleskom; prekidač SR | EN je u gornjoj traci. Posetioci iz Srbije i regiona dobijaju srpski, ostali engleski, a izbor se pamti. Link na određeni jezik: dodaj `?lang=en` ili `?lang=sr` na adresu.
+
+Tekstovi sajta su u `js/i18n.js`. Liste i mesta imaju polja na engleskom (`title_en`, `intro_en`, `short_en`, `description_en`); ako ih nema, prikazuje se srpski tekst.
+
 ## Top liste
 
 Sekcija "Top liste" ima četiri kartice:

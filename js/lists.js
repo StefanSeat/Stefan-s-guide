@@ -5,9 +5,9 @@
 
   Polja liste:
     id      kratko ime bez razmaka (koristi se u linku, npr. .../#lista-kafa)
-    title   naslov liste
+    title   naslov liste (title_en: na engleskom)
     icon    ilustracija
-    intro   jedna ili dve rečenice o listi
+    intro   jedna ili dve rečenice o listi (intro_en: na engleskom)
     places  mesta redom, svako sa:
               id    id mesta iz data.js
               note  (opciono) kratka rečenica uz mesto
@@ -19,8 +19,10 @@ const LISTS = [
   {
     id: "prvi-dan",
     title: "Prvi dan u Beogradu",
+    title_en: "First day in Belgrade",
     icon: "🏰",
     intro: "Ako imaš samo jedan dan: tvrđava, kafa na Dorćolu, ručak u kafani, hram, reka i koktel za kraj.",
+    intro_en: "If you only have one day: the fortress, coffee in Dorćol, lunch at a kafana, the temple, the river and a cocktail to finish.",
     places: [
       { id: "kalemegdan" },
       { id: "gradska-przionica" },
@@ -35,8 +37,10 @@ const LISTS = [
   {
     id: "kafa",
     title: "Najbolja kafa",
+    title_en: "Best coffee",
     icon: "☕",
     intro: "Specialty pržionice i mali kafići u koje se vraćam.",
+    intro_en: "Specialty roasters and small cafés I keep going back to.",
     places: [
       { id: "gradska-przionica" },
       { id: "ugao-specialty-coffee" },
@@ -53,8 +57,10 @@ const LISTS = [
   {
     id: "dorucak",
     title: "Doručak i brunch",
+    title_en: "Breakfast & brunch",
     icon: "🍳",
     intro: "Za lagana jutra i duge vikend doručke.",
+    intro_en: "For slow mornings and long weekend breakfasts.",
     places: [
       { id: "brekky" },
       { id: "basic-coffee-breakfast" },
@@ -69,8 +75,10 @@ const LISTS = [
   {
     id: "slatko",
     title: "Nešto slatko",
+    title_en: "Something sweet",
     icon: "🍰",
     intro: "Kolači, sladoled i bubble tea kad zatreba šećer.",
+    intro_en: "Cakes, ice cream and bubble tea when you need sugar.",
     places: [
       { id: "meduza" },
       { id: "fenisa" },
@@ -85,8 +93,10 @@ const LISTS = [
   {
     id: "pica-burger",
     title: "Pica i burgeri",
+    title_en: "Pizza & burgers",
     icon: "🍕",
     intro: "Kad treba nešto sigurno i ukusno.",
+    intro_en: "When you want something reliable and tasty.",
     places: [
       { id: "perlo-burgeri" },
       { id: "di-napoli-pizzeria-restaurant" },
@@ -103,8 +113,10 @@ const LISTS = [
   {
     id: "kafane",
     title: "Kafane i domaća kuhinja",
+    title_en: "Kafanas & local food",
     icon: "🍲",
     intro: "Jagnjetina, roštilj i dobra atmosfera.",
+    intro_en: "Lamb, grill and a great atmosphere.",
     places: [
       { id: "kafana-5-glava" },
       { id: "zavicaj-skadarlija" },
@@ -120,8 +132,10 @@ const LISTS = [
   {
     id: "kokteli",
     title: "Kokteli",
+    title_en: "Cocktails",
     icon: "🍸",
     intro: "Barovi u koje vodim ljude kad hoćemo dobar koktel.",
+    intro_en: "Bars I take people to for a good cocktail.",
     places: [
       { id: "lenja-buba" },
       { id: "noble-roots-cocktail-bar" },
@@ -138,8 +152,10 @@ const LISTS = [
   {
     id: "pivo",
     title: "Pivo i pabovi",
+    title_en: "Beer & pubs",
     icon: "🍺",
     intro: "Craft pivo, Ginis i bašte za duga leta.",
+    intro_en: "Craft beer, Guinness and gardens for long summers.",
     places: [
       { id: "dogma-brewery-tap-room" },
       { id: "helga-s-pub-mesi-mesi" },
@@ -154,8 +170,10 @@ const LISTS = [
   {
     id: "pogled",
     title: "Pogled i reka",
+    title_en: "Views & the river",
     icon: "🌅",
     intro: "Mesta za zalazak sunca, reke i pogled na grad.",
+    intro_en: "Spots for sunsets, the rivers and views over the city.",
     places: [
       { id: "the-view-rooftop" },
       { id: "restoran-mokum" },
@@ -172,8 +190,10 @@ const LISTS = [
   {
     id: "skriveno",
     title: "Skrivena i neobična mesta",
+    title_en: "Hidden & unusual spots",
     icon: "🗝️",
     intro: "Mesta koja ne nađeš slučajno.",
+    intro_en: "Places you won't stumble upon by accident.",
     places: [
       { id: "barrel-house" },
       { id: "kissa10" },
@@ -188,8 +208,10 @@ const LISTS = [
   {
     id: "aktivnosti",
     title: "Kišni dan i aktivnosti",
+    title_en: "Rainy day & activities",
     icon: "🎭",
     intro: "Kad napolju pada kiša ili ti treba nešto drugačije od kafane.",
+    intro_en: "When it rains or you want something other than a kafana.",
     places: [
       { id: "mmr-escape-rooms-lokacija-2" },
       { id: "3d-board-game-pub" },

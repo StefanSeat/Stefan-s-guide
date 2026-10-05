@@ -822,3 +822,19 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
 @media (max-width: 600px) {
   .ltab { font-size: 0.72rem; padding: 0.5rem 0.7rem; }
 }
+
+/* Prekidač jezika */
+.topbar-right { display: flex; align-items: center; gap: 1rem; }
+.lang-switch { display: inline-flex; border: 1px solid rgba(243, 234, 216, 0.5); }
+.lang-switch button {
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  padding: 0.1rem 0.5rem;
+  border: 0;
+  background: transparent;
+  color: var(--cream);
+  cursor: pointer;
+}
+.lang-switch button[aria-pressed="true"] { background: var(--yellow); color: var(--black); }

@@ -19,4 +19,4 @@ const GOOGLE_MAPS_API_KEY = "";
   Dok su prazni, sajt radi kao i do sada, bez prijave i glasanja.
 */
 const SUPABASE_URL = "";
-const SUPABASE_ANON_KEY = "";
+const SUPABASE_ANON_KEY = "sb_publishable_ugniqmBD9rq8y7aBgkk6YQ_f7B_pqZ8";

@@ -185,7 +185,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
   gap: clamp(2rem, 5vw, 4rem);
   align-items: center;
 }
-.polaroids { position: relative; height: 492px; }
+.polaroids { position: relative; height: 462px; }
 .polaroid {
   position: absolute;
   margin: 0;
@@ -200,7 +200,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
 .p1 .ph { --dot: var(--orange); }
 .p2 { right: 4%; top: 0; transform: rotate(5deg); width: 44%; }
 .p2 .ph { --dot: var(--green); }
-.p3 { right: 1%; bottom: 0; transform: rotate(-3deg); width: 44%; z-index: 3; }
+.p3 { right: 8%; bottom: 0; transform: rotate(-3deg); width: 44%; z-index: 3; }
 .p3 .ph { --dot: var(--yellow); }
 .intro-title { font-family: var(--display); font-size: clamp(2.4rem, 5vw, 3.6rem); text-transform: uppercase; color: var(--cream); margin-bottom: 1.25rem; }
 .intro-title em { color: var(--orange); font-size: 0.9em; }
@@ -512,7 +512,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
   .nav-left, .nav-right { display: contents; }
   .logo { grid-column: 1 / -1; grid-row: 1; justify-self: center; }
   .intro { grid-template-columns: 1fr; }
-  .polaroids { height: 392px; max-width: 420px; width: 100%; margin: 0 auto; }
+  .polaroids { height: 375px; max-width: 420px; width: 100%; margin: 0 auto; }
   .tiles { grid-template-columns: repeat(2, 1fr); }
   .map-wrap { grid-template-columns: 1fr; }
   .map-list { display: flex; gap: 0.25rem; overflow-x: auto; max-height: none; }

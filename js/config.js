@@ -10,3 +10,13 @@
   Ključ ograniči na adresu svog sajta (Website restrictions). Uputstvo je u README.md.
 */
 const GOOGLE_MAPS_API_KEY = "";
+
+/*
+  Zajednica (prijava mejlom, liste u oblaku, glasanje, dodavanje mesta)
+  ---------------------------------------------------------------------
+  Napravi besplatan projekat na supabase.com, pokreni supabase/schema.sql u SQL Editor-u
+  i ovde nalepi Project URL i anon public ključ (Project Settings > API).
+  Dok su prazni, sajt radi kao i do sada, bez prijave i glasanja.
+*/
+const SUPABASE_URL = "";
+const SUPABASE_ANON_KEY = "";

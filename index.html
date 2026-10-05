@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.min.css" />
-  <link rel="stylesheet" href="css/style.css?v=202610042014" />
+  <link rel="stylesheet" href="css/style.css?v=202610050621" />
 </head>
 <body>
   <!--
@@ -33,6 +33,7 @@
     <nav class="nav-links nav-right">
       <a href="#mapa">Mapa</a>
       <a href="#o-meni">O meni</a>
+      <button class="nav-auth" id="authBtn" type="button" hidden>Prijava</button>
     </nav>
   </header>
 
@@ -104,6 +105,21 @@
     <div class="tiles" id="tiles"></div>
   </section>
 
+  <!-- Zajednica: rang lista po glasovima i dodavanje mesta (radi kada je podešen Supabase u js/config.js) -->
+  <section class="band band-black" id="zajednica" hidden>
+    <h2 class="band-title">Zajednica bira</h2>
+    <p class="band-intro community-intro">Mesta sa najviše glasova posetilaca. Glasaj ▲ ili ▼ na bilo kom mestu, ili dodaj svoje sa Google Maps.</p>
+    <div class="community-tabs" role="tablist">
+      <button class="chip active" data-ctab="top" role="tab">Najbolje ocenjeno</button>
+      <button class="chip" data-ctab="new" role="tab">Novo od zajednice</button>
+    </div>
+    <ol class="ranked" id="communityList"></ol>
+    <p class="empty" id="communityEmpty" hidden></p>
+    <div class="list-actions">
+      <button class="btn btn-green" id="addPlaceBtn" type="button">+ Dodaj mesto sa Google Maps</button>
+    </div>
+  </section>
+
   <!-- Izabrana lista -->
   <section class="band wall" id="lista" hidden>
     <div class="list-head">
@@ -155,6 +171,14 @@
 
       <!-- Moja top 10: poređaj sačuvana mesta i podeli listu -->
       <div class="mytop" id="myTop" hidden>
+        <div class="cloud-lists" id="cloudLists" hidden>
+          <label class="mytop-name">Lista
+            <select id="listSelect"></select>
+          </label>
+          <button class="btn btn-ghost" id="newListBtn" type="button">Nova lista</button>
+          <button class="btn btn-ghost" id="addPlaceBtn2" type="button">+ Mesto sa Google Maps</button>
+          <span class="sync-status" id="syncStatus"></span>
+        </div>
         <div class="mytop-head">
           <label class="mytop-name">Ime tvoje liste
             <input id="myTopName" type="text" maxlength="40" placeholder="npr. Markova top 10" />
@@ -194,6 +218,52 @@
     <p>Beograd · <span id="year"></span></p>
   </footer>
 
+  <!-- Prijava mejlom -->
+  <dialog id="authDialog" class="detail small-dialog">
+    <button class="close" data-close aria-label="Zatvori">×</button>
+    <div class="dialog-body">
+      <div id="authOut">
+        <h3>Prijava</h3>
+        <p>Upiši mejl i poslaćemo ti link za prijavu. Lozinka nije potrebna.</p>
+        <form id="authForm">
+          <label class="field">Mejl<input id="authEmail" type="email" required autocomplete="email" placeholder="ime@primer.com" /></label>
+          <button class="btn btn-green" type="submit">Pošalji link</button>
+        </form>
+        <p class="form-msg" id="authMsg" role="status"></p>
+        <p class="fine">Mejl koristimo samo za prijavu. Javno se vidi samo ime koje izabereš.</p>
+      </div>
+      <div id="authIn" hidden>
+        <h3>Tvoj nalog</h3>
+        <p class="fine" id="authWho"></p>
+        <form id="profileForm">
+          <label class="field">Javno ime<input id="profileName" type="text" minlength="2" maxlength="40" required placeholder="npr. Marko" /></label>
+          <button class="btn btn-green" type="submit">Sačuvaj ime</button>
+        </form>
+        <p class="form-msg" id="profileMsg" role="status"></p>
+        <button class="btn btn-ghost" id="signOutBtn" type="button">Odjavi se</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Dodavanje mesta sa Google Maps -->
+  <dialog id="addDialog" class="detail small-dialog">
+    <button class="close" data-close aria-label="Zatvori">×</button>
+    <div class="dialog-body">
+      <h3>Dodaj mesto sa Google Maps</h3>
+      <p class="fine">Na Google Maps otvori mesto, klikni <b>Podeli</b> (Share) i kopiraj link. Nalepi ga ovde.</p>
+      <form id="addForm">
+        <label class="field">Google Maps link<input id="addUrl" type="url" required placeholder="https://maps.app.goo.gl/..." /></label>
+        <label class="field">Naziv mesta<input id="addName" type="text" required minlength="2" maxlength="120" /></label>
+        <label class="field">Kategorija<select id="addCategory" required></select></label>
+        <label class="field">Kraj grada (opciono)<input id="addArea" type="text" maxlength="60" list="areaList" placeholder="npr. Dorćol" /></label>
+        <datalist id="areaList"></datalist>
+        <label class="check"><input id="addToList" type="checkbox" checked /> Dodaj i u moju listu</label>
+        <button class="btn btn-green" type="submit" id="addSubmit">Dodaj mesto</button>
+      </form>
+      <p class="form-msg" id="addMsg" role="status"></p>
+    </div>
+  </dialog>
+
   <dialog id="detail" class="detail">
     <button class="close" id="closeDetail" aria-label="Zatvori">×</button>
     <div id="detailBody"></div>
@@ -201,9 +271,10 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
-  <script src="js/config.js?v=202610042014"></script>
-  <script src="js/data.js?v=202610042014"></script>
-  <script src="js/lists.js?v=202610042014"></script>
-  <script src="js/app.js?v=202610042014"></script>
+  <script src="js/config.js?v=202610050621"></script>
+  <script src="js/data.js?v=202610050621"></script>
+  <script src="js/lists.js?v=202610050621"></script>
+  <script src="js/app.js?v=202610050621"></script>
+  <script src="js/community.js?v=202610050621"></script>
 </body>
 </html>

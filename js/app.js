@@ -25,9 +25,13 @@
 
   /* Moja top 10 (dugme +); redosled dodavanja je i redosled na listi */
   let saved = new Set(store.get("sv-lista", []).filter((id) => byId(id)));
-  function setSaved(ids) {
-    saved = new Set(ids);
+  const emit = (name, detail) => document.dispatchEvent(new CustomEvent(name, { detail }));
+  const hasCoords = (l) => Number.isFinite(l.lat) && Number.isFinite(l.lng);
+
+  function setSaved(ids, quiet) {
+    saved = new Set(ids.filter((id) => byId(id)));
     store.set("sv-lista", [...saved]);
+    if (!quiet) emit("sv:saved", [...saved]);
     updateCounts();
     if (state.view === "lista") renderGrid();
     document.querySelectorAll("[data-save]").forEach(setSaveBtn);
@@ -277,7 +281,8 @@
       <button class="rank-thumb" data-open="${esc(l.id)}" aria-label="${esc(l.name)}">${imageHtml(l)}</button>
       <div class="rank-body">
         <h3><button class="rank-name" data-open="${esc(l.id)}">${esc(l.name)}</button></h3>
-        <p class="rank-meta">${cat ? cat.icon + " " + esc(cat.label) : ""} · ${esc(l.area)} <span class="rank-stars" ${ratingAttrs(l, "meta")}>${ratingHtml(l, "meta")}</span></p>
+        <p class="rank-meta">${cat ? cat.icon + " " + esc(cat.label) : ""}${l.area ? " · " + esc(l.area) : ""} <span class="rank-stars" ${ratingAttrs(l, "meta")}>${ratingHtml(l, "meta")}</span></p>
+        <div class="vote" data-vote="${esc(l.id)}"></div>
         ${extra}
       </div>
       ${controls || `<button class="save" data-save="${esc(l.id)}"></button>`}
@@ -304,6 +309,7 @@
     $("lista").dataset.list = L.id;
     document.querySelectorAll(".list-tile").forEach((t) => t.classList.toggle("active", t.dataset.list === L.id));
     updateMarkers(places.map((x) => x.l));
+    emit("sv:render");
     history.replaceState(null, "", "#lista-" + L.id);
     if (scroll) $("lista").scrollIntoView({ behavior: "smooth" });
   }
@@ -365,6 +371,7 @@
     $("adoptTop").textContent = saved.size ? "Zameni moju listu ovom" : "Sačuvaj kao moju listu";
     updateMarkers(ids.map(byId));
     $("deljena").scrollIntoView();
+    emit("sv:render");
     return true;
   }
 
@@ -443,6 +450,7 @@
       $("empty").hidden = saved.size > 0;
       $("empty").textContent = "Tvoja lista je prazna. Klikni + na mestima koja voliš i ovde ih poređaj.";
       updateMarkers([...saved].map(byId));
+      emit("sv:render");
       return;
     }
     const all = filtered();
@@ -462,6 +470,7 @@
             </span>
           </button>
           <button class="save" data-save="${esc(l.id)}"></button>
+          <div class="vote" data-vote="${esc(l.id)}"></div>
         </article>`;
       })
       .join("");
@@ -478,6 +487,7 @@
       ? "Tvoja lista je prazna. Klikni + na mestu da ga dodaš."
       : "Nema mesta za ovaj izbor.";
     updateMarkers(all);
+    emit("sv:render");
   }
 
   /* Svaka promena filtera počinje od prve strane */
@@ -499,6 +509,8 @@
         <p class="review-stars" ${ratingAttrs(l, "long")}>${ratingHtml(l, "long")}</p>
         ${l.description || l.short ? `<p>${esc(l.description || l.short)}</p>` : ""}
         ${l.tip ? `<div class="tip"><strong>Stefanov savet:</strong> ${esc(l.tip)}</div>` : ""}
+        <div class="vote vote-big" data-vote="${esc(l.id)}"></div>
+        <div class="community-slot" data-community="${esc(l.id)}"></div>
         <div class="detail-info">
           ${l.address ? `<span>📍 ${esc(l.address)}</span>` : ""}
           ${l.price ? `<span>💰 ${esc(l.price)}</span>` : ""}
@@ -511,6 +523,7 @@
       </div>`;
     if (API_KEY) fillGooglePhoto($("detailImg"), l.id, true);
     $("detail").showModal();
+    emit("sv:render");
     history.replaceState(null, "", "#" + l.id);
   }
 
@@ -540,7 +553,8 @@
       <div class="gcard-body">
         <div class="gcard-name">${esc(l.name)}</div>
         <div class="gcard-rating" ${ratingAttrs(l, "card")}>${ratingHtml(l, "card")}</div>
-        <div class="gcard-type">${cat ? esc(cat.label) : ""} · ${esc(l.area)}</div>
+        <div class="gcard-type">${cat ? esc(cat.label) : ""}${l.area ? " · " + esc(l.area) : ""}</div>
+        <div class="vote" data-vote="${esc(l.id)}"></div>
         <div class="popup-row">
           <button class="popup-link" data-open="${esc(l.id)}">Detalji →</button>
           <a class="popup-link" href="${esc(mapsUrl(l))}" target="_blank" rel="noopener">Google Maps ↗</a>
@@ -568,24 +582,27 @@
       ? L.markerClusterGroup({ showCoverageOnHover: false, maxClusterRadius: 36, spiderfyOnMaxZoom: true })
       : L.layerGroup();
     lmap.addLayer(cluster);
-    LOCATIONS.forEach((l) => {
-      const icon = L.divIcon({
-        className: "",
-        html: `<div class="pin" style="--pc:${COLORS[l.category] || "var(--orange)"}"><span>${iconFor(l)}</span></div>`,
-        iconSize: [34, 34],
-        iconAnchor: [17, 17],
-        popupAnchor: [0, -16],
-      });
-      const m = L.marker([l.lat, l.lng], { icon, title: l.name }).bindPopup(() => popupHtml(l), { maxWidth: 280, minWidth: 280, className: "gpopup" });
-      m.on("click", () => markActive(l.id));
-      // Sa Google ključem kartica dobija pravu fotografiju, ocenu i broj recenzija
-      m.on("popupopen", (e) => {
-        const box = e.popup.getElement()?.querySelector(".gcard-img");
-        if (box && API_KEY) fillGooglePhoto(box, l.id, false);
-      });
-      markers[l.id] = m;
-    });
+    LOCATIONS.filter(hasCoords).forEach(makeLeafletMarker);
     updateMarkers(mapList);
+  }
+
+  function makeLeafletMarker(l) {
+    const icon = L.divIcon({
+      className: "",
+      html: `<div class="pin" style="--pc:${COLORS[l.category] || "var(--orange)"}"><span>${iconFor(l)}</span></div>`,
+      iconSize: [34, 34],
+      iconAnchor: [17, 17],
+      popupAnchor: [0, -16],
+    });
+    const m = L.marker([l.lat, l.lng], { icon, title: l.name }).bindPopup(() => popupHtml(l), { maxWidth: 280, minWidth: 280, className: "gpopup" });
+    m.on("click", () => markActive(l.id));
+    m.on("popupopen", (e) => {
+      // Sa Google ključem kartica dobija pravu fotografiju, ocenu i broj recenzija
+      const box = e.popup.getElement()?.querySelector(".gcard-img");
+      if (box && API_KEY) fillGooglePhoto(box, l.id, false);
+      emit("sv:render");
+    });
+    markers[l.id] = m;
   }
 
   function initEmbedMap() {
@@ -605,7 +622,7 @@
       gestureHandling: "cooperative",
     });
     infoWindow = new google.maps.InfoWindow();
-    LOCATIONS.forEach((l) => {
+    LOCATIONS.filter(hasCoords).forEach((l) => {
       const m = new google.maps.Marker({
         position: { lat: l.lat, lng: l.lng },
         title: l.name,
@@ -635,15 +652,16 @@
     mapList = list;
     if (!list.some((l) => l.id === currentId)) currentId = list[0]?.id || null;
     renderMapList();
+    const pinned = list.filter((l) => markers[l.id]);
     if (lmap) {
       cluster.clearLayers();
-      list.forEach((l) => cluster.addLayer(markers[l.id]));
-      if (list.length === 1) lmap.setView([list[0].lat, list[0].lng], 16);
-      else if (list.length) lmap.fitBounds(L.latLngBounds(list.map((l) => [l.lat, l.lng])), { padding: [30, 30], maxZoom: 15 });
+      pinned.forEach((l) => cluster.addLayer(markers[l.id]));
+      if (pinned.length === 1) lmap.setView([pinned[0].lat, pinned[0].lng], 16);
+      else if (pinned.length) lmap.fitBounds(L.latLngBounds(pinned.map((l) => [l.lat, l.lng])), { padding: [30, 30], maxZoom: 15 });
     } else if (gmap) {
       infoWindow.close();
       const bounds = new google.maps.LatLngBounds();
-      LOCATIONS.forEach((l) => {
+      LOCATIONS.filter((l) => markers[l.id]).forEach((l) => {
         const visible = list.includes(l);
         markers[l.id].setMap(visible ? gmap : null);
         if (visible) bounds.extend(markers[l.id].getPosition());
@@ -663,6 +681,7 @@
     const l = byId(id);
     if (!l) return;
     markActive(id);
+    if (!markers[id]) return; // mesto bez koordinata nema pin
     if (lmap) {
       const m = markers[id];
       if (!cluster.hasLayer(m)) cluster.addLayer(m);
@@ -793,6 +812,45 @@
       }
     });
   }
+
+  /* Veza sa zajednicom (js/community.js): dodavanje mesta korisnika i pristup listi */
+  function addPlaces(places) {
+    let added = 0;
+    places.forEach((p) => {
+      if (!p || byId(p.id)) return;
+      LOCATIONS.push(p);
+      if (lmap && hasCoords(p)) makeLeafletMarker(p);
+      added++;
+    });
+    if (!added) return;
+    renderStats();
+    renderFilters();
+    $("areaSelect").value = state.area;
+    updateCounts();
+    renderGrid();
+  }
+
+  function removePlace(id) {
+    const i = LOCATIONS.findIndex((l) => l.id === id);
+    if (i < 0) return;
+    LOCATIONS.splice(i, 1);
+    if (markers[id]) {
+      if (cluster) cluster.removeLayer(markers[id]);
+      delete markers[id];
+    }
+    if (saved.has(id)) setSaved([...saved].filter((x) => x !== id));
+    closeDetail();
+    renderStats();
+    renderFilters();
+    updateCounts();
+    renderGrid();
+  }
+
+  window.SV = {
+    LOCATIONS, CATEGORIES, byId, esc, addPlaces, removePlace, setSaved, rankedItem, requestRankPhotos,
+    openDetail, closeDetail, handleHash, getSaved: () => [...saved], refresh: () => renderGrid(),
+    syncSaveButtons: () => document.querySelectorAll("[data-save]").forEach(setSaveBtn),
+  };
 
   renderStats();
   renderTiles();

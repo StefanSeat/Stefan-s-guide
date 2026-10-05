@@ -18,6 +18,25 @@ Naslovna strana prikazuje Stefanove tematske liste (npr. "Najbolja kafa", "Prvi 
 
 Posetioci prave svoju top 10 (dugme + i strelice pod "Moja top 10") i dele je linkom. Ko otvori link vidi tu listu i koliko se poklapa sa Stefanovim listama. Sve radi bez servera.
 
+## Zajednica (prijava, glasanje, mesta korisnika)
+
+Posetioci mogu da se prijave mejlom (bez lozinke), čuvaju više svojih lista u nalogu, dodaju mesta sa Google Maps linkom i glasaju ▲ ili ▼ za bilo koje mesto. Sekcija "Zajednica bira" prikazuje mesta sa najviše glasova i nova mesta od korisnika.
+
+Sve to radi preko besplatnog Supabase naloga. Dok nije podešen, sajt radi kao i pre, bez prijave i glasanja.
+
+Podešavanje (jednom, oko 15 minuta):
+
+1. Napravi nalog i novi projekat na supabase.com (besplatno, kartica nije potrebna). Region: Frankfurt.
+2. SQL Editor > New query > nalepi ceo sadržaj fajla `supabase/schema.sql` > Run.
+3. Authentication > URL Configuration: u **Site URL** i **Redirect URLs** upiši `https://vidovit.github.io/Stefan-s-guide/`
+4. Project Settings > API: kopiraj **Project URL** i **anon public** ključ u `js/config.js` (`SUPABASE_URL` i `SUPABASE_ANON_KEY`). Anon ključ je javan po dizajnu; podatke štite pravila u bazi.
+5. Da bi ti kao Stefan mogao da brišeš tuđa mesta: prijavi se jednom na sajtu, pa u SQL Editor-u pokreni
+   `update public.profiles set is_admin = true where display_name = 'Tvoje ime';`
+6. (Opciono) Kratki linkovi sa telefona (maps.app.goo.gl): Edge Functions > Deploy a new function > ime `resolve-maps` > nalepi `supabase/functions/resolve-maps/index.ts`. Bez ovoga kratki link radi, ali mesto nema pin na mapi.
+7. (Preporučeno) Supabase-ov ugrađeni mejl šalje svega nekoliko mejlova na sat. Za pravi sajt podesi svoj SMTP: Authentication > Emails > SMTP Settings (npr. besplatni Brevo ili Resend nalog).
+
+Napomena: besplatan Supabase projekat se pauzira posle nedelju dana bez ikakvih poseta; pokreće se ponovo jednim klikom u Supabase-u.
+
 ## Odakle su mesta
 
 Mesta su uvezena iz Stefanovih Google Maps recenzija (Google Takeout, fajl `Reviews.json`): samo Beograd, samo ocene 4 i 5, bez servisa i prodavnica. Za svako mesto sajt prikazuje ocenu, recenziju i link ka mestu na Google Maps.

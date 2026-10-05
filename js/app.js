@@ -1,6 +1,5 @@
 (function () {
-  const PAGE = 24;
-  const state = { view: "sve", category: "sve", area: "sve", query: "", favOnly: false, sort: "preporuka", limit: PAGE };
+  let tab = "stefan";
 
   // Boja tačkica i naslova za svaku kategoriju (kao na starim posterima)
   const COLORS = {
@@ -33,7 +32,7 @@
     store.set("sv-lista", [...saved]);
     if (!quiet) emit("sv:saved", [...saved]);
     updateCounts();
-    if (state.view === "lista") renderGrid();
+    renderMyTop();
     document.querySelectorAll("[data-save]").forEach(setSaveBtn);
   }
   function toggleSaved(id) {
@@ -241,12 +240,12 @@
   /* Statistika */
   function renderStats() {
     if (!$("stats")) return;
-    const areas = new Set(LOCATIONS.map((l) => l.area));
-    const top = LOCATIONS.filter((l) => l.rating === 5).length;
+    const places = homePlaces();
+    const areas = new Set(places.map((l) => l.area).filter(Boolean));
     $("stats").innerHTML = [
-      [LOCATIONS.length, "mesta"],
+      [(typeof LISTS !== "undefined" ? LISTS : []).length, "top lista"],
+      [places.length, "mesta"],
       [areas.size, "krajeva"],
-      [top, "ocena 5★"],
     ]
       .map(([n, t]) => `<li><strong>${n}</strong><span>${t}</span></li>`)
       .join("");
@@ -293,25 +292,55 @@
     container.querySelectorAll(".rank-thumb").forEach((b) => requestGooglePhoto(b, b.dataset.open));
   }
 
-  function openList(id, scroll = true) {
-    const L = listById(id);
-    if (!L) return;
-    const places = L.places.map((p) => ({ l: byId(p.id), note: p.note })).filter((x) => x.l);
-    $("listKicker").textContent = `${L.icon} Stefanova top lista`;
-    $("listTitle").textContent = L.title;
-    $("listIntro").textContent = L.intro || "";
-    $("listItems").innerHTML = places
+  // Mesta sa svih Stefanovih top lista (ona su na mapi kada nijedna lista nije otvorena)
+  function homePlaces() {
+    const ids = [];
+    (typeof LISTS !== "undefined" ? LISTS : []).forEach((L) => L.places.forEach((p) => !ids.includes(p.id) && ids.push(p.id)));
+    return ids.map(byId).filter(Boolean);
+  }
+
+  // Prikaz jedne rangirane liste (Stefanove ili korisnikove) sa mestima na mapi
+  function showRanked({ hash, kicker, title, intro, items }, scroll = true) {
+    $("listKicker").textContent = kicker || "Top lista";
+    $("listTitle").textContent = title;
+    $("listIntro").textContent = intro || "";
+    $("listItems").innerHTML = items
       .map(({ l, note }, i) => rankedItem(l, i + 1, note || l.short ? `<p class="rank-note">${esc(note || l.short)}</p>` : ""))
       .join("");
     $("listItems").querySelectorAll("[data-save]").forEach(setSaveBtn);
     requestRankPhotos($("listItems"));
     $("lista").hidden = false;
-    $("lista").dataset.list = L.id;
-    document.querySelectorAll(".list-tile").forEach((t) => t.classList.toggle("active", t.dataset.list === L.id));
-    updateMarkers(places.map((x) => x.l));
+    $("lista").dataset.hash = hash;
+    document.querySelectorAll("[data-list], [data-ulist]").forEach((t) => t.classList.toggle("active", "#" + (t.dataset.list ? "lista-" + t.dataset.list : "korisnik-" + t.dataset.ulist) === "#" + hash));
+    updateMarkers(items.map((x) => x.l));
     emit("sv:render");
-    history.replaceState(null, "", "#lista-" + L.id);
+    history.replaceState(null, "", "#" + hash);
     if (scroll) $("lista").scrollIntoView({ behavior: "smooth" });
+  }
+
+  function openList(id, scroll = true) {
+    const L = listById(id);
+    if (!L) return;
+    setTab("stefan");
+    showRanked({
+      hash: "lista-" + L.id,
+      kicker: `${L.icon} Stefanova top lista`,
+      title: L.title,
+      intro: L.intro,
+      items: L.places.map((p) => ({ l: byId(p.id), note: p.note })).filter((x) => x.l),
+    }, scroll);
+  }
+
+  /* Kartice: Stefanove liste, liste korisnika, top lista svih, moja lista */
+  function setTab(name) {
+    tab = name;
+    document.querySelectorAll("[data-ltab]").forEach((b) => {
+      b.classList.toggle("active", b.dataset.ltab === name);
+      b.setAttribute("aria-selected", b.dataset.ltab === name);
+    });
+    document.querySelectorAll("[data-lpanel]").forEach((p) => (p.hidden = p.dataset.lpanel !== name));
+    if (name === "moja") updateMarkers([...saved].map(byId));
+    emit("sv:tab", name);
   }
 
   /* Moja top 10 i deljenje */
@@ -332,7 +361,10 @@
       .join("");
     $("myTopItems").querySelectorAll(".ctl[data-save]").forEach((b) => (b.textContent = "✕"));
     $("shareTop").disabled = ids.length === 0;
+    $("myTopEmpty").hidden = ids.length > 0;
     requestRankPhotos($("myTopItems"));
+    if (tab === "moja") updateMarkers(ids.map(byId));
+    emit("sv:render");
   }
 
   function shareUrl() {
@@ -380,120 +412,35 @@
     if (!raw) return;
     if (raw.startsWith("top=")) return showShared(new URLSearchParams(raw));
     const h = decodeURIComponent(raw);
+    if (h === "moja-lista") {
+      setTab("moja");
+      return $("liste").scrollIntoView({ behavior: "smooth" });
+    }
     if (h.startsWith("lista-")) return openList(h.slice(6));
+    if (h.startsWith("korisnik-")) return emit("sv:open-user-list", h.slice(9));
     if (byId(h)) openDetail(h);
   }
 
-  function setCategory(cat) {
-    state.category = cat;
-    document.querySelectorAll(".chip").forEach((c) => c.classList.toggle("active", c.dataset.cat === cat));
-    refresh();
-  }
-
-  function setView(view) {
-    state.view = view;
-    document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.view === view));
-    const mine = view === "lista";
-    $("myTop").hidden = !mine;
-    [".searchbar", "#categoryChips"].forEach((sel) => (document.querySelector(sel).hidden = mine));
-    if (mine) $("filterPanel").hidden = true;
-    refresh();
-  }
-
-  /* Filteri */
-  function renderFilters() {
-    const counts = {};
-    LOCATIONS.forEach((l) => (counts[l.category] = (counts[l.category] || 0) + 1));
-    const chips = [["sve", "Sve", LOCATIONS.length]].concat(
-      Object.entries(CATEGORIES)
-        .filter(([k]) => counts[k])
-        .map(([k, v]) => [k, `${v.icon} ${v.label}`, counts[k]])
-    );
-    $("categoryChips").innerHTML = chips
-      .map(([k, label, n]) => `<button class="chip${state.category === k ? " active" : ""}" data-cat="${k}" role="tab">${esc(label)} <small>${n}</small></button>`)
-      .join("");
-
-    const areas = [...new Set(LOCATIONS.map((l) => l.area))].sort((a, b) => a.localeCompare(b, "sr"));
-    $("areaSelect").innerHTML =
-      `<option value="sve">Svi krajevi</option>` + areas.map((a) => `<option value="${esc(a)}">${esc(a)}</option>`).join("");
-  }
-
   function updateCounts() {
-    $("countAll").textContent = LOCATIONS.length;
-    $("countSaved").textContent = saved.size;
+    $("countSaved").textContent = saved.size ? saved.size : "";
   }
 
-  function filtered() {
-    const q = state.query.trim().toLowerCase();
-    const list = LOCATIONS.filter((l) => {
-      if (state.view === "lista" && !saved.has(l.id)) return false;
-      if (state.category !== "sve" && l.category !== state.category) return false;
-      if (state.area !== "sve" && l.area !== state.area) return false;
-      if (state.favOnly && l.rating !== 5) return false;
-      if (q) {
-        const hay = [l.name, l.area, l.short, l.description, ...(l.tags || [])].join(" ").toLowerCase();
-        if (!hay.includes(q)) return false;
-      }
-      return true;
-    });
-    if (state.sort === "az") return list.sort((a, b) => a.name.localeCompare(b.name, "sr"));
-    if (state.sort === "kraj") return list.sort((a, b) => a.area.localeCompare(b.area, "sr") || a.name.localeCompare(b.name, "sr"));
-    return list.sort((a, b) => (b.rating || 0) - (a.rating || 0) || String(b.date).localeCompare(String(a.date)));
-  }
-
-  /* Kartice kao posteri */
-  function renderGrid() {
-    if (state.view === "lista") {
-      renderMyTop();
-      $("grid").innerHTML = "";
-      $("moreBtn").hidden = true;
-      $("empty").hidden = saved.size > 0;
-      $("empty").textContent = "Tvoja lista je prazna. Klikni + na mestima koja voliš i ovde ih poređaj.";
-      updateMarkers([...saved].map(byId));
-      emit("sv:render");
+  /* Pretraga mesta za dodavanje u moju listu */
+  function renderSearch() {
+    const q = $("placeSearch").value.trim().toLowerCase();
+    if (!q) {
+      $("placeResults").hidden = true;
       return;
     }
-    const all = filtered();
-    const list = all.slice(0, state.limit);
-    $("grid").innerHTML = list
-      .map((l) => {
-        const cat = CATEGORIES[l.category];
-        return `<article class="card">
-          <button class="card-open" data-open="${esc(l.id)}">
-            <span class="card-img" style="display:block">
-              ${imageHtml(l)}
-              <span class="fav" ${ratingAttrs(l, "badge")}>${ratingHtml(l, "badge")}</span>
-            </span>
-            <span class="poster-title" style="--tc:${COLORS[l.category] || "var(--green)"}">
-              <span class="pt-name">${esc(l.name)}</span>
-              <span class="pt-sub">${cat ? esc(cat.label) : ""} · ${esc(l.area)}</span>
-            </span>
-          </button>
-          <button class="save" data-save="${esc(l.id)}"></button>
-          <div class="vote" data-vote="${esc(l.id)}"></div>
-        </article>`;
-      })
-      .join("");
-    $("grid").querySelectorAll("[data-save]").forEach(setSaveBtn);
-    // Mesta za koja već znamo da nemaju sliku u images/ odmah traže fotografiju sa Google Maps
-    list.forEach((l, i) => {
-      requestGooglePhoto($("grid").children[i].querySelector(".card-img"), l.id);
-    });
-    const rest = all.length - list.length;
-    $("moreBtn").hidden = rest <= 0;
-    $("moreBtn").textContent = `Prikaži još (${rest})`;
-    $("empty").hidden = all.length > 0;
-    $("empty").textContent = state.view === "lista" && saved.size === 0
-      ? "Tvoja lista je prazna. Klikni + na mestu da ga dodaš."
-      : "Nema mesta za ovaj izbor.";
-    updateMarkers(all);
-    emit("sv:render");
-  }
-
-  /* Svaka promena filtera počinje od prve strane */
-  function refresh() {
-    state.limit = PAGE;
-    renderGrid();
+    const hits = LOCATIONS.filter((l) => `${l.name} ${l.area} ${CATEGORIES[l.category]?.label || ""}`.toLowerCase().includes(q)).slice(0, 8);
+    $("placeResults").innerHTML = hits.length
+      ? hits
+          .map((l) => `<li><button class="save sr-add" data-save="${esc(l.id)}"></button>
+            <button class="sr-name" data-open="${esc(l.id)}">${iconFor(l)} ${esc(l.name)}<small>${esc(l.area)}</small></button></li>`)
+          .join("")
+      : `<li class="sr-empty">Nema tog mesta. Dodaj ga sa Google Maps (potrebna je prijava).</li>`;
+    $("placeResults").querySelectorAll("[data-save]").forEach(setSaveBtn);
+    $("placeResults").hidden = false;
   }
 
   /* Prozor sa detaljima */
@@ -708,28 +655,15 @@
     selectOnMap(id);
   }
 
-  /* Plutajuće dugme "Pogledaj mapu" vidi se samo dok gledaš vodič */
-  function initMapPill() {
-    if (!("IntersectionObserver" in window)) return;
-    let inGuide = false;
-    let inMap = false;
-    const update = () => ($("mapPill").hidden = !(inGuide && !inMap));
-    new IntersectionObserver(([e]) => { inGuide = e.isIntersecting; update(); }, { rootMargin: "-40% 0px -40% 0px" }).observe($("vodic"));
-    new IntersectionObserver(([e]) => { inMap = e.isIntersecting; update(); }).observe($("mapa"));
-  }
-
   /* Događaji */
   function bindEvents() {
     // Greška pri učitavanju slike ne "putuje" kroz stranicu, pa se hvata u fazi hvatanja na celom dokumentu
     document.addEventListener("error", onImageError, true);
-    document.querySelector(".tabs").addEventListener("click", (e) => {
-      const t = e.target.closest(".tab");
-      if (t) setView(t.dataset.view);
+    document.querySelector(".ltabs").addEventListener("click", (e) => {
+      const t = e.target.closest("[data-ltab]");
+      if (t) setTab(t.dataset.ltab);
     });
-    $("categoryChips").addEventListener("click", (e) => {
-      const btn = e.target.closest(".chip");
-      if (btn) setCategory(btn.dataset.cat);
-    });
+    $("placeSearch").addEventListener("input", renderSearch);
     $("tiles").addEventListener("click", (e) => {
       const tile = e.target.closest("[data-list]");
       if (tile) openList(tile.dataset.list);
@@ -758,35 +692,14 @@
     $("adoptTop").addEventListener("click", () => {
       setSaved($("deljena").dataset.ids.split(","));
       $("adoptTop").textContent = "Sačuvano ✓";
-      setView("lista");
-      $("vodic").scrollIntoView({ behavior: "smooth" });
+      setTab("moja");
+      $("liste").scrollIntoView({ behavior: "smooth" });
     });
     $("myTopItems").addEventListener("click", (e) => {
       const mv = e.target.closest("[data-move]");
       if (mv) moveSaved(mv.dataset.move, Number(mv.dataset.dir));
     });
     window.addEventListener("hashchange", handleHash);
-    $("filterToggle").addEventListener("click", () => {
-      const open = $("filterPanel").hidden;
-      $("filterPanel").hidden = !open;
-      $("filterToggle").setAttribute("aria-expanded", open);
-    });
-    $("sortSelect").addEventListener("change", (e) => {
-      state.sort = e.target.value;
-      refresh();
-    });
-    $("areaSelect").addEventListener("change", (e) => {
-      state.area = e.target.value;
-      refresh();
-    });
-    $("search").addEventListener("input", (e) => {
-      state.query = e.target.value;
-      refresh();
-    });
-    $("favOnly").addEventListener("change", (e) => {
-      state.favOnly = e.target.checked;
-      refresh();
-    });
     document.addEventListener("click", (e) => {
       const save = e.target.closest("[data-save]");
       if (save) return toggleSaved(save.dataset.save);
@@ -797,18 +710,14 @@
       const item = e.target.closest("[data-map-id]");
       if (item) selectOnMap(item.dataset.mapId);
     });
-    $("moreBtn").addEventListener("click", () => {
-      state.limit += PAGE;
-      renderGrid();
-    });
     $("closeDetail").addEventListener("click", closeDetail);
     $("detail").addEventListener("click", (e) => {
       if (e.target === $("detail")) closeDetail();
     });
     $("detail").addEventListener("close", () => {
       if (LOCATIONS.some((l) => "#" + l.id === location.hash)) {
-        const L = !$("lista").hidden && $("lista").dataset.list;
-        history.replaceState(null, "", L ? "#lista-" + L : location.pathname);
+        const h = !$("lista").hidden && $("lista").dataset.hash;
+        history.replaceState(null, "", h ? "#" + h : location.pathname);
       }
     });
   }
@@ -823,11 +732,7 @@
       added++;
     });
     if (!added) return;
-    renderStats();
-    renderFilters();
-    $("areaSelect").value = state.area;
-    updateCounts();
-    renderGrid();
+    renderMyTop();
   }
 
   function removePlace(id) {
@@ -840,26 +745,24 @@
     }
     if (saved.has(id)) setSaved([...saved].filter((x) => x !== id));
     closeDetail();
-    renderStats();
-    renderFilters();
-    updateCounts();
-    renderGrid();
+    renderMyTop();
   }
 
   window.SV = {
     LOCATIONS, CATEGORIES, byId, esc, addPlaces, removePlace, setSaved, rankedItem, requestRankPhotos,
-    openDetail, closeDetail, handleHash, getSaved: () => [...saved], refresh: () => renderGrid(),
+    openDetail, closeDetail, handleHash, showRanked, setTab, updateMarkers, homePlaces,
+    getSaved: () => [...saved],
     syncSaveButtons: () => document.querySelectorAll("[data-save]").forEach(setSaveBtn),
   };
 
   renderStats();
   renderTiles();
-  renderFilters();
   updateCounts();
+  mapList = homePlaces();
   initMap();
   bindEvents();
-  renderGrid();
-  initMapPill();
+  renderMyTop();
+  updateMarkers(homePlaces());
   $("year").textContent = new Date().getFullYear();
 
   // Direktni linkovi: mesto (#kalemegdan), lista (#lista-kafa) ili deljena lista (#top=...)

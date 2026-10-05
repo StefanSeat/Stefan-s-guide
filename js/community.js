@@ -103,14 +103,16 @@
       return; // bez veze sa serverom sajt radi kao i pre
     }
     $("authBtn").hidden = false;
-    $("zajednica").hidden = false;
+    document.querySelectorAll('[data-ltab="korisnici"], [data-ltab="zajednica"]').forEach((b) => (b.hidden = false));
     bindUi();
     sb.auth.onAuthStateChange((_event, session) => setUser(session?.user || null));
     const { data } = await sb.auth.getSession();
     await setUser(data?.session?.user || null);
     await Promise.all([loadPlaces(), loadScores()]);
+    await loadPublicLists();
     renderVotes();
     renderCommunity();
+    if (pendingUserList) openUserList(pendingUserList);
     // Deljena lista može da sadrži mesta zajednice, pa je otvaramo ponovo kada su učitana
     if (location.hash.startsWith("#top=")) SV.handleHash();
   }
@@ -304,9 +306,11 @@
     SV.addPlaces([toLocation(data)]);
     if ($("addToList").checked) SV.setSaved([...SV.getSaved(), placeKey(data)]);
     $("addDialog").close();
-    ctab = "new";
-    setCtab("new");
-    $("zajednica").scrollIntoView({ behavior: "smooth" });
+    if (!$("addToList").checked) {
+      SV.setTab("zajednica");
+      setCtab("new");
+    }
+    $("liste").scrollIntoView({ behavior: "smooth" });
   }
 
   async function deletePlace(key) {
@@ -369,6 +373,67 @@
     renderVotes($("communityList"));
   }
 
+  /* ---------- Liste korisnika (javne) ---------- */
+  let publicLists = [];
+  let pendingUserList = null;
+  let publicTimer = null;
+
+  async function loadPublicLists() {
+    const { data, error } = await sb
+      .from("lists")
+      .select("id, title, owner, created_at, list_items(place_key, rank)")
+      .order("created_at", { ascending: false })
+      .limit(100);
+    if (error) return toast("Liste korisnika nisu učitane: " + error.message);
+    publicLists = (data || [])
+      .map((L) => ({ ...L, items: (L.list_items || []).sort((a, b) => a.rank - b.rank).map((i) => SV.byId(i.place_key)).filter(Boolean) }))
+      .filter((L) => L.items.length > 0);
+    const missing = [...new Set(publicLists.map((L) => L.owner))].filter((id) => !(id in names));
+    if (missing.length) {
+      const { data: profs } = await sb.from("profiles").select("id, display_name").in("id", missing);
+      (profs || []).forEach((p) => (names[p.id] = p.display_name));
+    }
+    renderUserTiles();
+  }
+
+  function refreshPublicLists() {
+    clearTimeout(publicTimer);
+    publicTimer = setTimeout(loadPublicLists, 1500);
+  }
+
+  function renderUserTiles() {
+    const colors = ["var(--sky)", "var(--orange)", "var(--green)", "var(--yellow)"];
+    const pats = ["pat-rings", "pat-dots", "pat-rays", "pat-stripes"];
+    $("userTiles").innerHTML = publicLists
+      .map((L, i) => {
+        const first = L.items[0];
+        const icon = SV.CATEGORIES[first.category]?.icon || "📍";
+        return `<button class="tile list-tile" data-ulist="${esc(L.id)}">
+          <div class="ph ${pats[i % pats.length]}" style="--dot:${colors[i % colors.length]}"><b class="tile-ico">${icon}</b></div>
+          <span class="tile-label">${esc(L.title)}<small>od ${esc(names[L.owner] || "člana")} · ${L.items.length}</small></span>
+        </button>`;
+      })
+      .join("");
+    $("userListsEmpty").hidden = publicLists.length > 0;
+  }
+
+  function openUserList(id) {
+    const L = publicLists.find((x) => x.id === id);
+    if (!L) {
+      pendingUserList = id;
+      return;
+    }
+    pendingUserList = null;
+    SV.setTab("korisnici");
+    SV.showRanked({
+      hash: "korisnik-" + L.id,
+      kicker: `Lista korisnika · od ${names[L.owner] || "člana zajednice"}`,
+      title: L.title,
+      intro: "",
+      items: L.items.map((l) => ({ l })),
+    });
+  }
+
   /* ---------- Liste u oblaku ---------- */
   let pushTimer = null;
   let applying = false;
@@ -427,7 +492,8 @@
       return sync("Čuvanje nije uspelo, pokušaj ponovo.");
     }
     currentList.list_items = rows.map(({ place_key, rank }) => ({ place_key, rank }));
-    sync("Sačuvano u nalogu ✓");
+    sync("Sačuvano u nalogu ✓ · vidljivo pod Liste korisnika");
+    refreshPublicLists();
   }
 
   async function newList() {
@@ -450,6 +516,7 @@
     if (!error) {
       currentList.title = title;
       renderListSelect();
+      refreshPublicLists();
     }
   }
 
@@ -471,6 +538,11 @@
     });
     $("addForm").addEventListener("submit", submitAdd);
     document.querySelectorAll("[data-ctab]").forEach((b) => b.addEventListener("click", () => setCtab(b.dataset.ctab)));
+    $("userTiles").addEventListener("click", (e) => {
+      const t = e.target.closest("[data-ulist]");
+      if (t) openUserList(t.dataset.ulist);
+    });
+    document.addEventListener("sv:open-user-list", (e) => openUserList(e.detail));
     $("listSelect").addEventListener("change", (e) => {
       currentList = lists.find((L) => L.id === e.target.value) || currentList;
       applyList();

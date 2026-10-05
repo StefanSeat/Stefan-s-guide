@@ -14,9 +14,14 @@ Lične preporuke za Beograd: gde jesti, piti kafu, izaći i šta videti. Statič
 
 ## Top liste
 
-Naslovna strana prikazuje Stefanove tematske liste (npr. "Najbolja kafa", "Prvi dan u Beogradu"). Liste se uređuju u `js/lists.js`: redosled mesta je rang, a uz svako mesto može da stoji rečenica zašto je na listi.
+Sekcija "Top liste" ima četiri kartice:
 
-Posetioci prave svoju top 10 (dugme + i strelice pod "Moja top 10") i dele je linkom. Ko otvori link vidi tu listu i koliko se poklapa sa Stefanovim listama. Sve radi bez servera.
+- **Stefanove liste**: tematske liste iz `js/lists.js` (redosled mesta je rang)
+- **Liste korisnika**: javne liste prijavljenih posetilaca
+- **Top lista svih ±**: mesta rangirana po glasovima svih korisnika (▲ minus ▼)
+- **Napravi svoju listu**: pretraga mesta, dodavanje sa Google Maps, ređanje strelicama i deljenje linkom
+
+Na mapi su samo mesta sa top lista; kada se otvori lista, mapa prikazuje samo njena mesta. U `js/data.js` su samo mesta koja se pojavljuju na Stefanovim listama.
 
 ## Zajednica (prijava, glasanje, mesta korisnika)
 

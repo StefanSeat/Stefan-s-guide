@@ -18,5 +18,5 @@ const GOOGLE_MAPS_API_KEY = "";
   i ovde nalepi Project URL i anon public ključ (Project Settings > API).
   Dok su prazni, sajt radi kao i do sada, bez prijave i glasanja.
 */
-const SUPABASE_URL = "";
+const SUPABASE_URL = "https://cslssqyvfxoonewfmtzu.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_ugniqmBD9rq8y7aBgkk6YQ_f7B_pqZ8";

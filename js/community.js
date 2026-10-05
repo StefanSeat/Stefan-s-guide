@@ -42,6 +42,22 @@
     tags: ["zajednica"],
     addedBy: row.created_by,
   });
+  // Kratka poruka na dnu ekrana (npr. kada server odbije glas)
+  function toast(text) {
+    let el = $("svToast");
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "svToast";
+      el.className = "toast";
+      el.setAttribute("role", "status");
+      document.body.appendChild(el);
+    }
+    el.textContent = text;
+    el.hidden = false;
+    clearTimeout(el._t);
+    el._t = setTimeout(() => (el.hidden = true), 8000);
+  }
+
   function msg(id, text, ok) {
     const el = $(id);
     el.textContent = text || "";
@@ -160,7 +176,8 @@
 
   /* ---------- Glasanje ---------- */
   async function loadScores() {
-    const { data } = await sb.from("place_scores").select("place_key, up, down, score");
+    const { data, error } = await sb.from("place_scores").select("place_key, up, down, score");
+    if (error) toast("Glasovi nisu učitani: " + error.message);
     scores = {};
     (data || []).forEach((r) => (scores[r.place_key] = r));
   }
@@ -199,6 +216,7 @@
       ? await sb.from("votes").upsert({ user_id: user.id, place_key: key, value: next })
       : await sb.from("votes").delete().eq("user_id", user.id).eq("place_key", key);
     if (error) {
+      toast("Glas nije sačuvan: " + error.message);
       await Promise.all([loadScores(), loadMyVotes()]);
       renderVotes();
     }
@@ -404,7 +422,10 @@
     const rows = ids.slice(0, 50).map((place_key, i) => ({ list_id: currentList.id, place_key, rank: i + 1 }));
     const del = await sb.from("list_items").delete().eq("list_id", currentList.id);
     const ins = rows.length ? await sb.from("list_items").insert(rows) : { error: null };
-    if (del.error || ins.error) return sync("Čuvanje nije uspelo, pokušaj ponovo.");
+    if (del.error || ins.error) {
+      toast("Lista nije sačuvana: " + (del.error || ins.error).message);
+      return sync("Čuvanje nije uspelo, pokušaj ponovo.");
+    }
     currentList.list_items = rows.map(({ place_key, rank }) => ({ place_key, rank }));
     sync("Sačuvano u nalogu ✓");
   }

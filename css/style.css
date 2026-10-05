@@ -198,6 +198,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
 .polaroid figcaption { font-family: var(--hand); font-size: 1.35rem; line-height: 1.1; color: var(--ink); text-align: center; padding: 0.3rem 0.3rem 0.5rem; }
 .p1 { left: 0; top: 40px; transform: rotate(-6deg); z-index: 2; }
 .p1 .ph { --dot: var(--orange); }
+html[lang="en"] .p1 figcaption { padding-right: 14%; }
 .p2 { right: 4%; top: 0; transform: rotate(5deg); width: 44%; }
 .p2 .ph { --dot: var(--green); }
 .p3 { right: 8%; bottom: 0; transform: rotate(-3deg); width: 44%; z-index: 3; }

@@ -180,7 +180,7 @@
       "hero.by": "by Stefan",
       "hero.lead": "Kafanas, coffee, sunsets and hidden spots I show my friends.",
       "hero.cta": "Top lists",
-      "about.cap1": "that's me, autumn edition",
+      "about.cap1": "me, autumn edition",
       "about.cap2": "artsy",
       "about.cap3": "wine is drunk with a fork",
       "about.title": "Hi, I'm <em>Stefan</em>",

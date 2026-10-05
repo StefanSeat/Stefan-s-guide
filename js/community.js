@@ -180,7 +180,7 @@
   /* ---------- Glasanje ---------- */
   async function loadScores() {
     const { data, error } = await sb.from("place_scores").select("place_key, up, down, score");
-    if (error) toast(T("toast.votesLoad", { err: error.message }));
+    if (error) console.warn("place_scores:", error.message);
     scores = {};
     (data || []).forEach((r) => (scores[r.place_key] = r));
   }
@@ -385,7 +385,7 @@
       .select("id, title, owner, created_at, list_items(place_key, rank)")
       .order("created_at", { ascending: false })
       .limit(100);
-    if (error) return toast(T("toast.lists", { err: error.message }));
+    if (error) return console.warn("lists:", error.message);
     publicLists = (data || [])
       .map((L) => ({ ...L, items: (L.list_items || []).sort((a, b) => a.rank - b.rank).map((i) => SV.byId(i.place_key)).filter(Boolean) }))
       .filter((L) => L.items.length > 0);

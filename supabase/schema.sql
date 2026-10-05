@@ -117,3 +117,12 @@ create or replace view public.place_scores as
   from public.votes
   group by place_key;
 grant select on public.place_scores to anon, authenticated;
+
+-- Prava pristupa za Data API ----------------------------------------------
+-- Novi Supabase projekti tabelama ne daju automatski prava za anon i authenticated,
+-- pa bez ovoga sajt dobija "permission denied for table ...". RLS pravila iznad i dalje važe.
+grant usage on schema public to anon, authenticated;
+grant select on public.profiles, public.places, public.lists, public.list_items to anon, authenticated;
+grant insert, delete on public.places to authenticated;
+grant insert, update, delete on public.lists, public.list_items to authenticated;
+grant select, insert, update, delete on public.votes to authenticated;

@@ -33,7 +33,7 @@ Podešavanje (jednom, oko 15 minuta):
 
 1. Napravi nalog i novi projekat na supabase.com (besplatno, kartica nije potrebna). Region: Frankfurt.
 2. SQL Editor > New query > nalepi ceo sadržaj fajla `supabase/schema.sql` > Run.
-3. Authentication > URL Configuration: u **Site URL** i **Redirect URLs** upiši `https://vidovit.github.io/Stefan-s-guide/`
+3. Authentication > URL Configuration: u **Site URL** i **Redirect URLs** upiši `https://stefanseat.github.io/Stefan-s-guide/`
 4. Project Settings > API: kopiraj **Project URL** i **anon public** ključ u `js/config.js` (`SUPABASE_URL` i `SUPABASE_ANON_KEY`). Anon ključ je javan po dizajnu; podatke štite pravila u bazi.
 5. Da bi ti kao Stefan mogao da brišeš tuđa mesta: prijavi se jednom na sajtu, pa u SQL Editor-u pokreni
    `update public.profiles set is_admin = true where display_name = 'Tvoje ime';`
@@ -65,7 +65,7 @@ Kako da dodaš ključ:
 3. APIs & Services > Library > uključi (Enable) "Maps JavaScript API" i "Places API (New)"
 4. APIs & Services > Credentials > Create credentials > API key
 5. Otvori ključ i podesi ograničenja:
-   - Application restrictions: Websites, pa dodaj `https://vidovit.github.io/*` i `http://localhost:8000/*`
+   - Application restrictions: Websites, pa dodaj `https://stefanseat.github.io/*` i `http://localhost:8000/*`
    - API restrictions: Restrict key > izaberi "Maps JavaScript API" i "Places API (New)"
 6. Kopiraj ključ u `js/config.js`, između navodnika: `const GOOGLE_MAPS_API_KEY = "tvoj-kljuc";`
 

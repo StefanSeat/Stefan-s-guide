@@ -1063,7 +1063,9 @@ const LOCATIONS = [
     "lat": 44.81303,
     "lng": 20.428896,
     "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x0:0xb97671acd4608ea2",
-    "tags": []
+    "tags": [],
+    "googleRating": 4.6,
+    "googleReviews": 3852
   },
   {
     "id": "gelato-bar",
@@ -1133,7 +1135,9 @@ const LOCATIONS = [
     "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x0:0x5b6e8891cb42fbad",
     "tags": [
       "ručak"
-    ]
+    ],
+    "googleRating": 4.7,
+    "googleReviews": 1208
   },
   {
     "id": "museum-of-contemporary-art",
@@ -1723,9 +1727,9 @@ const LOCATIONS = [
     "description": "",
     "rating": null,
     "price": "",
-    "address": "",
-    "lat": 44.7988,
-    "lng": 20.47,
+    "address": "Mutapova 5, Beograd",
+    "lat": 44.7984,
+    "lng": 20.4716,
     "mapsUrl": "",
     "tags": [
       "pica"
@@ -1739,15 +1743,15 @@ const LOCATIONS = [
     "id": "bosiljak-pizza-napoletana",
     "name": "Bosiljak Pizza Napoletana",
     "category": "jelo",
-    "area": "Stari grad",
+    "area": "Zemun",
     "image": "",
     "short": "Prava napolitanska pica.",
     "description": "",
     "rating": null,
     "price": "",
-    "address": "",
-    "lat": 44.819,
-    "lng": 20.459,
+    "address": "Bežanijska 36, Beograd",
+    "lat": 44.8442,
+    "lng": 20.4086,
     "mapsUrl": "",
     "tags": [
       "pica"
@@ -1756,5 +1760,71 @@ const LOCATIONS = [
     "short_en": "Proper Neapolitan pizza.",
     "googleRating": 4.7,
     "googleReviews": 4379
+  },
+  {
+    "id": "pizza-una-trattoria-gourmet",
+    "name": "Pizza Una Trattoria Gourmet",
+    "category": "jelo",
+    "area": "Vračar",
+    "image": "",
+    "short": "Napolitanska pica od dugo fermentisanog testa.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Njegoševa 8, Beograd",
+    "lat": 44.8048,
+    "lng": 20.4683,
+    "mapsUrl": "",
+    "tags": [
+      "pica"
+    ],
+    "icon": "🍕",
+    "short_en": "Neapolitan pizza from long-fermented dough.",
+    "googleRating": 4.9,
+    "googleReviews": 2515
+  },
+  {
+    "id": "pizza-fabrika",
+    "name": "Pizza Fabrika",
+    "category": "jelo",
+    "area": "Vračar",
+    "image": "",
+    "short": "Pica iz peći na drva, sa baštom.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Sinđelićeva 22, Beograd",
+    "lat": 44.7937,
+    "lng": 20.4797,
+    "mapsUrl": "",
+    "tags": [
+      "pica"
+    ],
+    "icon": "🍕",
+    "short_en": "Wood-fired pizza with a garden.",
+    "googleRating": 4.7,
+    "googleReviews": 2441
+  },
+  {
+    "id": "da-luca-due",
+    "name": "Da Luca Due",
+    "category": "jelo",
+    "area": "Krnjača",
+    "image": "",
+    "short": "Velike pice sa tankom korom.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Pančevački put 56, Beograd",
+    "lat": 44.8395,
+    "lng": 20.4955,
+    "mapsUrl": "",
+    "tags": [
+      "pica"
+    ],
+    "icon": "🍕",
+    "short_en": "Big thin-crust pizzas.",
+    "googleRating": 4.8,
+    "googleReviews": 1400
   }
 ];

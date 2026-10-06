@@ -666,7 +666,9 @@ const LOCATIONS = [
     "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x0:0xe7cf7cef088cf301",
     "tags": [
       "večera"
-    ]
+    ],
+    "googleRating": 4.6,
+    "googleReviews": 2272
   },
   {
     "id": "bure-piva",

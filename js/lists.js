@@ -106,6 +106,7 @@ const LISTS = [
       { id: "billys-pizza-tavern-dorcol" },
       { id: "di-napoli-pizzeria-restaurant" },
       { id: "pizza-bar-vracar" },
+      { id: "taurunum-pogled-pizza-bar" },
     ],
   },
   {

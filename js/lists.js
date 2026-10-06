@@ -95,7 +95,7 @@ const LISTS = [
     title: "Top 10 pica",
     title_en: "Top 10 pizza",
     icon: "🍕",
-    image: "images/lista-pica.jpg",
+    image: "images/lista-pica.jpg?v=2",
     intro: "Najbolje pice u gradu, od napolitanske do one sa pogledom.",
     intro_en: "The best pizza in town, from Neapolitan to pizza with a view.",
     places: [

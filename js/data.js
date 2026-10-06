@@ -488,7 +488,9 @@ const LOCATIONS = [
     "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x0:0x94263cf6190f1141",
     "tags": [
       "večera"
-    ]
+    ],
+    "googleRating": 4.7,
+    "googleReviews": 2074
   },
   {
     "id": "im-camy-lunch-bar",
@@ -851,7 +853,9 @@ const LOCATIONS = [
     "lat": 44.819077,
     "lng": 20.471077,
     "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x0:0xb895fe5e8be2220",
-    "tags": []
+    "tags": [],
+    "googleRating": 4.7,
+    "googleReviews": 5372
   },
   {
     "id": "basic-coffee-breakfast",
@@ -972,7 +976,9 @@ const LOCATIONS = [
     "lat": 44.803466,
     "lng": 20.409728,
     "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x0:0x5e0db7008862122e",
-    "tags": []
+    "tags": [],
+    "googleRating": 4.6,
+    "googleReviews": 1939
   },
   {
     "id": "rocket-coffee",
@@ -1706,5 +1712,49 @@ const LOCATIONS = [
     "tags": [],
     "icon": "🎻",
     "short_en": "A cobbled bohemian street with kafanas and old-town music."
+  },
+  {
+    "id": "pizza-bar-vracar",
+    "name": "Pizza Bar Vračar",
+    "category": "jelo",
+    "area": "Vračar",
+    "image": "",
+    "short": "Pica sa pogledom na Hram Svetog Save.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "",
+    "lat": 44.7988,
+    "lng": 20.47,
+    "mapsUrl": "",
+    "tags": [
+      "pica"
+    ],
+    "icon": "🍕",
+    "short_en": "Pizza with a view of the Temple of Saint Sava.",
+    "googleRating": 4.5,
+    "googleReviews": 6610
+  },
+  {
+    "id": "bosiljak-pizza-napoletana",
+    "name": "Bosiljak Pizza Napoletana",
+    "category": "jelo",
+    "area": "Stari grad",
+    "image": "",
+    "short": "Prava napolitanska pica.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "",
+    "lat": 44.819,
+    "lng": 20.459,
+    "mapsUrl": "",
+    "tags": [
+      "pica"
+    ],
+    "icon": "🍕",
+    "short_en": "Proper Neapolitan pizza.",
+    "googleRating": 4.7,
+    "googleReviews": 4379
   }
 ];

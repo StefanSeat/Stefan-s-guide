@@ -246,7 +246,8 @@ const LISTS = [
     intro: "Mesta sa akcijama koje se stvarno isplate.",
     intro_en: "Places with deals that are actually worth it.",
     places: [
-      { id: "diner-bros-novi-beograd", note: "Najviše se trude oko akcija u gradu. Svakog radnog dana druga akcija: ponedeljkom uz picu dobijaš još jednu iste veličine gratis, a radnim danima od 16 do 18h je happy hour (drugo piće gratis). Uz kupon sa kesice Chipsy Cheeseburger čipsa dobijaš burger 1+1.", note_en: "They try the hardest with deals in town. A different deal every weekday: on Mondays buy a pizza and get another of the same size free, and weekdays 4 to 6 pm is happy hour (second drink free). With the coupon from a bag of Chipsy Cheeseburger crisps you get a 1+1 burger." },
+      { id: "diner-bros-novi-beograd", note: "Najviše se trude oko akcija u gradu. Svakog radnog dana imaju drugu akciju, a po meni je najbolja ponedeljkom: uz picu dobijaš još jednu iste veličine gratis. Radnim danima od 16 do 18h je happy hour (drugo piće gratis). Radili su i akciju sa kuponom sa kesice Chipsy Cheeseburger čipsa za burger 1+1. Ne znam da li je još aktivna, ali to dovoljno govori o njihovom marketingu.", note_en: "They try the hardest with deals in town. There is a different deal every weekday, and in my opinion the best is Monday: buy a pizza and get another of the same size free. Weekdays 4 to 6 pm is happy hour (second drink free). They also ran a 1+1 burger deal with a coupon from Chipsy Cheeseburger crisps. I don't know if it's still on, but it says a lot about their marketing." },
+
 
       { id: "konoba-akustik", note: "Aktivni na sajtovima sa kuponima, a u Knez Mihailovoj dele flajere sa popustom.", note_en: "Active on coupon sites, and they hand out discount flyers on Knez Mihailova street." },
     ],

@@ -477,6 +477,7 @@
         ${l.tags?.length ? `<div class="tags">${l.tags.map((t) => `<span class="tag">#${esc(window.I18N.tag(t))}</span>`).join("")}</div>` : ""}
         <div class="detail-actions">
           <a class="btn" href="${mapsUrl(l)}" target="_blank" rel="noopener">${T("detail.openGmaps")}</a>
+          ${l.website ? `<a class="btn btn-ghost" href="${esc(l.website)}" target="_blank" rel="noopener">${T("detail.website")}</a>` : ""}
           <button class="btn btn-ghost" data-show-map="${esc(l.id)}">${T("detail.showMap")}</button>
         </div>
       </div>`;
@@ -517,6 +518,7 @@
         <div class="popup-row">
           <button class="popup-link" data-open="${esc(l.id)}">${T("popup.details")}</button>
           <a class="popup-link" href="${esc(mapsUrl(l))}" target="_blank" rel="noopener">Google Maps ↗</a>
+          ${l.website ? `<a class="popup-link" href="${esc(l.website)}" target="_blank" rel="noopener">${T("popup.website")} ↗</a>` : ""}
         </div>
       </div>
     </div>`;

@@ -490,7 +490,8 @@ const LOCATIONS = [
       "večera"
     ],
     "googleRating": 4.7,
-    "googleReviews": 2074
+    "googleReviews": 2074,
+    "website": "https://giovannispizzeria.rs/"
   },
   {
     "id": "im-camy-lunch-bar",
@@ -668,7 +669,8 @@ const LOCATIONS = [
       "večera"
     ],
     "googleRating": 4.6,
-    "googleReviews": 2272
+    "googleReviews": 2272,
+    "website": "https://taurunumpogled.rs/italijanski-specijaliteti/"
   },
   {
     "id": "bure-piva",
@@ -857,7 +859,8 @@ const LOCATIONS = [
     "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x0:0xb895fe5e8be2220",
     "tags": [],
     "googleRating": 4.7,
-    "googleReviews": 5372
+    "googleReviews": 5372,
+    "website": "https://pizzabotako.rs/"
   },
   {
     "id": "basic-coffee-breakfast",
@@ -1067,7 +1070,8 @@ const LOCATIONS = [
     "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x0:0xb97671acd4608ea2",
     "tags": [],
     "googleRating": 4.6,
-    "googleReviews": 3852
+    "googleReviews": 3852,
+    "website": "https://dinapoli.rs/"
   },
   {
     "id": "gelato-bar",
@@ -1139,7 +1143,8 @@ const LOCATIONS = [
       "ručak"
     ],
     "googleRating": 4.7,
-    "googleReviews": 1208
+    "googleReviews": 1208,
+    "website": "https://billyspizzatavern.com/"
   },
   {
     "id": "museum-of-contemporary-art",
@@ -1622,7 +1627,8 @@ const LOCATIONS = [
     "mapsUrl": "https://maps.app.goo.gl/zGshVhyruSaWBTN46",
     "tags": [],
     "icon": "🥐",
-    "short_en": "Cheese or meat burek with a glass of yogurt, the classic Belgrade breakfast."
+    "short_en": "Cheese or meat burek with a glass of yogurt, the classic Belgrade breakfast.",
+    "website": "https://bgburek.rs/"
   },
   {
     "id": "dorcol-knez-mihailova",
@@ -1739,7 +1745,8 @@ const LOCATIONS = [
     "icon": "🍕",
     "short_en": "Pizza with a view of the Temple of Saint Sava.",
     "googleRating": 4.5,
-    "googleReviews": 6610
+    "googleReviews": 6610,
+    "website": "https://pizzabar.rs/"
   },
   {
     "id": "bosiljak-pizza-napoletana",
@@ -1761,7 +1768,8 @@ const LOCATIONS = [
     "icon": "🍕",
     "short_en": "Proper Neapolitan pizza.",
     "googleRating": 4.7,
-    "googleReviews": 4379
+    "googleReviews": 4379,
+    "website": "https://www.bosiljakpizza.com/"
   },
   {
     "id": "pizza-una-trattoria-gourmet",
@@ -1783,7 +1791,8 @@ const LOCATIONS = [
     "icon": "🍕",
     "short_en": "Neapolitan pizza from long-fermented dough.",
     "googleRating": 4.9,
-    "googleReviews": 2515
+    "googleReviews": 2515,
+    "website": "https://www.unatrattoria.rs/"
   },
   {
     "id": "pizza-fabrika",
@@ -1805,7 +1814,8 @@ const LOCATIONS = [
     "icon": "🍕",
     "short_en": "Wood-fired pizza with a garden.",
     "googleRating": 4.7,
-    "googleReviews": 2441
+    "googleReviews": 2441,
+    "website": "https://www.pizza-fabrika.rs/"
   },
   {
     "id": "da-luca-due",
@@ -1827,6 +1837,7 @@ const LOCATIONS = [
     "icon": "🍕",
     "short_en": "Big thin-crust pizzas.",
     "googleRating": 4.8,
-    "googleReviews": 1400
+    "googleReviews": 1400,
+    "website": "https://daluca.rs/"
   }
 ];

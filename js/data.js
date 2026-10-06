@@ -983,7 +983,10 @@ const LOCATIONS = [
     "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x0:0x5e0db7008862122e",
     "tags": [],
     "googleRating": 4.6,
-    "googleReviews": 1939
+    "googleReviews": 1939,
+    "website": "https://burgerhousebros.com/",
+    "tip": "Svakog radnog dana druga akcija. Najbolja je ponedeljkom: uz kupljenu picu dobijaš još jednu iste veličine gratis. Radnim danima od 16 do 18h je happy hour: uz pivo ili koktel drugo piće gratis.",
+    "tip_en": "A different deal every weekday. The best is Monday: buy any pizza and get another of the same size free. Weekdays 4 to 6 pm is happy hour: buy a beer or cocktail and the second one is free."
   },
   {
     "id": "rocket-coffee",
@@ -1839,5 +1842,30 @@ const LOCATIONS = [
     "googleRating": 4.8,
     "googleReviews": 1400,
     "website": "https://daluca.rs/"
+  },
+  {
+    "id": "konoba-akustik",
+    "name": "Konoba Akustik - Stari Beograd",
+    "category": "jelo",
+    "area": "Stari grad",
+    "image": "",
+    "short": "Srpska kuhinja i starogradska atmosfera kod Kalemegdana.",
+    "description": "",
+    "rating": null,
+    "price": "€€",
+    "address": "Pariska 16, Beograd 11158",
+    "lat": 44.8203,
+    "lng": 20.4535,
+    "mapsUrl": "",
+    "tags": [
+      "kafana"
+    ],
+    "icon": "🍖",
+    "short_en": "Serbian food and old-town atmosphere near Kalemegdan.",
+    "googleRating": 4.6,
+    "googleReviews": 8014,
+    "website": "https://konobaakustik.rs/",
+    "tip": "Redovno imaju akcije na sajtovima sa kuponima (npr. dva gurmanska ćevapa ili pljeskavice sa supom i desertom za dvoje), a u Knez Mihailovoj dele flajere sa popustom.",
+    "tip_en": "They regularly run deals on coupon sites (e.g. gourmet ćevapi or pljeskavica with soup and dessert for two), and hand out discount flyers on Knez Mihailova street."
   }
 ];

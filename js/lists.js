@@ -238,4 +238,16 @@ const LISTS = [
       { id: "klub-za-drustvene-igre-groot" },
     ],
   },
+  {
+    id: "promocije",
+    title: "Najbolje promocije",
+    title_en: "Best deals",
+    icon: "🏷️",
+    intro: "Mesta sa akcijama koje se stvarno isplate.",
+    intro_en: "Places with deals that are actually worth it.",
+    places: [
+      { id: "diner-bros-novi-beograd", note: "Svakog radnog dana druga akcija. Ponedeljkom uz picu dobijaš još jednu iste veličine gratis, a radnim danima od 16 do 18h je happy hour (drugo piće gratis).", note_en: "A different deal every weekday. On Mondays buy a pizza and get another of the same size free, and weekdays 4 to 6 pm is happy hour (second drink free)." },
+      { id: "konoba-akustik", note: "Aktivni na sajtovima sa kuponima, a u Knez Mihailovoj dele flajere sa popustom.", note_en: "Active on coupon sites, and they hand out discount flyers on Knez Mihailova street." },
+    ],
+  },
 ];

@@ -985,8 +985,8 @@ const LOCATIONS = [
     "googleRating": 4.6,
     "googleReviews": 1939,
     "website": "https://burgerhousebros.com/",
-    "tip": "Svakog radnog dana druga akcija. Najbolja je ponedeljkom: uz kupljenu picu dobijaš još jednu iste veličine gratis. Radnim danima od 16 do 18h je happy hour: uz pivo ili koktel drugo piće gratis.",
-    "tip_en": "A different deal every weekday. The best is Monday: buy any pizza and get another of the same size free. Weekdays 4 to 6 pm is happy hour: buy a beer or cocktail and the second one is free."
+    "tip": "Svakog radnog dana druga akcija. Najbolja je ponedeljkom: uz kupljenu picu dobijaš još jednu iste veličine gratis. Radnim danima od 16 do 18h je happy hour: uz pivo ili koktel drugo piće gratis. Uz kupon isečen sa kesice Chipsy Cheeseburger čipsa dobijaš burger 1+1 u Burger House Bros. restoranima, dok traje akcija.",
+    "tip_en": "A different deal every weekday. The best is Monday: buy any pizza and get another of the same size free. Weekdays 4 to 6 pm is happy hour: buy a beer or cocktail and the second one is free. Cut the coupon from a bag of Chipsy Cheeseburger crisps for a 1+1 burger at Burger House Bros. restaurants, while the promo lasts."
   },
   {
     "id": "rocket-coffee",

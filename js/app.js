@@ -272,7 +272,7 @@
       .map((L, i) => {
         const colors = ["var(--orange)", "var(--green)", "var(--yellow)", "var(--sky)", "var(--red)"];
         return `<button class="tile list-tile" data-list="${esc(L.id)}">
-          <div class="ph ${PATTERNS[i % PATTERNS.length]}" style="--dot:${colors[i % colors.length]}"><b class="tile-ico">${L.icon}</b></div>
+          <div class="ph ${PATTERNS[i % PATTERNS.length]}" style="--dot:${colors[i % colors.length]}"><b class="tile-ico">${L.icon}</b>${L.image ? `<img src="${esc(L.image)}" alt="" loading="lazy" />` : ""}</div>
           <span class="tile-label">${esc(pick(L, "title"))}<small>${T("tile.top", { n: L.places.length })}</small></span>
         </button>`;
       })

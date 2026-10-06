@@ -7,6 +7,7 @@
     id      kratko ime bez razmaka (koristi se u linku, npr. .../#lista-kafa)
     title   naslov liste (title_en: na engleskom)
     icon    ilustracija
+    image   (opciono) slika za karticu liste, npr. "images/lista-pica.jpg"
     intro   jedna ili dve rečenice o listi (intro_en: na engleskom)
     places  mesta redom, svako sa:
               id    id mesta iz data.js
@@ -94,6 +95,7 @@ const LISTS = [
     title: "Top 10 pica",
     title_en: "Top 10 pizza",
     icon: "🍕",
+    image: "images/lista-pica.jpg",
     intro: "Najbolje pice u gradu, od napolitanske do one sa pogledom.",
     intro_en: "The best pizza in town, from Neapolitan to pizza with a view.",
     places: [

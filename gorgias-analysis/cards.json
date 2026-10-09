@@ -1,0 +1,368 @@
+{
+  "addon-channels": {
+    "created": 21,
+    "methods": [
+      "upsell"
+    ],
+    "stage": "expand",
+    "status": "Documented",
+    "take": "Once the inbox is the team's home, adding one more channel to it is a small decision. Each new channel is a cross-sell into an account that is already won.",
+    "title": "Voice and SMS as paid add-ons",
+    "type": "Cross-sell",
+    "url": "https://docs.gorgias.com/en-US/sms-add-on-pricing-289529",
+    "what": "Phone and SMS support are separate add-ons, each with its own ticket allowance and billing on top of the helpdesk plan."
+  },
+  "agency-directory": {
+    "created": 25,
+    "methods": [
+      "validation",
+      "consultative"
+    ],
+    "stage": "prove",
+    "status": "Documented",
+    "take": "Having a certified expert for setup lowers the risk of buying, and each agency's own reputation vouches for Gorgias.",
+    "title": "Certified agency partner directory",
+    "type": "Third-party validation",
+    "url": "https://agencies.gorgias.com/",
+    "what": "A directory of agencies that set up and run Gorgias for brands, labeled with tiers such as Elite Partner and Premier & Services Certified."
+  },
+  "ai-automation": {
+    "created": 5,
+    "methods": [
+      "value"
+    ],
+    "metric": "30%+ of support volume automated",
+    "stage": "prove",
+    "status": "To verify",
+    "take": "One repeated outcome metric is easy to remember and easy for a buyer to pass on internally.",
+    "title": "AI Agent automation rate claims",
+    "type": "Product proof",
+    "url": "",
+    "what": "Percent of tickets resolved automatically is used as the main proof point for the AI product."
+  },
+  "ai-per-resolution": {
+    "created": 20,
+    "methods": [
+      "upsell",
+      "value"
+    ],
+    "metric": "About $1.00 per automated resolution",
+    "stage": "expand",
+    "status": "Documented",
+    "take": "Land with the helpdesk, then expand with AI. Paying per outcome makes the upsell easy to approve, because the merchant only pays when it works, and spend grows as they use it more.",
+    "title": "AI Agent billed per resolution",
+    "type": "Upsell",
+    "url": "",
+    "what": "Since May 2025 the AI Agent is priced per automated resolution on top of the helpdesk plan, reported at about $1.00 on monthly and $0.90 on annual contracts. The more tickets the AI solves, the more Gorgias earns."
+  },
+  "champion-enablement": {
+    "created": 23,
+    "methods": [
+      "upsell",
+      "consultative",
+      "value"
+    ],
+    "stage": "expand",
+    "status": "Documented",
+    "take": "The person who loves the product is rarely the one who signs. Arming that champion with a ready pitch closes the upsell without a sales call.",
+    "title": "A guide for winning leadership approval",
+    "type": "Champion enablement",
+    "url": "https://www.gorgias.com/blog/how-to-pitch-shopping-assistant",
+    "what": "A blog post titled \"Get Leadership to Say Yes to Gorgias AI Shopping Assistant\" hands the CX lead the arguments and numbers to sell the upgrade inside their own company."
+  },
+  "cohosted-webinars": {
+    "created": 16,
+    "methods": [
+      "consultative",
+      "validation"
+    ],
+    "stage": "educate",
+    "status": "Documented",
+    "take": "Co-hosting borrows each partner's audience and trust, and puts Gorgias inside the stack merchants already use.",
+    "title": "Webinars co-hosted with Shopify and partners",
+    "type": "Content education",
+    "url": "https://www.gorgias.com/events",
+    "what": "Live sessions run with Shopify, Trustpilot, agencies and other tech partners, for example \"Inside the Shopify Flywheel: Your BFCM Playbook\" (21 Oct 2026) and DTCx growth stack webinars."
+  },
+  "comparison-pages": {
+    "created": 6,
+    "methods": [
+      "value"
+    ],
+    "stage": "educate",
+    "status": "To verify",
+    "take": "It meets buyers who are already shopping around and lets Gorgias frame the comparison before a competitor does.",
+    "title": "Comparison pages against competitors",
+    "type": "Comparison",
+    "url": "",
+    "what": "Side by side pages against other helpdesks, written for buyers who are already shopping around."
+  },
+  "cx-revenue": {
+    "created": 3,
+    "methods": [
+      "value"
+    ],
+    "stage": "attract",
+    "status": "To verify",
+    "take": "It moves the conversation from the support budget to the revenue budget, and brings the founder into the deal.",
+    "title": "Support reframed as a revenue center",
+    "type": "Positioning",
+    "url": "",
+    "what": "Messaging that says support is a sales channel, not a cost. Speaks to the founder and ecommerce lead, not only the support manager."
+  },
+  "demo-trial": {
+    "created": 7,
+    "methods": [
+      "consultative",
+      "qualification"
+    ],
+    "metric": "7-day free trial · no credit card",
+    "stage": "convert",
+    "status": "Documented",
+    "take": "Small stores get a no-call path and larger brands get a guided one. Bundling the demo with a pricing estimate and ROI assessment gives the buyer a reason to book a call.",
+    "title": "Book a demo and Sign up free, side by side",
+    "type": "Risk reversal",
+    "url": "https://www.gorgias.com/demo",
+    "what": "Both buttons sit in the top navigation on every page. The free trial is 7 days with no credit card. The demo page promises a personalized demo, a pricing estimate and a custom ROI assessment."
+  },
+  "events-community": {
+    "created": 15,
+    "methods": [
+      "consultative"
+    ],
+    "stage": "attract",
+    "status": "Documented",
+    "take": "Events turn customers into a community of CX leaders. People who belong to the community renew and refer others.",
+    "title": "Gorgias Connect conference and community events",
+    "type": "Events & community",
+    "url": "https://www.gorgias.com/events",
+    "what": "An in person conference (Gorgias Connect, Los Angeles, May 2025) with a Partner Day the day before, plus product town halls, meetups and a Customer Appreciation Dinner Series across five cities."
+  },
+  "g2-rating": {
+    "created": 24,
+    "methods": [
+      "validation"
+    ],
+    "metric": "4.6 / 5 on G2",
+    "stage": "prove",
+    "status": "Documented",
+    "take": "Buyers trust other merchants' reviews more than vendor claims, and review sites rank high when buyers search for a helpdesk.",
+    "title": "Review site ratings",
+    "type": "Third-party validation",
+    "url": "https://www.g2.com/products/gorgias/reviews",
+    "what": "Gorgias is rated about 4.6 out of 5 on G2 across hundreds of reviews from merchants."
+  },
+  "integration-pages": {
+    "created": 18,
+    "methods": [
+      "value"
+    ],
+    "stage": "attract",
+    "status": "Documented",
+    "take": "Merchants searching for a tool they already use land on Gorgias. Each page also shows that Gorgias fits the stack they have.",
+    "title": "A page for every integration",
+    "type": "Search & integrations",
+    "url": "https://www.gorgias.com/apps/help-desk-migration",
+    "what": "Each app that connects to Gorgias gets its own page, titled like \"Take care of your shoppers with Gorgias & [app]\"."
+  },
+  "live-chat-dogfood": {
+    "created": 13,
+    "methods": [
+      "consultative",
+      "value"
+    ],
+    "stage": "convert",
+    "status": "Documented",
+    "take": "The buyer experiences the product as a customer before using it as a merchant. Every conversation is a live demo.",
+    "title": "Chat with us: selling with their own product",
+    "type": "Product as proof",
+    "url": "https://www.gorgias.com/",
+    "what": "A Chat with us widget sits on their own pages. Visitors talk to Gorgias the same way a merchant's shoppers would."
+  },
+  "logo-wall": {
+    "created": 12,
+    "methods": [
+      "validation"
+    ],
+    "stage": "prove",
+    "status": "Documented",
+    "take": "Recognizable logos give instant credibility before the visitor reads anything, and tying them to Shopify speaks straight to the target buyer.",
+    "title": "Logo wall: Trusted by largest Shopify brands",
+    "type": "Social proof",
+    "url": "https://www.gorgias.com/",
+    "what": "The homepage shows a strip of well known Shopify brand logos (for example UKLASH and Delta Galil) under a headline about trust."
+  },
+  "migration-help": {
+    "created": 19,
+    "methods": [
+      "qualification",
+      "consultative"
+    ],
+    "stage": "convert",
+    "status": "Documented",
+    "take": "The fear of losing ticket history is a top reason not to switch. Removing it lowers the cost of saying yes.",
+    "title": "Switching help for teams leaving another helpdesk",
+    "type": "Risk reversal",
+    "url": "https://docs.gorgias.com/en-US/migrate-from-non-zendesk-providers-214415",
+    "what": "A built-in Zendesk import, a recommended migration service for other tools, and direct help from the sales team for brands with over 500 tickets a month."
+  },
+  "one-price-platform": {
+    "created": 11,
+    "methods": [
+      "anchoring",
+      "upsell",
+      "value"
+    ],
+    "stage": "convert",
+    "status": "Documented",
+    "take": "Consolidation sells relief from tool sprawl, and showing the savings first makes the price feel small next to it.",
+    "title": "One price, one platform, one inbox",
+    "type": "Pricing",
+    "url": "https://www.gorgias.com/pricing",
+    "what": "Consolidation framing: email, chat, social and AI in one tool at one price. It sells relief from tool sprawl and juggling many logins. The ROI calculator links straight to pricing, so the buyer sees their savings number before the price, which anchors the price against value."
+  },
+  "outcome-pitch": {
+    "created": 9,
+    "methods": [
+      "value"
+    ],
+    "metric": "Fewer repetitive tickets · zero extra holiday hiring · higher conversion rates",
+    "stage": "attract",
+    "status": "Documented",
+    "take": "Buyers pay for results they can feel in their operations, like a calmer holiday peak, not for feature lists.",
+    "title": "The core outcome pitch: sell outcomes, not features",
+    "type": "Positioning",
+    "url": "",
+    "what": "Messaging moves from features to operational impact. The merchant hears what changes in their business, not what buttons the product has."
+  },
+  "partner-ecosystem": {
+    "created": 14,
+    "methods": [
+      "validation",
+      "consultative"
+    ],
+    "metric": "Partnerships grew from 0 to 50% of company revenue (PartnerStack case study)",
+    "stage": "attract",
+    "status": "Documented",
+    "take": "Agencies already have the merchant's trust. Gorgias reaches buyers through the people they already listen to.",
+    "title": "Agency, tech and affiliate partner programs",
+    "type": "Channel partnerships",
+    "url": "https://www.gorgias.com/affiliate-program",
+    "what": "Three tracks: agency partners who recommend Gorgias to the brands they build for, technology partners who integrate with it, and affiliates who earn commission. Partners get revenue share, a partner manager and co-marketing."
+  },
+  "partner-stories": {
+    "created": 1,
+    "methods": [
+      "validation",
+      "value"
+    ],
+    "stage": "prove",
+    "status": "Documented",
+    "take": "A merchant trusts a peer's number more than a vendor's claim. Leading with a hard result lets the buyer picture the same outcome in their own store.",
+    "title": "Partner stories with measurable results",
+    "type": "Social proof",
+    "url": "https://www.gorgias.com/partner-stories",
+    "what": "A library of brands and agencies already using Gorgias, each framed around a result they achieved rather than features."
+  },
+  "playbooks": {
+    "created": 2,
+    "methods": [
+      "consultative",
+      "value"
+    ],
+    "metric": "+60% more conversions · 30%+ of support volume automated",
+    "stage": "educate",
+    "status": "Documented",
+    "take": "No gate means maximum reach and goodwill. The outcome number in the title earns the click, and the product tag means every guide ends by pointing at the tool that delivers it.",
+    "title": "Detailed playbooks that educate the seller",
+    "type": "Content education",
+    "url": "https://www.gorgias.com/playbooks",
+    "what": "A collection of free, un-gated playbooks (no email form). Each is tagged by product area (Shopping Assistant, Automate) and titled with a promised result, so every guide teaches the method and sells the matching product. Titles seen: The AI Shopping Assistant Playbook to Drive +60% More Conversions; The Complete Guide to Meeting Customer Expectations This Holiday Season; How to Automate 30%+ of Support Volume with AI Agent + Flows."
+  },
+  "pricing-tickets": {
+    "created": 8,
+    "methods": [
+      "upsell",
+      "anchoring",
+      "qualification"
+    ],
+    "metric": "$10 → $60 → $360 → $900 → Enterprise",
+    "stage": "expand",
+    "status": "Documented",
+    "take": "The cheap first tier anchors a low entry price. As the store grows, overage charges make the next tier the obvious move, so the merchant's own growth sells the upsell.",
+    "title": "Ticket tier ladder with overages",
+    "type": "Pricing",
+    "url": "",
+    "what": "Plans are sized by monthly tickets. Third-party pricing guides report Starter at $10 for 50 tickets, Basic $60 for 300, Pro $360 for 2,000 and Advanced $900 for 5,000, then Enterprise. Tickets beyond the plan are billed as overage."
+  },
+  "roi-calculator": {
+    "created": 10,
+    "methods": [
+      "value",
+      "anchoring"
+    ],
+    "stage": "convert",
+    "status": "Documented",
+    "take": "The buyer builds the business case in their own numbers, which makes it far more convincing to a boss than a vendor's claim.",
+    "title": "The ROI math strategy: an ROI calculator",
+    "type": "ROI math",
+    "url": "https://www.gorgias.com/roi-calculator",
+    "what": "An interactive calculator where the merchant enters their own numbers and sees the return. The buyer builds the business case themselves, ready to show a boss or co-founder."
+  },
+  "routing-by-size": {
+    "created": 26,
+    "methods": [
+      "qualification"
+    ],
+    "stage": "convert",
+    "status": "Documented",
+    "take": "Self-serve keeps small deals cheap to win, and sales time goes to the accounts worth the most. Ticket volume works as a built-in qualifying question.",
+    "title": "Routing buyers by size",
+    "type": "Qualification",
+    "url": "https://www.gorgias.com/demo",
+    "what": "Small stores go self-serve: sign up free and start a trial. Bigger brands are pulled into a sales conversation, with a demo that includes a pricing estimate and ROI assessment, and migration help from sales above 500 tickets a month."
+  },
+  "seasonal-bfcm": {
+    "created": 17,
+    "methods": [
+      "value"
+    ],
+    "stage": "attract",
+    "status": "Documented",
+    "take": "It hits the buyer at their moment of highest pain, and ties directly to the outcome pitch of no extra holiday hiring.",
+    "title": "Seasonal urgency around BFCM and holidays",
+    "type": "Timing",
+    "url": "https://www.gorgias.com/playbooks",
+    "what": "Holiday playbooks and BFCM roundtables are published ahead of the peak season, when merchants fear ticket spikes most."
+  },
+  "shopify-native": {
+    "created": 4,
+    "methods": [
+      "validation"
+    ],
+    "metric": "40% of the top 1.5K Shopify brands · Shopify Premier Partner",
+    "stage": "attract",
+    "status": "Documented",
+    "take": "Owning one ecosystem makes Gorgias the default choice for that audience and borrows Shopify's trust.",
+    "title": "Built for Shopify, shown everywhere",
+    "type": "Positioning",
+    "url": "https://www.gorgias.com/shopify",
+    "what": "Shopify's partner directory lists Gorgias as a Premier Partner, and Gorgias's Shopify page says 40% of the top 1.5K Shopify brands choose it."
+  },
+  "shopping-assistant": {
+    "created": 22,
+    "methods": [
+      "upsell",
+      "value",
+      "validation"
+    ],
+    "metric": "+75% conversion (Arc'teryx) · 8x ROI (bareMinerals) · +11% AOV (Caitlyn Minimalist)",
+    "stage": "expand",
+    "status": "Documented",
+    "take": "Gorgias upsells merchants a tool that helps them upsell their own shoppers. It moves Gorgias from the support budget into the revenue budget of an existing customer.",
+    "title": "Shopping Assistant: selling upsell as a product",
+    "type": "Upsell",
+    "url": "https://www.gorgias.com/ai-agent/shopping-assistant",
+    "what": "An AI that recommends products, suggests upgrades and sends discount codes in chat. It comes with its own ROI calculator and content like \"11 Ways to Use Shopping Assistant to Increase AOV\"."
+  }
+}

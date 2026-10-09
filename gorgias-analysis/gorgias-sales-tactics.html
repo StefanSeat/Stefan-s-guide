@@ -1,0 +1,343 @@
+<title>Gorgias Sales Tactics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a mind map. The question sits in a ringed hub in the middle; four buyer stages branch left and right; each tactic hangs off its stage. Gorgias palette: white, ink, coral, warm grey, peach. */
+:root{
+  --bg:#ffffff; --surface:#ffffff; --sunk:#ebe7e5; --fg:#161616; --muted:#5c5654; --line:#d9d3d0;
+  --ink:#161616; --on-ink:#ffffff; --coral:#f47a5f; --peach:#fcdccd; --tag-fg:#3a2a24; --warn:#a4462f;
+  --branch:#c9c1bd;
+  color-scheme:light;
+  --display:"Newsreader","Iowan Old Style",Georgia,serif;
+  --body:"Inter",ui-sans-serif,system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{padding-inline:20px;padding-block:24px 56px;max-width:1440px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+header{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--muted);max-width:68ch;margin:4px 0 0;font-size:14px}
+button,input,textarea,select{font:inherit;color:inherit}
+.btn{border:1px solid var(--line);background:var(--surface);padding:9px 18px;border-radius:999px;cursor:pointer;font-weight:500}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--ink);color:var(--on-ink);border-color:var(--ink);font-weight:600}
+.btn:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,.card:focus-visible{outline:2px solid var(--coral);outline-offset:2px}
+.note{font-size:13px;color:var(--muted);text-align:center;margin:0}
+.note.err{color:var(--warn)}
+
+/* map */
+.map{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 250px minmax(0,1fr);column-gap:64px;align-items:center}
+.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.wires path{fill:none;stroke:var(--branch);stroke-width:1.25}
+.wires path.trunk{stroke:var(--coral);stroke-width:1.5}
+.side{display:flex;flex-direction:column;gap:44px;position:relative;z-index:1;min-width:0}
+.hub{position:relative;z-index:1;width:250px;height:250px;border-radius:50%;display:grid;place-items:center;text-align:center;background:var(--surface);border:1px solid var(--line);
+  box-shadow:0 0 0 22px var(--bg),0 0 0 23px var(--line),0 0 0 48px var(--bg),0 0 0 49px var(--sunk)}
+.hub-in{display:flex;flex-direction:column;align-items:center;gap:6px;padding:20px}
+.hub .dot{width:44px;height:44px;border-radius:50%;background:var(--coral);display:grid;place-items:center;color:var(--ink);font-size:22px;line-height:1}
+.hub h1{font-family:var(--display);font-weight:400;font-size:34px;letter-spacing:-.02em;line-height:1.02;margin:0;text-wrap:balance}
+.hub h1 em{font-style:normal;color:var(--coral)}
+.hub .count{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.group{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:52px;align-items:center}
+.side.right .group{grid-template-columns:auto minmax(0,1fr)}
+.side.right .stage{order:-1}
+.stage{display:flex;flex-direction:column;align-items:center;gap:2px;background:var(--peach);color:var(--tag-fg);border-radius:6px;padding:8px 14px;text-align:center;max-width:150px}
+.stage b{font-family:var(--display);font-weight:500;font-size:22px;line-height:1.1;color:var(--ink)}
+.stage span{font-size:11.5px;line-height:1.3}
+.cards{display:flex;flex-direction:column;gap:12px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;cursor:pointer;text-align:left;min-width:0;transition:border-color .15s, transform .15s}
+.card:hover{border-color:var(--ink);transform:translateY(-1px)}
+.card h3{font-family:var(--display);font-size:19px;font-weight:400;letter-spacing:-.01em;margin:0;line-height:1.15}
+.card p{margin:0;font-size:13px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .more{font-size:12px;font-weight:500;color:var(--fg)}
+.card .more::after{content:" →"}
+.empty{font-size:13px;color:var(--muted);border:1px dashed var(--line);border-radius:8px;padding:10px 12px}
+
+.card.dim{opacity:.28}
+.wires path.faint{opacity:.25}
+.wires path.lit{stroke:var(--coral);stroke-width:1.5}
+
+/* method lens */
+.lens{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.lens-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lens-row{display:flex;flex-wrap:wrap;gap:6px}
+.lens-btn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.lens-btn:hover{border-color:var(--ink)}
+.lens-btn[aria-pressed="true"]{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.lens-btn .n{font-family:var(--mono);font-size:11px;opacity:.65}
+.lens-btn:focus-visible,.m-link:focus-visible{outline:2px solid var(--coral);outline-offset:2px}
+
+/* MEDDICC */
+.meddicc{display:flex;flex-direction:column;gap:18px;border-top:1px solid var(--line);padding-top:36px;margin-top:20px}
+.m-head h2{font-family:var(--display);font-weight:400;font-size:clamp(28px,4vw,40px);letter-spacing:-.02em;line-height:1.05;margin:4px 0 6px}
+.m-rows{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.m-row{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;border:1px solid var(--line);border-radius:8px;padding:14px}
+.m-key{display:flex;flex-direction:column;align-items:center;gap:2px;width:78px}
+.m-l{width:46px;height:46px;border-radius:50%;background:var(--coral);display:grid;place-items:center;font-family:var(--display);font-size:26px;color:var(--ink)}
+.m-n{font-size:11px;text-align:center;color:var(--muted);line-height:1.2}
+.m-body{display:flex;flex-direction:column;gap:8px;min-width:0}
+.m-body p{margin:0;font-size:14px}
+.m-links{display:flex;flex-wrap:wrap;gap:6px}
+.m-link{border:0;background:var(--peach);color:var(--tag-fg);border-radius:3px;padding:3px 9px;font-size:12px;cursor:pointer;text-align:left}
+.m-link:hover{text-decoration:underline}
+.chip.method{background:var(--sunk);color:var(--fg)}
+fieldset.methods{border:1px solid var(--line);border-radius:8px;padding:8px 12px 10px;margin:0}
+fieldset.methods legend{font-family:var(--mono);font-size:12px;color:var(--muted);padding:0 4px}
+#i-methods{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px}
+label.check{flex-direction:row;align-items:center;gap:8px;font-family:var(--body);font-size:13.5px;color:var(--fg);letter-spacing:0}
+label.check input{padding:0;margin:0}
+
+/* dialogs */
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--fg);padding:0;width:min(600px,calc(100vw - 32px))}
+dialog::backdrop{background:rgba(22,22,22,.45)}
+.detail{display:flex;flex-direction:column;gap:14px;padding:24px}
+.detail .crumb{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;padding:3px 9px;border-radius:3px;background:var(--peach);color:var(--tag-fg)}
+.detail h2{font-family:var(--display);font-weight:400;font-size:32px;letter-spacing:-.015em;line-height:1.08;margin:0;text-wrap:balance}
+.detail p{margin:0;line-height:1.6}
+.metric{font-family:var(--mono);font-size:13px;border-left:2px solid var(--coral);padding:2px 0 2px 10px}
+.why{background:var(--sunk);border-radius:8px;padding:12px 14px}
+.why b{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--warn);display:block;margin-bottom:2px}
+.url{font-size:13.5px;color:var(--fg);font-weight:500;overflow-wrap:anywhere}
+.url::after{content:" →"}
+form.ed{display:flex;flex-direction:column;gap:12px;padding:22px}
+form.ed h2{font-family:var(--display);font-weight:400;margin:0;font-size:28px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-family:var(--mono);color:var(--muted);letter-spacing:.03em}
+input,textarea,form.ed select{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:8px 10px;font-family:var(--body);font-size:14px;color:var(--fg);letter-spacing:0}
+textarea{min-height:70px;resize:vertical}
+.actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between}
+.actions div{display:flex;gap:8px;margin-left:auto}
+.danger{color:var(--warn)}
+
+@media (max-width:1000px){
+  .map{grid-template-columns:1fr;row-gap:36px}
+  .wires{display:none}
+  .hub{justify-self:center;order:-1;margin-block:48px}
+  .group,.side.right .group{grid-template-columns:1fr;row-gap:12px}
+  .side.right .stage{order:0}
+  .stage{flex-direction:row;gap:10px;max-width:none;justify-self:start;text-align:left;align-items:baseline}
+  .cards{border-left:1.5px solid var(--coral);padding-left:14px}
+  .row{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){.card{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">Sales tactics analysis · gorgias.com</div>
+      <p class="lede">The merchant's buying journey on gorgias.com, from first contact to signed deal. Each branch is one tactic. Open a card for the proof Gorgias shows and why the tactic works.</p>
+    </div>
+    <button class="btn primary" id="new" type="button" hidden>New tactic</button>
+  </header>
+  <nav class="lens" aria-label="Highlight by sales method"><span class="lens-label">Sales method</span><div class="lens-row" id="lens"></div></nav>
+  <p class="note" id="note">Loading the map…</p>
+  <main class="map" id="map">
+    <svg class="wires" id="wires" aria-hidden="true"></svg>
+    <div class="side left" id="side-left"></div>
+    <div class="hub" id="hub"><div class="hub-in"><div class="dot" aria-hidden="true">✦</div><h1>How Gorgias <em>sells</em></h1><div class="count" id="count"></div></div></div>
+    <div class="side right" id="side-right"></div>
+  </main>
+  <section class="meddicc" aria-labelledby="meddicc-h">
+    <div class="m-head">
+      <div class="eyebrow">Qualification lens</div>
+      <h2 id="meddicc-h">MEDDICC, answered by the website</h2>
+      <p class="lede">MEDDICC is the checklist a B2B rep uses to qualify a deal. Gorgias's site does much of that work before a rep joins: each letter below shows how the website already answers it.</p>
+    </div>
+    <div class="m-rows" id="meddicc-rows"></div>
+  </section>
+</div>
+
+<dialog id="det">
+  <div class="detail">
+    <div class="crumb" id="d-crumb"></div>
+    <h2 id="d-title"></h2>
+    <p id="d-what"></p>
+    <div class="metric" id="d-metric"></div>
+    <div class="why" id="d-why"><b>Why it works</b><span id="d-take"></span></div>
+    <a class="url" id="d-url" target="_blank" rel="noopener"></a>
+    <div class="actions"><div><button class="btn" type="button" id="d-edit" hidden>Edit</button><button class="btn primary" type="button" id="d-close">Close</button></div></div>
+  </div>
+</dialog>
+
+<dialog id="dlg">
+  <form class="ed" id="form" method="dialog">
+    <h2 id="dlg-title">New tactic</h2>
+    <label>Tactic name<input id="i-title" required maxlength="120"></label>
+    <div class="row">
+      <label>Buyer stage<select id="i-stage"></select></label>
+      <label>Tactic type<input id="i-type" list="types" maxlength="40"><datalist id="types"></datalist></label>
+    </div>
+    <label>Where on their site (URL)<input id="i-url" type="url" placeholder="https://www.gorgias.com/…"></label>
+    <label>What they do<textarea id="i-what" maxlength="1500"></textarea></label>
+    <label>Proof or metric they show<input id="i-metric" maxlength="200"></label>
+    <label>Why it works<textarea id="i-take" maxlength="1500"></textarea></label>
+    <fieldset class="methods"><legend>Sales methods</legend><div id="i-methods"></div></fieldset>
+    <p class="note err" id="form-err" hidden></p>
+    <div class="actions">
+      <button class="btn danger" type="button" id="del" hidden>Delete</button>
+      <div><button class="btn" type="button" id="cancel">Cancel</button><button class="btn primary" type="submit" id="save">Save tactic</button></div>
+    </div>
+  </form>
+</dialog>
+
+<script>
+const STAGES=[
+  {id:"attract",name:"Attract",q:"Getting a merchant's attention",side:"left"},
+  {id:"educate",name:"Educate",q:"Making the buyer smarter",side:"left"},
+  {id:"prove",name:"Prove",q:"Showing it works",side:"left"},
+  {id:"convert",name:"Convert",q:"Closing and lowering risk",side:"right"},
+  {id:"expand",name:"Expand",q:"Upselling and cross-selling customers",side:"right"}
+];
+const METHODS=[
+  {id:"upsell",name:"Upsell & cross-sell"},
+  {id:"anchoring",name:"Anchoring"},
+  {id:"consultative",name:"Relationship & consultative"},
+  {id:"qualification",name:"Qualification & process"},
+  {id:"value",name:"Solution & value"},
+  {id:"validation",name:"Third-party validation"}
+];
+const MEDDICC=[
+  {l:"M",n:"Metrics",t:"Every claim comes with a number the buyer can repeat: the ROI calculator, 30%+ of tickets automated, +60% conversions, results in partner stories.",ids:["roi-calculator","ai-automation","partner-stories"]},
+  {l:"E",n:"Economic buyer",t:"Support is pitched as revenue, so the message reaches the founder or ecommerce lead who controls budget, not only the support manager.",ids:["cx-revenue","outcome-pitch"]},
+  {l:"D",n:"Decision criteria",t:"The site defines what a good helpdesk looks like on Gorgias's strengths: Shopify-native, one inbox for every channel, priced by tickets.",ids:["shopify-native","one-price-platform","comparison-pages"]},
+  {l:"D",n:"Decision process",t:"A clear path for each size of buyer: free trial, then a demo with pricing estimate, then sales-led migration for 500+ tickets a month.",ids:["demo-trial","routing-by-size"]},
+  {l:"I",n:"Identify pain",t:"The content names the pains before the buyer does: holiday ticket spikes, repetitive questions, too many tools.",ids:["seasonal-bfcm","outcome-pitch","one-price-platform"]},
+  {l:"C",n:"Champion",t:"Playbooks train the CX lead in Gorgias's method, and a ready-made guide helps them win leadership approval.",ids:["playbooks","champion-enablement"]},
+  {l:"C",n:"Competition",t:"Switching costs are removed with a Zendesk import and migration help, and the buyer is met where they compare tools.",ids:["migration-help","comparison-pages"]}
+];
+const $=s=>document.querySelector(s);
+let cards=[],db=null,canWrite=false,editing=null,viewing=null,lens="";
+
+function el(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+function safeUrl(u){try{const x=new URL(u);return /^https?:$/.test(x.protocol)?x.href:null}catch(e){return null}}
+
+function render(){
+  const L=$("#side-left"),R=$("#side-right");L.replaceChildren();R.replaceChildren();
+  $("#types").replaceChildren(...[...new Set(cards.map(c=>c.type).filter(Boolean))].sort().map(t=>new Option(t)));
+  $("#count").textContent=cards.length?cards.length+" tactics · "+STAGES.length+" stages":"";
+  renderLens();renderMeddicc();
+  for(const st of STAGES){
+    const g=el("section","group");g.dataset.stage=st.id;g.setAttribute("aria-label",st.name);
+    const pill=el("div","stage");pill.append(el("b",null,st.name),el("span",null,st.q));
+    const list=el("div","cards");
+    const mine=cards.filter(c=>(c.stage||"prove")===st.id).sort((a,b)=>(a.created||0)-(b.created||0));
+    if(!mine.length)list.append(el("div","empty","No tactics here yet."));
+    for(const c of mine)list.append(cardEl(c));
+    g.append(list,pill);
+    (st.side==="left"?L:R).append(g);
+  }
+  requestAnimationFrame(drawWires);
+}
+function cardEl(c){
+  const d=el("article","card");d.tabIndex=0;d.setAttribute("role","button");
+  if(lens&&!(c.methods||[]).includes(lens))d.classList.add("dim");
+  d.append(el("h3",null,c.title||"Untitled"));
+  if(c.what)d.append(el("p",null,c.what));
+  d.append(el("span","more","More"));
+  const open=()=>openDetail(c);
+  d.onclick=open;d.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open()}};
+  return d;
+}
+
+function drawWires(){
+  const svg=$("#wires"),map=$("#map");
+  if(getComputedStyle(svg).display==="none"){svg.replaceChildren();return}
+  const m=map.getBoundingClientRect(),hub=$("#hub").getBoundingClientRect();
+  const ns="http://www.w3.org/2000/svg",paths=[];
+  const curve=(x1,y1,x2,y2,cls)=>{const mx=(x1+x2)/2;const p=document.createElementNS(ns,"path");p.setAttribute("d",`M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`);if(cls)p.setAttribute("class",cls);paths.push(p)};
+  const r=hub.width/2,cx=hub.left+r-m.left,cy=hub.top+r-m.top;
+  document.querySelectorAll(".group").forEach(g=>{
+    const left=g.parentElement.classList.contains("left");
+    const pill=g.querySelector(".stage").getBoundingClientRect();
+    const py=pill.top+pill.height/2-m.top;
+    const inner=left?pill.right-m.left:pill.left-m.left, outer=left?pill.left-m.left:pill.right-m.left;
+    const dy=Math.max(-r*.8,Math.min(r*.8,py-cy)), dx=Math.sqrt(r*r-dy*dy);
+    curve(left?cx-dx:cx+dx,cy+dy,inner,py,"trunk");
+    g.querySelectorAll(".card,.empty").forEach(c=>{const b=c.getBoundingClientRect();curve(outer,py,left?b.right-m.left:b.left-m.left,b.top+b.height/2-m.top,lens?(c.classList.contains("dim")?"faint":"lit"):"")});
+  });
+  svg.setAttribute("viewBox",`0 0 ${m.width} ${m.height}`);
+  svg.replaceChildren(...paths);
+}
+new ResizeObserver(()=>requestAnimationFrame(drawWires)).observe($("#map"));
+document.fonts?.ready.then(()=>requestAnimationFrame(drawWires));
+
+function renderLens(){
+  const bar=$("#lens");bar.replaceChildren();
+  const mk=(id,name)=>{const b=el("button","lens-btn",name);b.type="button";b.setAttribute("aria-pressed",String(lens===id));
+    const n=id?cards.filter(c=>(c.methods||[]).includes(id)).length:cards.length;b.append(el("span","n"," "+n));
+    b.onclick=()=>{lens=id;render()};return b};
+  bar.append(mk("","All tactics"),...METHODS.map(m=>mk(m.id,m.name)));
+}
+function renderMeddicc(){
+  const box=$("#meddicc-rows");box.replaceChildren();
+  for(const r of MEDDICC){
+    const row=el("div","m-row");
+    const k=el("div","m-key");k.append(el("span","m-l",r.l),el("span","m-n",r.n));
+    const body=el("div","m-body");body.append(el("p",null,r.t));
+    const links=el("div","m-links");
+    for(const id of r.ids){const c=cards.find(x=>x.id===id);if(!c)continue;const b=el("button","m-link",c.title);b.type="button";b.onclick=()=>openDetail(c);links.append(b)}
+    if(links.childElementCount)body.append(links);
+    row.append(k,body);box.append(row);
+  }
+}
+function openDetail(c){
+  viewing=c;
+  const st=STAGES.find(s=>s.id===(c.stage||"prove"));
+  $("#d-crumb").replaceChildren(el("span","chip",st?st.name:""),...(c.type?[el("span","chip",c.type)]:[]),
+    ...(c.methods||[]).map(id=>METHODS.find(m=>m.id===id)).filter(Boolean).map(m=>el("span","chip method",m.name)));
+  $("#d-title").textContent=c.title||"Untitled";
+  $("#d-what").textContent=c.what||"";$("#d-what").hidden=!c.what;
+  $("#d-metric").textContent=c.metric||"";$("#d-metric").hidden=!c.metric;
+  $("#d-take").textContent=c.take||"";$("#d-why").hidden=!c.take;
+  const u=safeUrl(c.url||"");const a=$("#d-url");a.hidden=!u;if(u){a.href=u;a.textContent="See it on "+u.replace(/^https?:\/\/(www\.)?/,"").replace(/\/$/,"")}
+  $("#d-edit").hidden=!canWrite;
+  $("#det").showModal();
+}
+$("#d-close").onclick=()=>$("#det").close();
+$("#d-edit").onclick=()=>{$("#det").close();openEd(viewing)};
+
+function openEd(c,stage){
+  editing=c;
+  $("#dlg-title").textContent=c?"Edit tactic":"New tactic";
+  $("#i-stage").replaceChildren(...STAGES.map(s=>new Option(s.name,s.id)));
+  $("#i-title").value=c?.title||"";$("#i-stage").value=c?.stage||stage||"attract";$("#i-type").value=c?.type||"";
+  $("#i-url").value=c?.url||"";$("#i-what").value=c?.what||"";$("#i-metric").value=c?.metric||"";$("#i-take").value=c?.take||"";
+  $("#i-methods").replaceChildren(...METHODS.map(m=>{const l=el("label","check");const i=el("input");i.type="checkbox";i.value=m.id;i.id="m-"+m.id;i.checked=(c?.methods||[]).includes(m.id);l.append(i,document.createTextNode(m.name));return l}));
+  $("#del").hidden=!c;$("#form-err").hidden=true;$("#del").textContent="Delete";$("#del").dataset.armed="";
+  $("#dlg").showModal();$("#i-title").focus();
+}
+function fail(msg){const e=$("#form-err");e.textContent=msg;e.hidden=false}
+$("#form").addEventListener("submit",async e=>{
+  e.preventDefault();if(!db)return fail("The map can't save right now. Reload the page and try again.");
+  const data={...(editing?{status:editing.status||""}:{}),title:$("#i-title").value.trim(),stage:$("#i-stage").value,type:$("#i-type").value.trim(),url:$("#i-url").value.trim(),
+    what:$("#i-what").value.trim(),metric:$("#i-metric").value.trim(),take:$("#i-take").value.trim(),methods:[...document.querySelectorAll("#i-methods input:checked")].map(i=>i.value),created:editing?.created||Date.now()};
+  if(!data.title)return fail("Give the tactic a name.");
+  $("#save").disabled=true;
+  try{const col=db.collection("cards");await (editing?col.doc(editing.id):col.doc()).set(data);$("#dlg").close()}
+  catch(err){if(err?.code==="invalid_argument"){canWrite=false;$("#new").hidden=true;fail("You can view this map but not edit it.")}else fail("Saving failed ("+(err?.code||"error")+"). Try again in a moment.")}
+  finally{$("#save").disabled=false}
+});
+$("#del").onclick=async()=>{
+  const b=$("#del");if(!b.dataset.armed){b.dataset.armed="1";b.textContent="Click again to delete";return}
+  try{await db.collection("cards").doc(editing.id).delete();$("#dlg").close()}catch(err){fail("Delete failed ("+(err?.code||"error")+").")}
+};
+$("#cancel").onclick=()=>$("#dlg").close();
+$("#new").onclick=()=>openEd(null,"attract");
+
+render();
+(async()=>{
+  const note=$("#note");
+  db=await window.claude?.use?.("db");
+  if(!db){note.textContent="Sign in to claude.ai to see this map.";note.classList.add("err");return}
+  try{const user=await claude.use("user");const w=user?await user.can("data.write"):null;canWrite=w!==false}catch(e){canWrite=true}
+  $("#new").hidden=!canWrite;
+  db.collection("cards").onSnapshot(s=>{
+    cards=s.docs.map(d=>({id:d.id,...d.data()}));
+    note.hidden=cards.length>0;note.textContent="No tactics yet. Use New tactic to add the first one.";
+    render();
+  },err=>{note.hidden=false;note.textContent="The map stopped syncing ("+err.code+"). Reload to reconnect.";note.classList.add("err")});
+})();
+</script>

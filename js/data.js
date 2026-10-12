@@ -1867,5 +1867,26 @@ const LOCATIONS = [
     "website": "https://konobaakustik.rs/",
     "tip": "Redovno imaju akcije na sajtovima sa kuponima (npr. dva gurmanska ćevapa ili pljeskavice sa supom i desertom za dvoje), a u Knez Mihailovoj dele flajere sa popustom.",
     "tip_en": "They regularly run deals on coupon sites (e.g. gourmet ćevapi or pljeskavica with soup and dessert for two), and hand out discount flyers on Knez Mihailova street."
+  },
+  {
+    "id": "trattoria-campania",
+    "name": "Trattoria Campania",
+    "category": "jelo",
+    "area": "Stari grad",
+    "image": "",
+    "short": "Napolitanska pica i italijanska kuhinja pored Konaka kneginje Ljubice.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Kneza Sime Markovića 10, Beograd",
+    "lat": 44.8187,
+    "lng": 20.4527,
+    "mapsUrl": "",
+    "tags": [
+      "pica"
+    ],
+    "icon": "🍕",
+    "short_en": "Neapolitan pizza and Italian food next to Princess Ljubica's Residence.",
+    "website": "https://trattoriacampania.com/"
   }
 ];

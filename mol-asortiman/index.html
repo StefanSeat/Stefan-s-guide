@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- ARTIFACT-START -->
+<title>Asortiman MOL pumpe</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: radni dokument u jednoj koloni, sa "displejom pumpe" (mono cifre) za brojeve i planogramom frižidera kao glavnom slikom */
+:root {
+  --bg: #f3f5f4;
+  --surface: #ffffff;
+  --ink: #14211f;
+  --muted: #56645f;
+  --line: #d5ddd9;
+  --accent: #0d6b55;      /* tamno zelena, boja stanice */
+  --accent-soft: #dcefe8;
+  --amber: #c97a00;       /* displej pumpe */
+  --amber-soft: #fbefd8;
+  --red: #b3261e;
+  --display-bg: #101a18;
+  --display-fg: #ffb547;
+  --f-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --f-body: "Barlow", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1514; --surface: #172120; --ink: #e6eeeb; --muted: #9aaaa4; --line: #2a3734;
+    --accent: #4cc3a0; --accent-soft: #173a31; --amber: #f0a43a; --amber-soft: #3a2b12; --red: #ff8a80;
+    --display-bg: #070c0b; --display-fg: #ffb547; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1514; --surface: #172120; --ink: #e6eeeb; --muted: #9aaaa4; --line: #2a3734;
+  --accent: #4cc3a0; --accent-soft: #173a31; --amber: #f0a43a; --amber-soft: #3a2b12; --red: #ff8a80;
+  --display-bg: #070c0b; --display-fg: #ffb547; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--f-body); font-size: 17px; line-height: 1.6;
+}
+.wrap {
+  max-width: 980px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px 80px;
+  display: flex; flex-direction: column; gap: 56px;
+}
+h1, h2, h3 { font-family: var(--f-display); font-weight: 700; line-height: 1.1; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2.6rem, 7vw, 4.4rem); letter-spacing: -0.01em; text-transform: uppercase; }
+h2 { font-size: clamp(1.8rem, 4vw, 2.4rem); text-transform: uppercase; }
+h3 { font-size: 1.3rem; text-transform: uppercase; letter-spacing: 0.02em; }
+p { margin: 0; max-width: 68ch; }
+.eyebrow {
+  font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent); font-weight: 700;
+}
+section { display: flex; flex-direction: column; gap: 18px; }
+.lead { font-size: 1.15rem; color: var(--muted); }
+ul { margin: 0; padding-left: 1.2em; }
+li { margin-block: 4px; }
+a { color: var(--accent); }
+
+/* hero */
+header.hero { display: flex; flex-direction: column; gap: 18px; }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  font-family: var(--f-mono); font-size: 0.75rem; padding: 4px 10px; border-radius: 4px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--muted);
+}
+.chip.warn { border-color: var(--amber); color: var(--amber); background: var(--amber-soft); }
+
+/* displej pumpe */
+.display {
+  background: var(--display-bg); border-radius: 10px; padding: 20px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px;
+}
+.display div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.display .lbl { font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: #8fa39c; }
+.display .val { font-family: var(--f-mono); font-weight: 700; font-size: 1.6rem; color: var(--display-fg); font-variant-numeric: tabular-nums; }
+.display .sub { font-size: 0.85rem; color: #c3d0cb; }
+
+/* tabele */
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 0.95rem; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 700; background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+td strong { font-weight: 600; }
+
+/* kartice zona */
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 18px;
+  display: flex; flex-direction: column; gap: 8px; min-width: 0;
+}
+.card .tag { font-family: var(--f-mono); font-size: 0.72rem; color: var(--amber); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.card ul { font-size: 0.95rem; }
+
+/* planogram frizidera */
+.fridge-wrap { overflow-x: auto; }
+.fridge {
+  display: grid; grid-template-columns: repeat(5, minmax(150px, 1fr)); gap: 6px;
+  background: var(--display-bg); padding: 10px; border-radius: 10px; min-width: 800px;
+}
+.door { display: flex; flex-direction: column; gap: 4px; background: #1d2b28; border-radius: 6px; padding: 6px; }
+.door-h { font-family: var(--f-mono); font-size: 0.7rem; color: #8fa39c; text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 4px 6px; }
+.shelf { border-radius: 4px; padding: 8px; font-size: 0.8rem; line-height: 1.35; color: #e7efec; background: #2a3a36; min-height: 64px; }
+.shelf b { display: block; font-family: var(--f-mono); font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase; color: #8fa39c; font-weight: 700; margin-bottom: 2px; }
+.shelf.eye { background: #3d3216; outline: 1px solid #ffb547; }
+.shelf.eye b { color: #ffb547; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 0.85rem; color: var(--muted); }
+.legend span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; background: #2a3a36; }
+.legend span.eye::before { background: #3d3216; outline: 1px solid #ffb547; }
+
+/* tierovi piva */
+.tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.tier { border-top: 4px solid var(--accent); background: var(--surface); border-radius: 0 0 8px 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; border-left: 1px solid var(--line); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.tier.t2 { border-top-color: var(--amber); }
+.tier.t3 { border-top-color: var(--muted); }
+.tier.t4 { border-top-color: var(--red); }
+.tier .share { font-family: var(--f-mono); font-size: 0.8rem; color: var(--muted); }
+.tier p { font-size: 0.92rem; }
+
+/* kalkulator */
+.calc { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+.inputs { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field label { font-size: 0.85rem; color: var(--muted); }
+.field input {
+  font-family: var(--f-mono); font-size: 1rem; padding: 8px 10px; border-radius: 6px;
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 100%;
+}
+.field input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.out { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.out .display { grid-template-columns: 1fr; }
+.bar { height: 14px; background: var(--line); border-radius: 7px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .3s; }
+.note { font-size: 0.85rem; color: var(--muted); }
+
+/* checklist */
+.check { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.check li { display: flex; gap: 10px; align-items: flex-start; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; margin: 0; }
+.check input { margin-top: 5px; accent-color: var(--accent); width: 16px; height: 16px; flex: none; }
+.check label { cursor: pointer; }
+.prio { font-family: var(--f-mono); font-size: 0.7rem; font-weight: 700; padding: 1px 6px; border-radius: 3px; margin-right: 6px; white-space: nowrap; }
+.p1 { background: var(--accent-soft); color: var(--accent); }
+.p2 { background: var(--amber-soft); color: var(--amber); }
+
+.callout { border-left: 4px solid var(--amber); background: var(--amber-soft); padding: 12px 16px; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+footer { font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
+@media (prefers-reduced-motion: reduce) { .bar i { transition: none; } }
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <span class="eyebrow">Radni dokument · analiza asortimana · v1</span>
+  <h1>Kako izmeniti asortiman MOL pumpe</h1>
+  <p class="lead">Cilj koji je zadala pumpa: da prodavnica i Fresh Corner (kafa, viršle, hrana) pokriju ceo trošak rada pumpe, a da gorivo bude čist dodatak. Ovo je opšta analiza šta pumpe danas rade, šta se proverava kod impulsne kupovine i kako rasporediti frižidere i pivo. Slike iz radnje dolaze posle, pa se ovde dopunjuje konkretno stanje.</p>
+  <div class="hero-meta">
+    <span class="chip">Fresh Corner</span>
+    <span class="chip">Rashladne jedinice</span>
+    <span class="chip">Impulsna kupovina</span>
+    <span class="chip">Discover zona</span>
+    <span class="chip warn">Čeka slike iz radnje</span>
+  </div>
+</header>
+
+<section id="logika">
+  <span class="eyebrow">01 · Zašto hrana i kafa</span>
+  <h2>Logika: gorivo dovodi kupca, radnja zarađuje</h2>
+  <p>Na gorivu pumpa zarađuje malo po litru i na tu cenu skoro ne može da utiče. Kupac goriva je već na stanici i već ide do kase. Svaki dinar koji ostavi pored goriva nosi višestruko veću maržu. Zato sve velike mreže (MOL, OMV, NIS Petrol, Lukoil) guraju isti model: dobra kafa, brza topla hrana i prodavnica koja prodaje "sada i ovde".</p>
+  <div class="display" aria-label="Okvirne bruto marže po kategoriji">
+    <div><span class="lbl">Kafa iz aparata</span><span class="val">65–80%</span><span class="sub">najjača kategorija po marži</span></div>
+    <div><span class="lbl">Hot dog / viršle</span><span class="val">50–65%</span><span class="sub">signature proizvod mreže</span></div>
+    <div><span class="lbl">Hladna pića</span><span class="val">25–40%</span><span class="sub">najveći promet u komadima</span></div>
+    <div><span class="lbl">Grickalice, slatkiši</span><span class="val">25–35%</span><span class="sub">čista impulsna kupovina</span></div>
+    <div><span class="lbl">Cigarete</span><span class="val">5–10%</span><span class="sub">promet, ne zarada</span></div>
+  </div>
+  <p class="note">Rasponi su okvirni industrijski rasponi za maloprodaju na pumpama, ne MOL-ovi brojevi. Prave marže dobijamo od pumpe i unosimo u kalkulator ispod.</p>
+  <p>MOL grupa je od Fresh Corner-a napravila regionalni brend: oko 65 miliona šoljica kafe i 43 miliona hot dog-ova godišnje u celoj mreži, sopstvena pržionica kafe u Mađarskoj, i aplikacija MOL Move kao program lojalnosti. U Srbiji je Fresh Corner na oko 45 stanica. To znači da je deo asortimana (kafa, hot dog, peciva) zadat od strane mreže, a slobodan prostor za izmene je pre svega u prodavnici, frižiderima i rasporedu.</p>
+</section>
+
+<section id="kupci">
+  <span class="eyebrow">02 · Ko ulazi u radnju</span>
+  <h2>Misije kupaca po delu dana</h2>
+  <p>Asortiman se ne pravi za "prosečnog kupca", nego za nekoliko jasnih misija. Svaka misija ima svoj sat, svoju korpu i svoju impulsnu priliku.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Deo dana</th><th>Ko</th><th>Šta kupuje</th><th>Šta mu ponuditi pored</th></tr></thead>
+      <tbody>
+        <tr><td><strong>06–10h</strong> jutro</td><td>Komuteri, majstori, dostavljači</td><td>Kafa za poneti, kroasan, pecivo, cigarete, energetski</td><td>Kombo kafa + kroasan, druga kafa jeftinije uz MOL Move, voda 0,5 l</td></tr>
+        <tr><td><strong>10–15h</strong> dan</td><td>Profesionalni vozači, službena vozila, tranzit</td><td>Sendvič, hot dog, sok, voda</td><td>Meni "obrok za put": topli proizvod + piće + čokoladica</td></tr>
+        <tr><td><strong>15–19h</strong> popodne</td><td>Povratak s posla, roditelji s decom</td><td>Pivo za kuću, čips, slatkiši, sladoled</td><td>Pivo + grickalica pored frižidera, dečji slatkiši u visini deteta</td></tr>
+        <tr><td><strong>19–24h</strong> veče</td><td>Mladi, izlasci, kupci kad je sve zatvoreno</td><td>Pivo, energetski, cigarete, čips, žvake</td><td>Multipak piva, hladan led, upaljači, punjači za telefon</td></tr>
+        <tr><td><strong>00–06h</strong> noć</td><td>Kamiondžije, taksisti, noćna smena</td><td>Kafa, energetski, hot dog</td><td>Uži asortiman, ali uvek topla kafa i bar jedan topli proizvod</td></tr>
+        <tr><td><strong>Vikend / leto</strong></td><td>Porodice na putu, turisti u tranzitu</td><td>Voda, sladoled, grickalice za decu, putni sitni pribor</td><td>Veća pakovanja vode, hladnjak sa ledom, suveniri i lokalni proizvodi</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="callout">Iz slika nam treba lokacija pumpe (grad, magistrala ili autoput), radno vreme i otprilike odnos dnevnih i noćnih kupaca. Od toga zavisi koja misija dobija najviše prostora.</p>
+</section>
+
+<section id="fresh">
+  <span class="eyebrow">03 · Fresh Corner</span>
+  <h2>Kafa, viršle i hrana: motor koji plaća trošak</h2>
+  <div class="grid">
+    <div class="card">
+      <span class="tag">Kafa</span>
+      <h3>Najveća marža po kupcu</h3>
+      <ul>
+        <li>Aparat mora biti vidljiv sa ulaza i odmah pored kase, ne u ćošku</li>
+        <li>Jasan cenovnik sa 3 do 4 izbora, ne 15 (espreso, kafa s mlekom, kapućino, latte)</li>
+        <li>Dve veličine čaše: veća čaša je najlakši način da se podigne račun</li>
+        <li>Kroasan i pecivo na pultu odmah pored aparata, uz kombo cenu</li>
+        <li>Leto: ledena kafa i frape iz frižidera kao dodatak</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="tag">Hot dog / viršle</span>
+      <h3>Signature proizvod</h3>
+      <ul>
+        <li>Grill ili topla vitrina mora da izgleda puno, i u 23h</li>
+        <li>Kombo: hot dog + 0,5 l piće + mali dodatak po fiksnoj ceni</li>
+        <li>Dodaci (senf, kečap, luk, krastavčići) uvek dopunjeni i čisti</li>
+        <li>Pratiti otpis po satu: bolje češće manje količine nego puna vitrina koja se baca</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="tag">Sendviči i peciva</span>
+      <h3>Obrok za put</h3>
+      <ul>
+        <li>Hladna vitrina sa sendvičima na visini očiju, pored hladnih pića</li>
+        <li>2 do 3 stalna ukusa koji se dobro prodaju + 1 sezonski</li>
+        <li>Zdravija opcija (salata, wrap, jogurt i musli) za deo kupaca koji ne jede hot dog</li>
+        <li>Jasan rok i datum, popust posle određenog sata umesto bacanja</li>
+      </ul>
+    </div>
+  </div>
+  <p>Ključni broj ovde je <strong>konverzija</strong>: koliko kupaca goriva kupi bar jednu kafu ili jedan topli proizvod. Svaki procenat više je direktno novac koji ide na pokrivanje troška. Merimo ga iz kase: broj računa sa Fresh Corner proizvodom podeljen sa brojem računa za gorivo.</p>
+</section>
+
+<section id="zone">
+  <span class="eyebrow">04 · Raspored radnje</span>
+  <h2>Zone radnje i šta ide gde</h2>
+  <p>Kupac na pumpi ima malo vremena i jasan put: vrata, kasa, vrata. Raspored treba da ga provede pored frižidera i Fresh Corner-a, a da mu ne smeta kad samo plaća gorivo.</p>
+  <div class="grid">
+    <div class="card"><span class="tag">Zona 1 · Ulaz</span><h3>Promo i sezona</h3><ul><li>Jedna akcija meseca, velika i jasna</li><li>Sezonski proizvodi: leto voda i sladoled, zima tečnost za stakla i metlice</li><li>Ne zatrpavati, kupac mora da vidi kasu i kafu</li></ul></div>
+    <div class="card"><span class="tag">Zona 2 · Put do kase</span><h3>Grickalice i slatkiši</h3><ul><li>Čips, kikiriki, štapići na polici do kase</li><li>Čokoladice i bombone na visini 120 do 160 cm</li><li>Dečji slatkiši niže, na visini deteta</li></ul></div>
+    <div class="card"><span class="tag">Zona 3 · Zadnji zid</span><h3>Rashladne jedinice</h3><ul><li>Frižideri u dnu vuku kupca kroz radnju</li><li>Pored frižidera piva: grickalice za pivo</li><li>Pored hladnih pića: sendviči</li></ul></div>
+    <div class="card"><span class="tag">Zona 4 · Kasa</span><h3>Najjači impuls</h3><ul><li>Žvake, mentol bombone, mali slatkiši do 150 RSD</li><li>Energetski u malom frižideru na kasi</li><li>Punjači, kablovi, upaljači</li><li>Kasir pita jedno pitanje: "Kafa uz gorivo?"</li></ul></div>
+    <div class="card"><span class="tag">Zona 5 · Auto kutak</span><h3>Planska kupovina</h3><ul><li>Ulje, AdBlue, tečnost za stakla, brisači, sijalice</li><li>Mirisi za auto, krpe, sprej za gume</li><li>Ne mora biti na najboljem mestu, kupac ga sam traži</li></ul></div>
+    <div class="card"><span class="tag">Zona 6 · Discover</span><h3>Novo i lokalno</h3><ul><li>Jedna polica ili stalak "Probaj novo" koji se menja na 4 do 6 nedelja</li><li>Novi ukusi, lokalni kraft, domaći proizvodi, sezonski limitirani</li><li>Razlog da se stalni kupac osvrne, i test pre nego što proizvod uđe u stalni asortiman</li></ul></div>
+  </div>
+</section>
+
+<section id="frizideri">
+  <span class="eyebrow">05 · Rashladne jedinice</span>
+  <h2>Planogram frižidera</h2>
+  <p>Primer rasporeda za liniju od 5 vrata. Pravilo: kupac čita frižider s leva na desno i odozgo nadole, a najviše kupuje sa police u visini očiju. Tu ide ono što se najviše prodaje i nosi najbolju maržu. Velika pakovanja i multipak idu dole, jer su teška i kupac ih ionako traži.</p>
+  <div class="fridge-wrap">
+    <div class="fridge" role="img" aria-label="Planogram od pet vrata frižidera">
+      <div class="door"><span class="door-h">Vrata 1 · Voda</span>
+        <div class="shelf"><b>Gore</b>Voda sa ukusom, izotonik</div>
+        <div class="shelf eye"><b>Oči</b>Negazirana i gazirana voda 0,5 l, bestseleri</div>
+        <div class="shelf"><b>Ruka</b>Voda 0,75 l sport čep, 1 l</div>
+        <div class="shelf"><b>Dole</b>Voda 1,5 l, multipak</div>
+      </div>
+      <div class="door"><span class="door-h">Vrata 2 · Sokovi i gazirano</span>
+        <div class="shelf"><b>Gore</b>Ledeni čajevi, nove vrste</div>
+        <div class="shelf eye"><b>Oči</b>Cola, Cola Zero, Fanta, Sprite 0,5 l</div>
+        <div class="shelf"><b>Ruka</b>Sokovi 0,33 i 0,5 l, limunade</div>
+        <div class="shelf"><b>Dole</b>Gazirano 1,5 l</div>
+      </div>
+      <div class="door"><span class="door-h">Vrata 3 · Energija i kafa</span>
+        <div class="shelf"><b>Gore</b>Proteinski napici, mleko</div>
+        <div class="shelf eye"><b>Oči</b>Energetski 0,25 i 0,5 l, lider + izazivač</div>
+        <div class="shelf"><b>Ruka</b>Ledena kafa u čaši i limenci, jogurt</div>
+        <div class="shelf"><b>Dole</b>Rezerva energetskih, jeftiniji brend</div>
+      </div>
+      <div class="door"><span class="door-h">Vrata 4 · Pivo domaće</span>
+        <div class="shelf"><b>Gore</b>Radler i bezalkoholno</div>
+        <div class="shelf eye"><b>Oči</b>Mainstream limenka 0,5 l (Jelen, Lav, Zaječarsko)</div>
+        <div class="shelf"><b>Ruka</b>Isti brendovi, boca 0,5 l i povratna</div>
+        <div class="shelf"><b>Dole</b>Multipak 4 ili 6 limenki, PET 2 l</div>
+      </div>
+      <div class="door"><span class="door-h">Vrata 5 · Pivo premium</span>
+        <div class="shelf"><b>Gore</b>Kraft i Discover pivo (rotacija)</div>
+        <div class="shelf eye"><b>Oči</b>Premium međunarodno (Heineken, Tuborg, Staropramen, Carlsberg)</div>
+        <div class="shelf"><b>Ruka</b>Nikšićko, Amstel, Corona, sezonska izdanja</div>
+        <div class="shelf"><b>Dole</b>Premium multipak, boce 0,33 l</div>
+      </div>
+    </div>
+  </div>
+  <div class="legend"><span class="eye">Visina očiju: najbolje mesto, bestseleri i najveća marža</span><span>Ostale police</span></div>
+  <p class="callout">Proveriti pre izmene: mnogi frižideri na pumpama su u vlasništvu pivare ili Coca-Cola HBC i imaju ugovor o tome šta sme da stoji u njima. Ako je frižider od Lava, u njemu ne može da stoji Jelen. Na slikama zato treba videti logo na frižideru, a od pumpe dobiti spisak ugovora.</p>
+</section>
+
+<section id="pivo">
+  <span class="eyebrow">06 · Pivo</span>
+  <h2>Koje pivo držati i kako ga pozicionirati</h2>
+  <p>Tržište piva u Srbiji drže tri kompanije sa oko 96% udela: Molson Coors (Apatinska pivara: Jelen, Nikšićko, Staropramen), Carlsberg Srbija (Lav, Tuborg, Carlsberg) i Heineken Srbija (Zaječarsko, MB, Heineken, Amstel). Potrošnja je oko 65 litara po stanovniku, ali ukupna prodaja piva poslednjih godina pada. Na pumpi zato ne treba širina, nego pravi brendovi na pravom mestu i hladni u svakom trenutku.</p>
+  <div class="tiers">
+    <div class="tier"><span class="tag" style="font-family:var(--f-mono);font-size:.72rem;font-weight:700;color:var(--accent)">TIER 1</span><h3>Domaći mainstream</h3><span class="share">≈ 50–55% vrata piva</span><p>Jelen, Lav, Zaječarsko, MB. Prodaje se najviše u komadima. Kupac zna šta hoće, cena mora biti konkurentna marketu. Limenka 0,5 l na visini očiju, multipak dole.</p></div>
+    <div class="tier t2"><span class="tag" style="font-family:var(--f-mono);font-size:.72rem;font-weight:700;color:var(--amber)">TIER 2</span><h3>Premium međunarodni</h3><span class="share">≈ 25–30%</span><p>Heineken, Tuborg, Staropramen, Carlsberg, Amstel, Nikšićko, Corona. Bolja marža po komadu. Ovo ide na visinu očiju na drugim vratima, za kupce koji kupuju "za društvo" ili poklon.</p></div>
+    <div class="tier t3"><span class="tag" style="font-family:var(--f-mono);font-size:.72rem;font-weight:700;color:var(--muted)">TIER 3</span><h3>Bezalkoholno i radler</h3><span class="share">≈ 10–15%</span><p>Najbrže rastući segment i logičan za pumpu, jer je kupac često vozač. Heineken 0.0, bezalkoholne verzije domaćih brendova, radleri. Gornja polica, jasno označeno.</p></div>
+    <div class="tier t4"><span class="tag" style="font-family:var(--f-mono);font-size:.72rem;font-weight:700;color:var(--red)">TIER 4</span><h3>Kraft i Discover</h3><span class="share">≈ 5–10%</span><p>Lokalne kraft pivare (npr. Kabinet, Dogma, Salto). Malo mesta, česta rotacija, viša cena. Daje razlog za "probaj novo" i diferencira pumpu od marketa.</p></div>
+  </div>
+  <ul>
+    <li><strong>Udeo police prati udeo prodaje.</strong> Brend koji pravi 30% prodaje piva dobija oko 30% mesta. Svaka 4 do 6 nedelja proverimo iz kase i prilagodimo.</li>
+    <li><strong>Limenka pre boce.</strong> Na pumpi se pivo kupuje za odmah ili za kuću; limenka se brže hladi, lakše nosi i ne lomi se.</li>
+    <li><strong>Uvek hladno.</strong> Frižider piva se dopunjava iz rezerve sa zadnje strane, nikad toplim pivom napred.</li>
+    <li><strong>Unakrsno izlaganje.</strong> Čips, kikiriki i štapići na stalku odmah pored vrata piva.</li>
+    <li><strong>Pravila prodaje.</strong> Prodaja alkohola maloletnima je zabranjena. Neke opštine propisuju i vreme kada prodavnice smeju da prodaju alkohol, pa za svaku lokaciju proveriti odluku lokalne samouprave.</li>
+  </ul>
+</section>
+
+<section id="impuls">
+  <span class="eyebrow">07 · Impulsna kupovina</span>
+  <h2>Šta se proverava kod impulsne kupovine</h2>
+  <p>Impulsna kupovina je sve što kupac nije planirao kad je stao da sipa gorivo. Na pumpi je to najveći deo zarade radnje. Proveravamo sledeće stvari, svaku na slici i u kasi.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Šta proveravamo</th><th>Kako izgleda dobro</th><th>Najčešća greška</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Kasa zona</strong></td><td>Mali proizvodi do 150–200 RSD, uredno, 6 do 8 kategorija</td><td>Pretrpano, svega po malo, prašnjavi proizvodi</td></tr>
+        <tr><td><strong>Vidljivost kafe</strong></td><td>Aparat i cena vidljivi sa vrata</td><td>Aparat iza police ili u ćošku</td></tr>
+        <tr><td><strong>Hladno odmah</strong></td><td>Mali frižider sa energetskim i vodom na kasi</td><td>Hladna pića samo u dnu radnje</td></tr>
+        <tr><td><strong>Kombo ponude</strong></td><td>2 do 3 kombinacije sa jasnom cenom (kafa + kroasan, hot dog + piće)</td><td>Akcije koje kupac ne razume ili ne vidi</td></tr>
+        <tr><td><strong>Cene</strong></td><td>Svaki proizvod ima cenu, akcijska cena drugačije boje</td><td>Proizvodi bez cene, kupac ne pita i ne kupuje</td></tr>
+        <tr><td><strong>Popunjenost</strong></td><td>Police i frižideri puni, prazna mesta odmah dopunjena</td><td>Rupe na polici, posebno uveče</td></tr>
+        <tr><td><strong>Sezona</strong></td><td>Ulaz se menja 4 puta godišnje</td><td>Ista izložba cele godine</td></tr>
+        <tr><td><strong>Kasir</strong></td><td>Jedna rečenica ponude uz svaki račun za gorivo</td><td>Kasir samo naplaćuje</td></tr>
+        <tr><td><strong>MOL Move</strong></td><td>Akcije iz aplikacije istaknute na kasi i aparatu za kafu</td><td>Kupac ne zna za akciju dok ne skenira</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>Kategorije koje dobro rade na pumpi</h3>
+  <div class="grid">
+    <div class="card"><span class="tag">Uvek</span><ul><li>Čokoladice, bombone, žvake</li><li>Čips, kikiriki, štapići</li><li>Energetski, voda, gazirano</li><li>Punjači, kablovi, slušalice</li><li>Upaljači, maramice</li></ul></div>
+    <div class="card"><span class="tag">Leto</span><ul><li>Sladoled (posebna škrinja)</li><li>Led u kesi, veća voda</li><li>Ledena kafa, izotonik</li><li>Krema za sunčanje, naočare</li><li>Dečje igračke za put</li></ul></div>
+    <div class="card"><span class="tag">Zima</span><ul><li>Topla čokolada, čaj</li><li>Tečnost za stakla, strugač, metlica</li><li>Antifriz, sprej za brave</li><li>Rukavice, kape (tranzit)</li><li>Slatkiši za praznike, pokloni</li></ul></div>
+  </div>
+</section>
+
+<section id="izmene">
+  <span class="eyebrow">08 · Plan izmena</span>
+  <h2>Šta izmeniti, po prioritetu</h2>
+  <p>Lista je opšta, posle slika je pretvaramo u konkretan plan za tu radnju. Štikliranje se pamti samo u tvom pregledaču.</p>
+  <ul class="check" id="checklist">
+    <li><input type="checkbox" id="c1"><label for="c1"><span class="prio p1">BRZO</span>Izbaciti 15–20% artikala koji se najsporije prodaju (podaci iz kase za 3 meseca) i osloboditi mesto za bestselere</label></li>
+    <li><input type="checkbox" id="c2"><label for="c2"><span class="prio p1">BRZO</span>Preurediti frižidere po planogramu: voda, sokovi, energija, pivo domaće, pivo premium</label></li>
+    <li><input type="checkbox" id="c3"><label for="c3"><span class="prio p1">BRZO</span>Očistiti i suziti kasa zonu na 6 do 8 kategorija malih proizvoda</label></li>
+    <li><input type="checkbox" id="c4"><label for="c4"><span class="prio p1">BRZO</span>Uvesti 2 do 3 kombo ponude sa jasnom cenom na aparatu za kafu i na kasi</label></li>
+    <li><input type="checkbox" id="c5"><label for="c5"><span class="prio p1">BRZO</span>Staviti grickalice za pivo pored frižidera piva</label></li>
+    <li><input type="checkbox" id="c6"><label for="c6"><span class="prio p2">SREDNJE</span>Postaviti mali frižider sa energetskim i vodom pored kase</label></li>
+    <li><input type="checkbox" id="c7"><label for="c7"><span class="prio p2">SREDNJE</span>Otvoriti Discover policu "Probaj novo" sa rotacijom na 4 do 6 nedelja</label></li>
+    <li><input type="checkbox" id="c8"><label for="c8"><span class="prio p2">SREDNJE</span>Dogovoriti sa pivarama raspored brendova po udelu prodaje i proveriti ugovore za frižidere</label></li>
+    <li><input type="checkbox" id="c9"><label for="c9"><span class="prio p2">SREDNJE</span>Uvesti zdraviju opciju u Fresh Corner (wrap, salata, jogurt)</label></li>
+    <li><input type="checkbox" id="c10"><label for="c10"><span class="prio p2">SREDNJE</span>Obučiti kasire za jednu rečenicu ponude i meriti konverziju kafe po smeni</label></li>
+  </ul>
+</section>
+
+<section id="kalkulator">
+  <span class="eyebrow">09 · Pokrivanje troška</span>
+  <h2>Kalkulator: da li radnja pokriva trošak pumpe</h2>
+  <p>Brojevi koji su upisani su samo primer da bi kalkulator radio. Kad pumpa da prave podatke (mesečni trošak, broj računa, prosečna korpa), upisujemo njih.</p>
+  <div class="calc">
+    <div class="inputs">
+      <div class="field"><label for="k-cost">Mesečni trošak pumpe (RSD): plate, struja, zakup, ostalo</label><input id="k-cost" type="number" min="0" step="10000" value="3000000"></div>
+      <div class="field"><label for="k-tx">Broj kupaca goriva dnevno</label><input id="k-tx" type="number" min="0" step="10" value="600"></div>
+      <div class="field"><label for="k-pen">Procenat kupaca koji kupe nešto u radnji (%)</label><input id="k-pen" type="number" min="0" max="100" step="1" value="35"></div>
+      <div class="field"><label for="k-basket">Prosečna korpa radnje, bez goriva (RSD)</label><input id="k-basket" type="number" min="0" step="10" value="450"></div>
+      <div class="field"><label for="k-margin">Prosečna bruto marža radnje (%)</label><input id="k-margin" type="number" min="0" max="100" step="1" value="38"></div>
+      <div class="field"><label for="k-coffee">Zarada po jednoj kafi (RSD)</label><input id="k-coffee" type="number" min="1" step="5" value="150"></div>
+    </div>
+    <div class="out">
+      <div class="display">
+        <div><span class="lbl">Mesečna bruto zarada radnje</span><span class="val" id="o-gross">0</span></div>
+        <div><span class="lbl">Pokrivenost troška</span><span class="val" id="o-cover">0%</span></div>
+        <div><span class="lbl">Nedostaje mesečno</span><span class="val" id="o-gap">0</span><span class="sub" id="o-gap-sub"></span></div>
+      </div>
+      <div class="bar" aria-hidden="true"><i id="o-bar"></i></div>
+      <p class="note" id="o-levers"></p>
+    </div>
+  </div>
+</section>
+
+<section id="kpi">
+  <span class="eyebrow">10 · Merenje</span>
+  <h2>Brojevi koje pratimo posle izmene</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Pokazatelj</th><th>Kako se računa</th><th>Zašto</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Penetracija radnje</strong></td><td>Računi sa proizvodom iz radnje / svi računi za gorivo</td><td>Glavni broj: koliko kupaca goriva postaje kupac radnje</td></tr>
+        <tr><td><strong>Konverzija kafe</strong></td><td>Računi sa kafom / računi za gorivo</td><td>Kafa nosi najveću maržu</td></tr>
+        <tr><td><strong>Prosečna korpa</strong></td><td>Promet radnje / broj računa radnje</td><td>Pokazuje rade li kombo ponude i kasa zona</td></tr>
+        <tr><td><strong>Prodaja po vratima frižidera</strong></td><td>Promet kategorije / broj vrata</td><td>Da li raspored piva i pića ima smisla</td></tr>
+        <tr><td><strong>Otpis hrane</strong></td><td>Bačena hrana / nabavljena hrana (%)</td><td>Fresh Corner zarađuje samo ako otpis ostane nizak</td></tr>
+        <tr><td><strong>Spori artikli</strong></td><td>Artikli sa manje od 1 komada nedeljno</td><td>Kandidati za izbacivanje</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="slike">
+  <span class="eyebrow">11 · Sledeći korak</span>
+  <h2>Koje slike da pošalješ</h2>
+  <div class="grid">
+    <div class="card"><span class="tag">Radnja</span><ul><li>Ulaz, pogled sa vrata ka kasi</li><li>Ceo raspored iz ugla</li><li>Kasa zona izbliza</li><li>Svaka polica sa grickalicama i slatkišima</li></ul></div>
+    <div class="card"><span class="tag">Frižideri</span><ul><li>Svaka vrata posebno, spreda, otvorena</li><li>Logo na frižideru (čiji je)</li><li>Škrinja za sladoled</li><li>Mali frižider na kasi, ako postoji</li></ul></div>
+    <div class="card"><span class="tag">Fresh Corner i podaci</span><ul><li>Aparat za kafu i cenovnik</li><li>Grill i topla vitrina</li><li>Vitrina sa sendvičima</li><li>Ako može: izveštaj prodaje po artiklu iz kase za 3 meseca</li></ul></div>
+  </div>
+</section>
+
+<footer>Radni dokument za izmenu asortimana jedne MOL pumpe. Nije zvaničan materijal kompanije MOL. Brojevi o tržištu su iz javnih izvora, marže su okvirni industrijski rasponi, a kalkulator koristi primer podatke dok ne stignu pravi.</footer>
+
+</div>
+
+<script>
+(function () {
+  var fmt = new Intl.NumberFormat("sr-RS");
+  function v(id) { var n = parseFloat(document.getElementById(id).value); return isFinite(n) ? n : 0; }
+  function calc() {
+    var cost = v("k-cost"), tx = v("k-tx"), pen = v("k-pen") / 100, basket = v("k-basket"),
+        margin = v("k-margin") / 100, coffee = v("k-coffee");
+    var gross = tx * 30 * pen * basket * margin;
+    var cover = cost > 0 ? gross / cost : 0;
+    var gap = Math.max(0, cost - gross);
+    document.getElementById("o-gross").textContent = fmt.format(Math.round(gross)) + " RSD";
+    document.getElementById("o-cover").textContent = Math.round(cover * 100) + "%";
+    document.getElementById("o-gap").textContent = gap > 0 ? fmt.format(Math.round(gap)) + " RSD" : "Pokriveno";
+    document.getElementById("o-bar").style.width = Math.min(100, cover * 100) + "%";
+    var sub = "", lev = "";
+    if (gap > 0) {
+      var cups = coffee > 0 ? Math.ceil(gap / 30 / coffee) : 0;
+      sub = "to je oko " + fmt.format(cups) + " kafa dnevno više";
+      var perBuyer = tx * 30 * basket * margin;
+      var needPen = perBuyer > 0 ? Math.ceil(cost / perBuyer * 100) : 0;
+      var perTx = tx * 30 * pen * margin;
+      var needBasket = perTx > 0 ? Math.ceil(cost / perTx) : 0;
+      lev = "Da bi radnja sama pokrila trošak, treba ili da " + fmt.format(needPen) + "% kupaca goriva kupi nešto (sada " + Math.round(pen * 100) + "%), ili da prosečna korpa bude " + fmt.format(needBasket) + " RSD (sada " + fmt.format(basket) + " RSD). U praksi se kombinuju obe poluge: kombo ponude dižu korpu, a kafa i kasir dižu procenat kupaca.";
+    } else {
+      lev = "Sa ovim brojevima radnja pokriva ceo trošak pumpe, a sve iznad je višak koji ostaje uz zaradu od goriva.";
+    }
+    document.getElementById("o-gap-sub").textContent = sub;
+    document.getElementById("o-levers").textContent = lev;
+  }
+  document.querySelectorAll(".calc input").forEach(function (el) { el.addEventListener("input", calc); });
+  calc();
+
+  var KEY = "mol-asortiman-check";
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { saved = {}; }
+  document.querySelectorAll("#checklist input").forEach(function (el) {
+    if (saved[el.id]) el.checked = true;
+    el.addEventListener("change", function () {
+      saved[el.id] = el.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+    });
+  });
+})();
+</script>
+<!-- ARTIFACT-END -->
+</html>

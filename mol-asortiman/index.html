@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,700&display=swap" rel="stylesheet">
 <style>
-/* Layout: tlocrt radnje odozgo; klik na zonu otvara predloge za tu zonu. Boje kao molserbia.rs */
+/* Layout: tlocrt prave radnje (sa slika); klik na zonu otvara: slike, šta vidimo sada, predlog. Boje kao molserbia.rs, bela pozadina */
 :root {
   --bg: #ffffff;
   --surface: #ffffff;
@@ -18,109 +18,121 @@
   --muted: #5d6763;
   --line: #e3e7e5;
   --green: #00875a;
+  --green-dark: #005c3d;
   --green-soft: #e4f3ec;
   --lime: #a4cd39;
-  --floor: #f4f6f5;
-  --fixture: #ffffff;
-  --shadow: 0 2px 12px rgba(0, 60, 40, 0.10);
-  --red: #e2231a;
-  --green-dark: #005c3d;
   --lime-tint: #dcecb0;
+  --red: #e2231a;
+  --floor: #f4f6f5;
+  --shadow: 0 2px 12px rgba(0, 60, 40, 0.10);
   --f-display: "Barlow Semi Condensed", "Arial Narrow", sans-serif;
   --f-body: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
 }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5; color-scheme: light; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5; }
 .page {
-  max-width: 1080px; margin: 0 auto;
+  max-width: 1120px; margin: 0 auto;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
   padding-block: 24px 48px;
   display: flex; flex-direction: column; gap: 20px;
 }
-h1, h2 { font-family: var(--f-display); font-weight: 700; text-transform: uppercase; line-height: 1.05; margin: 0; text-wrap: balance; }
+h1, h2, h3 { font-family: var(--f-display); font-weight: 700; text-transform: uppercase; line-height: 1.05; margin: 0; text-wrap: balance; }
 h1 { font-size: clamp(1.9rem, 5vw, 2.8rem); }
 h1 .hl { background: var(--lime); color: #1f2321; padding: 0 8px; }
 h2 { font-size: 1.6rem; }
+h3 { font-size: 1rem; letter-spacing: 0.03em; }
 p { margin: 0; }
 .badge { display: inline-block; background: var(--red); color: #fff; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.04em; padding: 2px 12px 2px 10px; border-radius: 4px 14px 4px 14px; margin-bottom: 8px; }
 .top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; }
-.goal { font-size: 1rem; color: var(--muted); max-width: 46ch; }
+.goal { color: var(--muted); max-width: 46ch; }
 .goal b { color: var(--ink); }
 
-.layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 20px; align-items: start; }
-@media (max-width: 820px) { .layout { grid-template-columns: 1fr; } }
+/* tri glavne izmene */
+.top3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.top3 div { background: var(--green); color: #fff; border-radius: 10px; padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; }
+.top3 b { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--lime); color: #1f2321; display: grid; place-items: center; font-family: var(--f-display); }
+.top3 span { font-weight: 700; line-height: 1.3; }
+
+.layout { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
 
 /* tlocrt */
 .store {
   background: var(--floor); border-radius: 12px; padding: 14px; box-shadow: var(--shadow);
   border: 6px solid var(--green);
-  display: grid; gap: 12px;
+  display: grid; gap: 10px;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-areas:
-    "fr fr fr"
-    "sn sn kf"
-    "ul ks ks";
+    "al al fr"
+    "go go fr"
+    "ul kf ks";
 }
 @media (max-width: 520px) {
-  .store { grid-template-columns: 1fr 1fr; grid-template-areas: "fr fr" "sn kf" "ul ks"; padding: 10px; gap: 8px; }
+  .store { grid-template-columns: 1fr 1fr; grid-template-areas: "al al" "fr fr" "go go" "ul kf" "ks ks"; padding: 10px; gap: 8px; }
 }
 .zone {
-  box-shadow: 0 1px 4px rgba(0, 60, 40, 0.08);
   display: flex; flex-direction: column; gap: 8px; align-items: stretch;
-  background: var(--fixture); border: 2px solid transparent; border-radius: 8px; padding: 10px;
+  background: #fff; border: 2px solid transparent; border-radius: 8px; padding: 10px;
+  box-shadow: 0 1px 4px rgba(0, 60, 40, 0.08);
   font: inherit; color: inherit; text-align: left; cursor: pointer; min-width: 0;
   transition: border-color .15s;
 }
 .zone:hover { border-color: var(--lime); }
 .zone:focus-visible { outline: 3px solid var(--lime); outline-offset: 2px; }
 .zone[aria-pressed="true"] { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
-.zname { font-family: var(--f-display); font-weight: 700; text-transform: uppercase; font-size: 1.05rem; display: flex; align-items: center; gap: 8px; }
+.zname { font-family: var(--f-display); font-weight: 700; text-transform: uppercase; font-size: 1rem; display: flex; align-items: center; gap: 8px; line-height: 1.1; }
 .num { flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; font-size: 0.8rem; }
 .zone[aria-pressed="true"] .num { background: var(--lime); color: #1f2321; }
-.fr { grid-area: fr; } .sn { grid-area: sn; } .kf { grid-area: kf; } .ks { grid-area: ks; } .ul { grid-area: ul; }
+.flag { margin-left: auto; flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--red); }
+.al { grid-area: al; } .fr { grid-area: fr; } .go { grid-area: go; } .kf { grid-area: kf; } .ks { grid-area: ks; } .ul { grid-area: ul; }
 
-/* frizider: 5 vrata */
-.doors { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
-.door { background: var(--green-dark); border-radius: 4px; padding: 4px; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-.door i { display: block; height: 9px; border-radius: 2px; }
-.door small { color: #fff; font-size: 0.66rem; text-align: center; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.c-voda { background: var(--lime-tint); } .c-sok { background: var(--lime); } .c-en { background: var(--red); } .c-pivo { background: var(--green); } .c-prem { background: #ffffff; }
-
-/* snacks: police */
-.shelves { display: flex; flex-direction: column; gap: 6px; }
-.shelfrow { display: flex; gap: 3px; height: 14px; }
+/* crtezi u zonama */
+.doors { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; flex: 1; min-height: 90px; }
+.door { background: #c9d0cd; border-radius: 4px; padding: 4px; display: flex; flex-direction: column; gap: 3px; min-width: 0; border-top: 6px solid var(--lime); }
+.door i { display: block; height: 8px; border-radius: 2px; }
+.door small { margin-top: auto; color: #1f2321; font-size: 0.64rem; text-align: center; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 700; }
+.c-sok { background: #f0a23a; } .c-en { background: var(--red); } .c-voda { background: #7fc7e6; } .c-iso { background: var(--lime); }
+.shelfrow { display: flex; gap: 3px; height: 12px; }
 .shelfrow i { flex: 1; border-radius: 2px; }
 .s1 { background: var(--lime); } .s2 { background: var(--red); } .s3 { background: var(--green); } .s4 { background: var(--lime-tint); } .s5 { background: var(--green-dark); }
-
-/* kafa */
+.wall { display: flex; flex-direction: column; gap: 4px; }
+.bottle { display: flex; gap: 2px; height: 14px; align-items: flex-end; }
+.bottle i { flex: 1; background: var(--green-dark); border-radius: 2px 2px 0 0; height: 100%; }
+.bottle i:nth-child(odd) { height: 70%; background: #7a3b2e; }
 .coffee { display: flex; gap: 8px; align-items: flex-end; }
-.machine { width: 34px; height: 46px; background: var(--green-dark); border-radius: 4px; position: relative; flex: none; }
-.machine::after { content: ""; position: absolute; left: 10px; bottom: 6px; width: 14px; height: 12px; background: #fff; border-radius: 0 0 4px 4px; }
-.grill { flex: 1; height: 30px; border-radius: 4px; background: repeating-linear-gradient(90deg, var(--red) 0 8px, var(--green-dark) 8px 12px); }
-
-/* kasa */
-.counter { height: 30px; border-radius: 4px; background: var(--green); display: flex; align-items: center; gap: 4px; padding: 0 6px; }
-.counter i { width: 16px; height: 16px; border-radius: 3px; background: var(--lime); }
-.counter i:nth-child(2) { background: var(--red); } .counter i:nth-child(3) { background: #ffffff; }
-.counter span { margin-left: auto; font-size: 0.7rem; color: #fff; font-weight: 700; }
-
-/* ulaz */
-.zone.ul { background: transparent; border: 2px dashed var(--muted); }
+.machine { width: 30px; height: 42px; background: #2c2622; border-radius: 4px; position: relative; flex: none; border-top: 6px solid var(--lime); }
+.machine::after { content: ""; position: absolute; left: 8px; bottom: 5px; width: 13px; height: 11px; background: #fff; border-radius: 0 0 4px 4px; }
+.pastry { flex: 1; height: 42px; border-radius: 4px; background: #efe7da; display: grid; grid-template-rows: repeat(3, 1fr); gap: 2px; padding: 3px; }
+.pastry i { border-radius: 2px; background: linear-gradient(90deg, #c98b3f 0 22%, transparent 22%); }
+.counter { height: 28px; border-radius: 4px; background: var(--green); display: flex; align-items: center; gap: 4px; padding: 0 6px; }
+.counter i { width: 14px; height: 14px; border-radius: 3px; background: var(--lime); }
+.counter i:nth-child(2) { background: var(--red); } .counter i:nth-child(3) { background: #fff; }
+.counter span { margin-left: auto; font-size: 0.68rem; color: #fff; font-weight: 700; }
+.zone.ul { border: 2px dashed var(--muted); }
 .zone.ul[aria-pressed="true"] { border: 2px solid var(--green); }
-.door-gap { height: 30px; border-radius: 4px; background: repeating-linear-gradient(45deg, var(--lime) 0 6px, transparent 6px 12px); opacity: .6; }
+.promo { height: 28px; border-radius: 4px; background: var(--red); color: #fff; font-family: var(--f-display); font-weight: 700; font-size: 0.75rem; display: grid; place-items: center; letter-spacing: 0.04em; }
 
-.hint { font-size: 0.85rem; color: var(--muted); margin-top: 8px; }
+.hint { font-size: 0.85rem; color: var(--muted); margin-top: 8px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.hint .flag { margin: 0; }
 
-/* panel sa predlozima */
+/* panel */
 .panel { background: var(--surface); border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--line); overflow: hidden; }
-.panel-head { background: var(--green); color: #fff; padding: 16px 20px; display: flex; flex-direction: column; gap: 4px; }
+.panel-head { background: var(--green); color: #fff; padding: 14px 20px; display: flex; flex-direction: column; gap: 2px; }
 .panel-head .tag { align-self: flex-start; background: var(--lime); color: #1f2321; font-family: var(--f-display); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; padding: 0 8px; border-radius: 3px; }
-.panel-head p { font-size: 0.92rem; opacity: 0.92; }
-.tips { list-style: none; margin: 0; padding: 8px 20px 18px; display: flex; flex-direction: column; }
-.tips li { display: flex; gap: 12px; padding-block: 11px; border-bottom: 1px solid var(--line); }
-.tips li:last-child { border-bottom: 0; }
-.tips li::before { content: ""; flex: none; width: 10px; height: 10px; margin-top: 7px; border-radius: 2px; background: var(--lime); }
+.photos { display: flex; gap: 8px; overflow-x: auto; padding: 14px 20px 4px; }
+.photos img { height: 190px; width: auto; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 8px; flex: none; max-width: 100%; background: var(--floor); }
+.block { padding: 10px 20px 4px; display: flex; flex-direction: column; gap: 4px; }
+.block:last-child { padding-bottom: 18px; }
+.block h3 { color: var(--muted); }
+.block.do h3 { color: var(--green); }
+.list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.list li { display: flex; gap: 10px; padding-block: 7px; border-bottom: 1px solid var(--line); }
+.list li:last-child { border-bottom: 0; }
+.list li::before { content: ""; flex: none; width: 9px; height: 9px; margin-top: 7px; border-radius: 50%; background: #b9c2be; }
+.do .list li::before { border-radius: 2px; background: var(--lime); }
+.list .ok::before { background: var(--green); }
 
 footer { font-size: 0.8rem; color: var(--muted); }
 @media (prefers-reduced-motion: reduce) { .zone { transition: none; } }
@@ -130,106 +142,163 @@ footer { font-size: 0.8rem; color: var(--muted); }
   <div class="top">
     <div><span class="badge">Fresh Corner · radnja</span>
     <h1><span class="hl">Asortiman</span> MOL pumpe</h1></div>
-    <p class="goal"><b>Cilj:</b> radnja i Fresh Corner pokrivaju ceo trošak pumpe. Klikni na deo radnje da vidiš predloge.</p>
+    <p class="goal"><b>Cilj:</b> radnja i Fresh Corner pokrivaju ceo trošak pumpe. Klikni na deo radnje: slike, šta vidimo sada i predlog.</p>
+  </div>
+
+  <div class="top3" aria-label="Tri najvažnije izmene">
+    <div><b>1</b><span>Vitrina sa pecivom uvek puna</span></div>
+    <div><b>2</b><span>Jedna vrata frižidera samo za hladno pivo</span></div>
+    <div><b>3</b><span>Na kafi jedan veliki kombo umesto 7 malih plakata</span></div>
   </div>
 
   <div class="layout">
     <div>
       <div class="store" role="group" aria-label="Tlocrt radnje">
+        <button class="zone al" data-z="al" aria-pressed="false" type="button">
+          <span class="zname"><span class="num">6</span>Alkohol i čips</span>
+          <span class="wall" aria-hidden="true">
+            <span class="bottle"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            <span class="shelfrow"><i class="s2"></i><i class="s2"></i><i class="s1"></i><i class="s2"></i></span>
+          </span>
+        </button>
         <button class="zone fr" data-z="fr" aria-pressed="true" type="button">
-          <span class="zname"><span class="num">1</span>Frižideri</span>
+          <span class="zname"><span class="num">1</span>Frižideri<span class="flag" title="Važna izmena"></span></span>
           <span class="doors" aria-hidden="true">
-            <span class="door"><i class="c-voda"></i><i class="c-voda"></i><i class="c-voda"></i><small>Voda</small></span>
-            <span class="door"><i class="c-sok"></i><i class="c-sok"></i><i class="c-sok"></i><small>Sokovi</small></span>
-            <span class="door"><i class="c-en"></i><i class="c-en"></i><i class="c-en"></i><small>Energija</small></span>
-            <span class="door"><i class="c-pivo"></i><i class="c-pivo"></i><i class="c-pivo"></i><small>Pivo</small></span>
-            <span class="door"><i class="c-prem"></i><i class="c-prem"></i><i class="c-prem"></i><small>Premium</small></span>
+            <span class="door"><i class="c-sok"></i><i class="c-sok"></i><i class="c-sok"></i><i class="c-sok"></i><small>Sokovi</small></span>
+            <span class="door"><i class="c-en"></i><i class="c-en"></i><i class="c-en"></i><i class="c-iso"></i><small>Energija</small></span>
+            <span class="door"><i class="c-sok"></i><i class="c-en"></i><i class="c-sok"></i><i class="c-sok"></i><small>Sokovi</small></span>
+            <span class="door"><i class="c-voda"></i><i class="c-voda"></i><i class="c-voda"></i><i class="c-voda"></i><small>Voda</small></span>
           </span>
         </button>
-        <button class="zone sn" data-z="sn" aria-pressed="false" type="button">
-          <span class="zname"><span class="num">2</span>Snacks</span>
-          <span class="shelves" aria-hidden="true">
-            <span class="shelfrow"><i class="s1"></i><i class="s2"></i><i class="s1"></i><i class="s5"></i><i class="s2"></i></span>
-            <span class="shelfrow"><i class="s3"></i><i class="s3"></i><i class="s4"></i><i class="s3"></i><i class="s5"></i></span>
-            <span class="shelfrow"><i class="s2"></i><i class="s5"></i><i class="s1"></i><i class="s4"></i><i class="s1"></i></span>
+        <button class="zone go" data-z="go" aria-pressed="false" type="button">
+          <span class="zname"><span class="num">2</span>Gondola: pivo i kikiriki</span>
+          <span class="wall" aria-hidden="true">
+            <span class="shelfrow"><i class="s4"></i><i class="s4"></i><i class="s1"></i><i class="s1"></i><i class="s4"></i></span>
+            <span class="shelfrow"><i class="s3"></i><i class="s3"></i><i class="s5"></i><i class="s5"></i><i class="s2"></i></span>
+            <span class="shelfrow"><i class="s2"></i><i class="s2"></i><i class="s1"></i><i class="s4"></i><i class="s3"></i></span>
           </span>
-        </button>
-        <button class="zone kf" data-z="kf" aria-pressed="false" type="button">
-          <span class="zname"><span class="num">3</span>Kafa</span>
-          <span class="coffee" aria-hidden="true"><span class="machine"></span><span class="grill"></span></span>
         </button>
         <button class="zone ul" data-z="ul" aria-pressed="false" type="button">
           <span class="zname"><span class="num">5</span>Ulaz</span>
-          <span class="door-gap" aria-hidden="true"></span>
+          <span class="promo" aria-hidden="true">TOP PONUDA</span>
+        </button>
+        <button class="zone kf" data-z="kf" aria-pressed="false" type="button">
+          <span class="zname"><span class="num">3</span>Kafa<span class="flag" title="Važna izmena"></span></span>
+          <span class="coffee" aria-hidden="true"><span class="machine"></span><span class="pastry"><i></i><i></i><i></i></span></span>
         </button>
         <button class="zone ks" data-z="ks" aria-pressed="false" type="button">
           <span class="zname"><span class="num">4</span>Kasa</span>
           <span class="counter" aria-hidden="true"><i></i><i></i><i></i><span>KASA</span></span>
         </button>
       </div>
-      <p class="hint">Tlocrt je šematski. Kad stignu slike iz radnje, prilagođavamo ga stvarnom rasporedu.</p>
+      <p class="hint"><span class="flag"></span> zone sa najvažnijim izmenama. Tlocrt je šematski, prema slikama.</p>
     </div>
 
     <aside class="panel" aria-live="polite">
       <div class="panel-head">
         <span class="tag" id="p-tag">Zona 1</span>
         <h2 id="p-title">Frižideri</h2>
-        <p id="p-sub">Pića su najveći promet u komadima.</p>
       </div>
-      <ul class="tips" id="p-tips">
-        <li><span><b>Redosled vrata:</b> voda, sokovi, energetski, domaće pivo, premium pivo.</span></li>
-      </ul>
+      <div class="photos" id="p-photos"></div>
+      <div class="block"><h3>Šta vidimo sada</h3><ul class="list" id="p-now"></ul></div>
+      <div class="block do"><h3>Predlog</h3><ul class="list" id="p-do"></ul></div>
     </aside>
   </div>
 
-  <footer>Radni dokument za izmenu asortimana jedne MOL pumpe. Nije zvaničan materijal kompanije MOL.</footer>
+  <footer>Radni dokument za izmenu asortimana jedne MOL pumpe, na osnovu slika iz radnje. Nije zvaničan materijal kompanije MOL.</footer>
 </div>
 
 <script>
 (function () {
   var Z = {
-    fr: { n: 1, t: "Frižideri", s: "Pića su najveći promet u komadima.", tips: [
-      "<b>Redosled vrata:</b> voda, sokovi, energetski, domaće pivo, premium pivo.",
-      "<b>Visina očiju</b> za bestselere: voda 0,5 l, Cola, energetski, pivo u limenci.",
-      "<b>Domaće pivo</b> (Jelen, Lav, Zaječarsko) i <b>premium</b> (Heineken, Tuborg, Staropramen) na posebnim vratima.",
-      "<b>Bezalkoholno i radler</b> na gornju policu, kupac je često vozač.",
-      "<b>Multipak i 1,5 l</b> na donju policu.",
-      "<b>Proveri čiji je frižider</b>: ako je od pivare, ugovor određuje šta sme unutra."
-    ]},
-    sn: { n: 2, t: "Snacks", s: "Čista impulsna kupovina.", tips: [
-      "<b>Čips i kikiriki</b> odmah pored frižidera sa pivom.",
-      "<b>Čokoladice</b> na visini 120 do 160 cm, dečji slatkiši niže.",
-      "<b>Izbaci 15 do 20%</b> artikala koji se najsporije prodaju.",
-      "<b>Polica \"Probaj novo\"</b>: novi ukusi i lokalni proizvodi, menja se na 4 do 6 nedelja.",
-      "<b>Svaki proizvod sa cenom</b>, akcija drugom bojom."
-    ]},
-    kf: { n: 3, t: "Kafa i Fresh Corner", s: "Najveća marža po kupcu.", tips: [
-      "<b>Aparat vidljiv sa ulaza</b>, odmah pored kase.",
-      "<b>3 do 4 vrste kafe</b> i dve veličine čaše.",
-      "<b>Kombo:</b> kafa + kroasan ujutru, hot dog + piće preko dana.",
-      "<b>Vitrina puna</b> i u 23h, ali manje količine češće, da se ne baca.",
-      "<b>Jedna zdravija opcija</b>: wrap ili salata."
-    ]},
-    ks: { n: 4, t: "Kasa", s: "Najjači impuls: svaki kupac goriva prođe ovuda.", tips: [
-      "<b>Žvake i mali slatkiši</b> do 150 RSD, uredno, bez gužve.",
-      "<b>Mali frižider</b> sa energetskim i vodom na samoj kasi.",
-      "<b>Punjači, kablovi, upaljači</b> na pultu.",
-      "<b>Kasir pita</b>: \"Kafa uz gorivo?\"",
-      "<b>MOL Move akcije</b> istaknute na kasi."
-    ]},
-    ul: { n: 5, t: "Ulaz", s: "Prvo što kupac vidi.", tips: [
-      "<b>Jedna akcija meseca</b>, velika i jasna.",
-      "<b>Sezona:</b> leto voda i sladoled, zima tečnost za stakla i metlice.",
-      "<b>Ne zatrpavati</b>: sa vrata se vide kasa i kafa."
-    ]}
+    fr: { n: 1, t: "Frižideri", img: ["frizideri", "gondola"],
+      now: [
+        "Četiri vrata: sokovi, mnogo energetskih (Red Bull, Monster, Ultra, Joker, Guarana), izotonik, voda na kraju.",
+        "Energetski zauzimaju više od jednih vrata.",
+        "Pivo se u frižideru jedva vidi: najviše stoji toplo na gondoli i na podu kod ulaza."
+      ],
+      ok: ["Frižideri su puni, osvetljeni i sa cenama."],
+      todo: [
+        "<b>Jedna vrata samo za hladno pivo</b>: Jelen, Lav, Zaječarsko i JOE u limenci 0,5 l na visini očiju, Carlsberg i Heineken iznad, bezalkoholno i radler gore.",
+        "<b>Energetske svesti na jedna vrata</b>: Red Bull i Monster u visini očiju, Joker i Guarana (akcija) ispod.",
+        "<b>Voda 0,5 l u prva vrata</b> do kase, ne na kraj reda.",
+        "Proveriti čiji su frižideri pre izmene (ugovori sa dobavljačima)."
+      ]},
+    go: { n: 2, t: "Gondola: pivo i kikiriki", img: ["gondola", "frizideri"],
+      now: [
+        "Pivo (Carlsberg, JOE, Heineken), Gorki list Bitter, Pepsi 0,5 i 1,5 l, voda.",
+        "GUD kikiriki i Crunch & Go čips na čelu gondole, uz akciju.",
+        "Čips je na tri mesta: gondola, zadnji zid i stalak."
+      ],
+      ok: ["Kikiriki i čips odmah uz pivo: dobro unakrsno izlaganje."],
+      todo: [
+        "<b>Na gondoli multipak za kuću</b> (može toplo), a limenke za odmah u frižider.",
+        "<b>Sve grickalice za pivo na jedno mesto</b>, ovde uz pivo.",
+        "<b>Kombo cena</b> na čelu: \"4 piva + kikiriki\"."
+      ]},
+    kf: { n: 3, t: "Kafa i Fresh Corner", img: ["kafa", "ulaz-kafa"],
+      now: [
+        "Samouslužni aparat, čaše S, M i L.",
+        "Vitrina za peciva skoro prazna: par kroasana i perec (99 do 199 RSD).",
+        "Oko 7 malih plakata sa različitim akcijama (kafa + Jaffa 79 RSD, MOL Move, termo šolja, Matcha latte, Flat white).",
+        "Levo od kafe velika pakovanja keksa (Plazma, Oreo, Milka)."
+      ],
+      ok: ["Kafa se vidi sa ulaza i odmah je pored kase."],
+      todo: [
+        "<b>Vitrina uvek puna</b>: bar 2 vrste kroasana i perec, dopuna tokom dana.",
+        "<b>Jedan veliki kombo</b> u visini očiju (kafa + kroasan, jedna cena) umesto 7 malih plakata.",
+        "<b>Pored kafe slatko u jednom komadu</b> (kroasan, mafin, mala Plazma), a velika pakovanja keksa niže.",
+        "Kasir nudi veću čašu: M u L."
+      ]},
+    ks: { n: 4, t: "Kasa", img: ["kasa", "kasa-pult"],
+      now: [
+        "Gondola puna: čokoladice, proteinske i Corny pločice, Riddle, Kinder, Pulmoll, mentos.",
+        "Na pultu dve akcije: energetski (Joker, Guarana) i Milka.",
+        "Vitrina sa sendvičima pored kase; iza cigarete, baterije, Durex.",
+        "Mini alkohol (vinjak, votka) na istoj gondoli kao Kinder jaja i lizalice."
+      ],
+      ok: ["Kasa zona je uredna i dobro popunjena, samo dve akcije na pultu."],
+      todo: [
+        "<b>Mini alkohol skloniti</b> sa dečje gondole, iza kase ili uz zid sa alkoholom.",
+        "<b>Kombo na vitrini</b>: sendvič + piće po jednoj ceni.",
+        "<b>Voda 0,5 l i energetski</b> u vitrini sa sendvičima, na visini očiju.",
+        "Kasir pita: \"Kafa uz gorivo?\""
+      ]},
+    ul: { n: 5, t: "Ulaz", img: ["ulaz", "ulaz-kafa"],
+      now: [
+        "Velika crvena \"Top ponuda\": JOE pivo multipak (429,99 i 399,99 RSD), Radler Zero.",
+        "Jelen plakat na staklu, stalak sa mirisima za auto, Plazma stalak.",
+        "Tečnost za stakla napolju ispred vrata."
+      ],
+      ok: ["Jedna jaka akcija na ulazu, jasno istaknuta cena."],
+      todo: [
+        "<b>Jesen i zima</b>: tečnost za stakla, strugači i metlice na sam ulaz.",
+        "<b>Top ponuda menja se na 2 do 4 nedelje</b>, da stalni kupci vide nešto novo.",
+        "Uz pivo na akciji staviti i čips ili kikiriki."
+      ]},
+    al: { n: 6, t: "Alkohol i čips", img: ["frizideri", "gondola"],
+      now: [
+        "Žestina i vino na gornjim policama zadnjeg zida.",
+        "Ispod Smoki, Chipsy, Party mix i druge grickalice; pored stalak Coca-Cola."
+      ],
+      ok: ["Grickalice u visini ruke ispod alkohola imaju smisla."],
+      todo: [
+        "<b>Ostaviti 10 do 15 najprodavanijih</b> žestina i vina, ostalo izbaciti.",
+        "<b>Poklon pakovanja</b> pred praznike na ovaj zid.",
+        "Grickalice prebaciti uz pivo (zona 2), ovde ostaviti samo slane za uz alkohol."
+      ]}
   };
   var btns = document.querySelectorAll(".zone");
+  function li(cls, t) { return "<li" + (cls ? ' class="' + cls + '"' : "") + "><span>" + t + "</span></li>"; }
   function show(k) {
     var z = Z[k];
     document.getElementById("p-tag").textContent = "Zona " + z.n;
     document.getElementById("p-title").textContent = z.t;
-    document.getElementById("p-sub").textContent = z.s;
-    document.getElementById("p-tips").innerHTML = z.tips.map(function (t) { return "<li><span>" + t + "</span></li>"; }).join("");
+    document.getElementById("p-photos").innerHTML = z.img.map(function (s) {
+      return '<img src="img/' + s + '.jpg" alt="Slika iz radnje: ' + z.t + '" loading="lazy" width="720" height="960">';
+    }).join("");
+    document.getElementById("p-now").innerHTML = z.now.map(function (t) { return li("", t); }).join("") + z.ok.map(function (t) { return li("ok", t); }).join("");
+    document.getElementById("p-do").innerHTML = z.todo.map(function (t) { return li("", t); }).join("");
     btns.forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.z === k ? "true" : "false"); });
   }
   btns.forEach(function (b) { b.addEventListener("click", function () { show(b.dataset.z); }); });

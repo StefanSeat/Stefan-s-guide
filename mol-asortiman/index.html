@@ -12,34 +12,25 @@
 <style>
 /* Layout: tlocrt radnje odozgo; klik na zonu otvara predloge za tu zonu. Boje kao molserbia.rs */
 :root {
-  --bg: #f1f2f2;
+  --bg: #ffffff;
   --surface: #ffffff;
   --ink: #1f2321;
   --muted: #5d6763;
-  --line: #dfe3e1;
+  --line: #e3e7e5;
   --green: #00875a;
   --green-soft: #e4f3ec;
   --lime: #a4cd39;
-  --floor: #e7eae9;
+  --floor: #f4f6f5;
   --fixture: #ffffff;
-  --shadow: 0 2px 10px rgba(20, 40, 30, 0.08);
+  --shadow: 0 2px 12px rgba(0, 60, 40, 0.10);
+  --red: #e2231a;
+  --green-dark: #005c3d;
+  --lime-tint: #dcecb0;
   --f-display: "Barlow Semi Condensed", "Arial Narrow", sans-serif;
   --f-body: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #121615; --surface: #1b2120; --ink: #e8eeeb; --muted: #a0aca7; --line: #2c3532;
-    --green-soft: #14382a; --lime: #b4dc4a;
-    --floor: #171c1b; --fixture: #222a28; --shadow: 0 2px 10px rgba(0,0,0,0.4); color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #121615; --surface: #1b2120; --ink: #e8eeeb; --muted: #a0aca7; --line: #2c3532;
-  --green-soft: #14382a; --lime: #b4dc4a;
-  --floor: #171c1b; --fixture: #222a28; --shadow: 0 2px 10px rgba(0,0,0,0.4); color-scheme: dark;
-}
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5; color-scheme: light; }
 .page {
   max-width: 1080px; margin: 0 auto;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
@@ -52,6 +43,7 @@ h1 { font-size: clamp(1.9rem, 5vw, 2.8rem); }
 h1 .hl { background: var(--lime); color: #1f2321; padding: 0 8px; }
 h2 { font-size: 1.6rem; }
 p { margin: 0; }
+.badge { display: inline-block; background: var(--red); color: #fff; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.04em; padding: 2px 12px 2px 10px; border-radius: 4px 14px 4px 14px; margin-bottom: 8px; }
 .top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; }
 .goal { font-size: 1rem; color: var(--muted); max-width: 46ch; }
 .goal b { color: var(--ink); }
@@ -74,6 +66,7 @@ p { margin: 0; }
   .store { grid-template-columns: 1fr 1fr; grid-template-areas: "fr fr" "sn kf" "ul ks"; padding: 10px; gap: 8px; }
 }
 .zone {
+  box-shadow: 0 1px 4px rgba(0, 60, 40, 0.08);
   display: flex; flex-direction: column; gap: 8px; align-items: stretch;
   background: var(--fixture); border: 2px solid transparent; border-radius: 8px; padding: 10px;
   font: inherit; color: inherit; text-align: left; cursor: pointer; min-width: 0;
@@ -89,27 +82,27 @@ p { margin: 0; }
 
 /* frizider: 5 vrata */
 .doors { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
-.door { background: #2c3431; border-radius: 4px; padding: 4px; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.door { background: var(--green-dark); border-radius: 4px; padding: 4px; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .door i { display: block; height: 9px; border-radius: 2px; }
 .door small { color: #fff; font-size: 0.66rem; text-align: center; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.c-voda { background: #7cc6e8; } .c-sok { background: #f29a3b; } .c-en { background: #e2231a; } .c-pivo { background: #e8c547; } .c-prem { background: #a4cd39; }
+.c-voda { background: var(--lime-tint); } .c-sok { background: var(--lime); } .c-en { background: var(--red); } .c-pivo { background: var(--green); } .c-prem { background: #ffffff; }
 
 /* snacks: police */
 .shelves { display: flex; flex-direction: column; gap: 6px; }
 .shelfrow { display: flex; gap: 3px; height: 14px; }
 .shelfrow i { flex: 1; border-radius: 2px; }
-.s1 { background: #f2b33b; } .s2 { background: #d9534f; } .s3 { background: #8e5a3c; } .s4 { background: #a4cd39; } .s5 { background: #f29a3b; }
+.s1 { background: var(--lime); } .s2 { background: var(--red); } .s3 { background: var(--green); } .s4 { background: var(--lime-tint); } .s5 { background: var(--green-dark); }
 
 /* kafa */
 .coffee { display: flex; gap: 8px; align-items: flex-end; }
-.machine { width: 34px; height: 46px; background: #2c3431; border-radius: 4px; position: relative; flex: none; }
+.machine { width: 34px; height: 46px; background: var(--green-dark); border-radius: 4px; position: relative; flex: none; }
 .machine::after { content: ""; position: absolute; left: 10px; bottom: 6px; width: 14px; height: 12px; background: #fff; border-radius: 0 0 4px 4px; }
-.grill { flex: 1; height: 30px; border-radius: 4px; background: repeating-linear-gradient(90deg, #c86b3c 0 8px, #2c3431 8px 12px); }
+.grill { flex: 1; height: 30px; border-radius: 4px; background: repeating-linear-gradient(90deg, var(--red) 0 8px, var(--green-dark) 8px 12px); }
 
 /* kasa */
 .counter { height: 30px; border-radius: 4px; background: var(--green); display: flex; align-items: center; gap: 4px; padding: 0 6px; }
-.counter i { width: 16px; height: 16px; border-radius: 3px; background: #a4cd39; }
-.counter i:nth-child(2) { background: #e2231a; } .counter i:nth-child(3) { background: #f2b33b; }
+.counter i { width: 16px; height: 16px; border-radius: 3px; background: var(--lime); }
+.counter i:nth-child(2) { background: var(--red); } .counter i:nth-child(3) { background: #ffffff; }
 .counter span { margin-left: auto; font-size: 0.7rem; color: #fff; font-weight: 700; }
 
 /* ulaz */
@@ -120,9 +113,9 @@ p { margin: 0; }
 .hint { font-size: 0.85rem; color: var(--muted); margin-top: 8px; }
 
 /* panel sa predlozima */
-.panel { background: var(--surface); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
+.panel { background: var(--surface); border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--line); overflow: hidden; }
 .panel-head { background: var(--green); color: #fff; padding: 16px 20px; display: flex; flex-direction: column; gap: 4px; }
-.panel-head .tag { align-self: flex-start; background: #a4cd39; color: #1f2321; font-family: var(--f-display); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; padding: 0 8px; border-radius: 3px; }
+.panel-head .tag { align-self: flex-start; background: var(--lime); color: #1f2321; font-family: var(--f-display); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; padding: 0 8px; border-radius: 3px; }
 .panel-head p { font-size: 0.92rem; opacity: 0.92; }
 .tips { list-style: none; margin: 0; padding: 8px 20px 18px; display: flex; flex-direction: column; }
 .tips li { display: flex; gap: 12px; padding-block: 11px; border-bottom: 1px solid var(--line); }
@@ -135,7 +128,8 @@ footer { font-size: 0.8rem; color: var(--muted); }
 
 <div class="page">
   <div class="top">
-    <h1><span class="hl">Asortiman</span> MOL pumpe</h1>
+    <div><span class="badge">Fresh Corner · radnja</span>
+    <h1><span class="hl">Asortiman</span> MOL pumpe</h1></div>
     <p class="goal"><b>Cilj:</b> radnja i Fresh Corner pokrivaju ceo trošak pumpe. Klikni na deo radnje da vidiš predloge.</p>
   </div>
 

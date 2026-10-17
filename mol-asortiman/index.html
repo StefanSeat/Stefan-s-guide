@@ -8,177 +8,225 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap" rel="stylesheet">
 <style>
-/* Layout: radni dokument u jednoj koloni, sa "displejom pumpe" (mono cifre) za brojeve i planogramom frižidera kao glavnom slikom */
+/* Layout: u stilu molserbia.rs: bela traka sa navigacijom, zelena traka sa brzim linkovima, bele kartice na svetlo sivoj podlozi, limeta istaknuti naslovi */
 :root {
-  --bg: #f3f5f4;
+  --bg: #f1f2f2;
   --surface: #ffffff;
-  --ink: #14211f;
-  --muted: #56645f;
-  --line: #d5ddd9;
-  --accent: #0d6b55;      /* tamno zelena, boja stanice */
-  --accent-soft: #dcefe8;
-  --amber: #c97a00;       /* displej pumpe */
-  --amber-soft: #fbefd8;
-  --red: #b3261e;
-  --display-bg: #101a18;
-  --display-fg: #ffb547;
-  --f-display: "Barlow Condensed", "Arial Narrow", sans-serif;
-  --f-body: "Barlow", "Segoe UI", system-ui, sans-serif;
-  --f-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --ink: #1f2321;
+  --muted: #5d6763;
+  --line: #e0e4e2;
+  --green: #00875a;        /* MOL zelena traka */
+  --green-dark: #006d49;
+  --green-soft: #e4f3ec;
+  --lime: #a4cd39;         /* limeta naglasak iz naslova */
+  --lime-soft: #f1f8de;
+  --red: #e2231a;          /* MOL crvena */
+  --red-soft: #fde8e7;
+  --on-green: #ffffff;
+  --shadow: 0 2px 10px rgba(20, 40, 30, 0.08);
+  --fridge: #2c3431;
+  --fridge-shelf: #3c4642;
+  --f-display: "Barlow Semi Condensed", "Arial Narrow", sans-serif;
+  --f-body: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "Barlow Semi Condensed", "Arial Narrow", sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0f1514; --surface: #172120; --ink: #e6eeeb; --muted: #9aaaa4; --line: #2a3734;
-    --accent: #4cc3a0; --accent-soft: #173a31; --amber: #f0a43a; --amber-soft: #3a2b12; --red: #ff8a80;
-    --display-bg: #070c0b; --display-fg: #ffb547; color-scheme: dark;
+    --bg: #121615; --surface: #1b2120; --ink: #e8eeeb; --muted: #a0aca7; --line: #2c3532;
+    --green: #00875a; --green-dark: #00a06b; --green-soft: #14382a; --lime: #b4dc4a; --lime-soft: #2a3414;
+    --red: #ff5a4f; --red-soft: #3d1715; --on-green: #ffffff; --shadow: 0 2px 10px rgba(0,0,0,0.4);
+    --fridge: #0c100f; --fridge-shelf: #26302d; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0f1514; --surface: #172120; --ink: #e6eeeb; --muted: #9aaaa4; --line: #2a3734;
-  --accent: #4cc3a0; --accent-soft: #173a31; --amber: #f0a43a; --amber-soft: #3a2b12; --red: #ff8a80;
-  --display-bg: #070c0b; --display-fg: #ffb547; color-scheme: dark;
+  --bg: #121615; --surface: #1b2120; --ink: #e8eeeb; --muted: #a0aca7; --line: #2c3532;
+  --green: #00875a; --green-dark: #00a06b; --green-soft: #14382a; --lime: #b4dc4a; --lime-soft: #2a3414;
+  --red: #ff5a4f; --red-soft: #3d1715; --on-green: #ffffff; --shadow: 0 2px 10px rgba(0,0,0,0.4);
+  --fridge: #0c100f; --fridge-shelf: #26302d; color-scheme: dark;
 }
 * { box-sizing: border-box; }
-body {
-  margin: 0; background: var(--bg); color: var(--ink);
-  font-family: var(--f-body); font-size: 17px; line-height: 1.6;
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 17px; line-height: 1.6; }
+.gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.inner { max-width: 1180px; margin: 0 auto; }
+
+/* gornja bela traka */
+.topbar { background: var(--surface); border-bottom: 1px solid var(--line); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+.topbar .inner { display: flex; align-items: center; gap: 24px; padding-block: 14px; flex-wrap: wrap; }
+.badge {
+  font-family: var(--f-display); font-weight: 700; font-size: 1.05rem; letter-spacing: 0.02em;
+  color: var(--surface); background: var(--red); padding: 4px 14px 4px 12px; border-radius: 4px 14px 4px 14px;
+  text-transform: uppercase; white-space: nowrap;
 }
-.wrap {
-  max-width: 980px; margin: 0 auto;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 40px 80px;
-  display: flex; flex-direction: column; gap: 56px;
-}
-h1, h2, h3 { font-family: var(--f-display); font-weight: 700; line-height: 1.1; text-wrap: balance; margin: 0; }
-h1 { font-size: clamp(2.6rem, 7vw, 4.4rem); letter-spacing: -0.01em; text-transform: uppercase; }
-h2 { font-size: clamp(1.8rem, 4vw, 2.4rem); text-transform: uppercase; }
-h3 { font-size: 1.3rem; text-transform: uppercase; letter-spacing: 0.02em; }
-p { margin: 0; max-width: 68ch; }
-.eyebrow {
-  font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--accent); font-weight: 700;
-}
-section { display: flex; flex-direction: column; gap: 18px; }
-.lead { font-size: 1.15rem; color: var(--muted); }
-ul { margin: 0; padding-left: 1.2em; }
-li { margin-block: 4px; }
-a { color: var(--accent); }
+.topbar nav { display: flex; gap: 22px; flex-wrap: wrap; margin-left: auto; }
+.topbar nav a { color: var(--ink); text-decoration: none; font-size: 0.98rem; }
+.topbar nav a:hover, .topbar nav a:focus-visible { color: var(--green); }
+@media (max-width: 760px) { .topbar nav { display: none; } }
 
 /* hero */
-header.hero { display: flex; flex-direction: column; gap: 18px; }
-.hero-meta { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip {
-  font-family: var(--f-mono); font-size: 0.75rem; padding: 4px 10px; border-radius: 4px;
-  border: 1px solid var(--line); background: var(--surface); color: var(--muted);
+.hero-band { padding-block: 22px; }
+.hero {
+  background: var(--surface); border-radius: 10px; box-shadow: var(--shadow); overflow: hidden;
+  display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
 }
-.chip.warn { border-color: var(--amber); color: var(--amber); background: var(--amber-soft); }
+.hero-text { padding: 34px 36px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.hero-side { background: var(--green); color: var(--on-green); padding: 30px; display: flex; flex-direction: column; gap: 12px; justify-content: center; position: relative; border-top-left-radius: 120px 100%; }
+.hero-side .num { font-family: var(--f-display); font-weight: 700; font-size: clamp(2.4rem, 5vw, 3.4rem); line-height: 1; }
+.hero-side .cap { font-size: 0.95rem; opacity: 0.92; max-width: 30ch; }
+.hero-side .pill { align-self: flex-start; background: var(--lime); color: #1f2321; font-family: var(--f-display); font-weight: 700; padding: 3px 12px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.03em; }
+@media (max-width: 760px) { .hero { grid-template-columns: 1fr; } .hero-side { border-top-left-radius: 0; } .hero-text { padding: 24px 20px; } }
+h1, h2, h3 { font-family: var(--f-display); font-weight: 700; line-height: 1.08; text-wrap: balance; margin: 0; text-transform: uppercase; }
+h1 { font-size: clamp(2.2rem, 5.5vw, 3.4rem); color: #1f2321; }
+h1 .hl { background: var(--lime); padding: 0 8px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+h1 .rest { display: block; color: var(--ink); }
+h2 { font-size: clamp(1.7rem, 3.6vw, 2.2rem); }
+h3 { font-size: 1.25rem; letter-spacing: 0.01em; }
+p { margin: 0; max-width: 70ch; }
+.lead { font-size: 1.1rem; color: var(--muted); }
+ul { margin: 0; padding-left: 1.2em; }
+li { margin-block: 4px; }
+a { color: var(--green); }
 
-/* displej pumpe */
-.display {
-  background: var(--display-bg); border-radius: 10px; padding: 20px;
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px;
-}
+/* zelena traka sa brzim linkovima */
+.quick { background: var(--green); color: var(--on-green); }
+.quick .inner { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; padding-block: 18px; }
+.quick a { color: var(--on-green); text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; font-weight: 700; font-size: 0.95rem; padding: 8px; border-radius: 8px; }
+.quick a:hover, .quick a:focus-visible { background: var(--green-dark); }
+.quick svg { width: 38px; height: 38px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+.hero-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-size: 0.8rem; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: var(--green-soft); color: var(--green-dark); }
+.chip.warn { background: var(--red-soft); color: var(--red); }
+
+.wrap { padding-block: 44px 80px; }
+.wrap .inner { max-width: 1000px; display: flex; flex-direction: column; gap: 56px; }
+section { display: flex; flex-direction: column; gap: 18px; scroll-margin-top: 80px; }
+.eyebrow { font-family: var(--f-display); font-size: 0.95rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--green); font-weight: 700; }
+
+/* zelena tabla sa brojevima */
+.display { background: var(--green); border-radius: 10px; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px; color: var(--on-green); }
 .display div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.display .lbl { font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: #8fa39c; }
-.display .val { font-family: var(--f-mono); font-weight: 700; font-size: 1.6rem; color: var(--display-fg); font-variant-numeric: tabular-nums; }
-.display .sub { font-size: 0.85rem; color: #c3d0cb; }
+.display .lbl { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.85; }
+.display .val { font-family: var(--f-display); font-weight: 700; font-size: 1.9rem; font-variant-numeric: tabular-nums; line-height: 1.15; }
+.display .sub { font-size: 0.85rem; opacity: 0.9; }
+.display .val .hl { background: var(--lime); color: #1f2321; padding: 0 6px; border-radius: 3px; }
 
 /* tabele */
-.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.tbl { overflow-x: auto; border-radius: 10px; background: var(--surface); box-shadow: var(--shadow); }
 table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 0.95rem; }
-th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
-th { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 700; background: var(--bg); }
+th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--f-display); font-size: 0.9rem; letter-spacing: 0.03em; text-transform: uppercase; color: var(--on-green); font-weight: 700; background: var(--green); }
 tr:last-child td { border-bottom: 0; }
-td strong { font-weight: 600; }
+td strong { font-weight: 700; }
 
-/* kartice zona */
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
-.card {
-  background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 18px;
-  display: flex; flex-direction: column; gap: 8px; min-width: 0;
-}
-.card .tag { font-family: var(--f-mono); font-size: 0.72rem; color: var(--amber); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+/* kartice */
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.card { background: var(--surface); border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 8px; min-width: 0; box-shadow: var(--shadow); }
+.card .tag { align-self: flex-start; font-family: var(--f-display); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; background: var(--lime); color: #1f2321; padding: 1px 8px; border-radius: 3px; }
 .card ul { font-size: 0.95rem; }
 
 /* planogram frizidera */
 .fridge-wrap { overflow-x: auto; }
-.fridge {
-  display: grid; grid-template-columns: repeat(5, minmax(150px, 1fr)); gap: 6px;
-  background: var(--display-bg); padding: 10px; border-radius: 10px; min-width: 800px;
-}
-.door { display: flex; flex-direction: column; gap: 4px; background: #1d2b28; border-radius: 6px; padding: 6px; }
-.door-h { font-family: var(--f-mono); font-size: 0.7rem; color: #8fa39c; text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 4px 6px; }
-.shelf { border-radius: 4px; padding: 8px; font-size: 0.8rem; line-height: 1.35; color: #e7efec; background: #2a3a36; min-height: 64px; }
-.shelf b { display: block; font-family: var(--f-mono); font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase; color: #8fa39c; font-weight: 700; margin-bottom: 2px; }
-.shelf.eye { background: #3d3216; outline: 1px solid #ffb547; }
-.shelf.eye b { color: #ffb547; }
+.fridge { display: grid; grid-template-columns: repeat(5, minmax(150px, 1fr)); gap: 6px; background: var(--fridge); padding: 10px; border-radius: 10px; min-width: 800px; border-top: 8px solid var(--green); }
+.door { display: flex; flex-direction: column; gap: 4px; background: #1c2321; border-radius: 6px; padding: 6px; }
+.door-h { font-family: var(--f-display); font-weight: 700; font-size: 0.85rem; color: #ffffff; text-transform: uppercase; letter-spacing: 0.03em; padding: 4px 4px 6px; }
+.shelf { border-radius: 4px; padding: 8px; font-size: 0.8rem; line-height: 1.35; color: #e9efec; background: var(--fridge-shelf); min-height: 64px; }
+.shelf b { display: block; font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: #a9b6b1; font-weight: 700; margin-bottom: 2px; }
+.shelf.eye { background: #a4cd39; color: #1f2321; }
+.shelf.eye b { color: #2f4a00; }
 .legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 0.85rem; color: var(--muted); }
-.legend span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; background: #2a3a36; }
-.legend span.eye::before { background: #3d3216; outline: 1px solid #ffb547; }
+.legend span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; background: var(--fridge-shelf); }
+.legend span.eye::before { background: #a4cd39; }
 
 /* tierovi piva */
-.tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
-.tier { border-top: 4px solid var(--accent); background: var(--surface); border-radius: 0 0 8px 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; border-left: 1px solid var(--line); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.tier.t2 { border-top-color: var(--amber); }
+.tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+.tier { background: var(--surface); border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; box-shadow: var(--shadow); border-top: 5px solid var(--green); }
+.tier.t2 { border-top-color: var(--lime); }
 .tier.t3 { border-top-color: var(--muted); }
 .tier.t4 { border-top-color: var(--red); }
-.tier .share { font-family: var(--f-mono); font-size: 0.8rem; color: var(--muted); }
+.tier .tlabel { font-family: var(--f-display); font-size: 0.85rem; font-weight: 700; color: var(--muted); letter-spacing: 0.06em; }
+.tier .share { font-family: var(--f-display); font-weight: 700; font-size: 1.05rem; color: var(--green); }
 .tier p { font-size: 0.92rem; }
 
 /* kalkulator */
-.calc { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+.calc { background: var(--surface); border-radius: 10px; padding: 22px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; box-shadow: var(--shadow); }
 .inputs { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 .field { display: flex; flex-direction: column; gap: 4px; }
-.field label { font-size: 0.85rem; color: var(--muted); }
-.field input {
-  font-family: var(--f-mono); font-size: 1rem; padding: 8px 10px; border-radius: 6px;
-  border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 100%;
-}
-.field input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.field label { font-size: 0.88rem; color: var(--muted); }
+.field input { font-family: var(--f-body); font-weight: 700; font-size: 1rem; padding: 9px 12px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 100%; font-variant-numeric: tabular-nums; }
+.field input:focus-visible { outline: 2px solid var(--green); outline-offset: 1px; }
 .out { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 .out .display { grid-template-columns: 1fr; }
-.bar { height: 14px; background: var(--line); border-radius: 7px; overflow: hidden; }
-.bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .3s; }
+.bar { height: 12px; background: var(--line); border-radius: 6px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--lime); width: 0; transition: width .3s; }
 .note { font-size: 0.85rem; color: var(--muted); }
 
 /* checklist */
 .check { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-.check li { display: flex; gap: 10px; align-items: flex-start; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; margin: 0; }
-.check input { margin-top: 5px; accent-color: var(--accent); width: 16px; height: 16px; flex: none; }
+.check li { display: flex; gap: 10px; align-items: flex-start; background: var(--surface); border-radius: 8px; padding: 11px 14px; margin: 0; box-shadow: var(--shadow); }
+.check input { margin-top: 5px; accent-color: var(--green); width: 17px; height: 17px; flex: none; }
 .check label { cursor: pointer; }
-.prio { font-family: var(--f-mono); font-size: 0.7rem; font-weight: 700; padding: 1px 6px; border-radius: 3px; margin-right: 6px; white-space: nowrap; }
-.p1 { background: var(--accent-soft); color: var(--accent); }
-.p2 { background: var(--amber-soft); color: var(--amber); }
+.prio { font-family: var(--f-display); font-size: 0.8rem; font-weight: 700; padding: 1px 7px; border-radius: 3px; margin-right: 6px; white-space: nowrap; }
+.p1 { background: var(--lime); color: #1f2321; }
+.p2 { background: var(--green-soft); color: var(--green-dark); }
 
-.callout { border-left: 4px solid var(--amber); background: var(--amber-soft); padding: 12px 16px; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
-footer { font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
+.callout { border-left: 5px solid var(--red); background: var(--surface); padding: 14px 18px; border-radius: 0 8px 8px 0; font-size: 0.95rem; box-shadow: var(--shadow); }
+footer { background: var(--green); color: var(--on-green); font-size: 0.88rem; }
+footer .inner { padding-block: 22px; }
 @media (prefers-reduced-motion: reduce) { .bar i { transition: none; } }
 </style>
 
-<div class="wrap">
+<div class="topbar gutter"><div class="inner">
+  <span class="badge">Asortiman</span>
+  <nav aria-label="Sekcije">
+    <a href="#fresh">Fresh Corner</a>
+    <a href="#frizideri">Frižideri</a>
+    <a href="#pivo">Pivo</a>
+    <a href="#impuls">Impulsna kupovina</a>
+    <a href="#kalkulator">Kalkulator</a>
+  </nav>
+</div></div>
 
-<header class="hero">
-  <span class="eyebrow">Radni dokument · analiza asortimana · v1</span>
-  <h1>Kako izmeniti asortiman MOL pumpe</h1>
-  <p class="lead">Cilj koji je zadala pumpa: da prodavnica i Fresh Corner (kafa, viršle, hrana) pokriju ceo trošak rada pumpe, a da gorivo bude čist dodatak. Ovo je opšta analiza šta pumpe danas rade, šta se proverava kod impulsne kupovine i kako rasporediti frižidere i pivo. Slike iz radnje dolaze posle, pa se ovde dopunjuje konkretno stanje.</p>
-  <div class="hero-meta">
-    <span class="chip">Fresh Corner</span>
-    <span class="chip">Rashladne jedinice</span>
-    <span class="chip">Impulsna kupovina</span>
-    <span class="chip">Discover zona</span>
-    <span class="chip warn">Čeka slike iz radnje</span>
-  </div>
-</header>
+<div class="hero-band gutter"><div class="inner">
+  <header class="hero">
+    <div class="hero-text">
+      <span class="eyebrow">Radni dokument · analiza asortimana · v1</span>
+      <h1><span class="hl">Asortiman koji</span> <span class="rest">plaća pumpu!</span></h1>
+      <p class="lead">Cilj koji je zadala pumpa: da prodavnica i Fresh Corner (kafa, viršle, hrana) pokriju ceo trošak rada pumpe, a da gorivo bude čist dodatak. Ovo je opšta analiza šta pumpe danas rade, šta se proverava kod impulsne kupovine i kako rasporediti frižidere i pivo. Slike iz radnje dolaze posle, pa se ovde dopunjuje konkretno stanje.</p>
+      <div class="hero-meta">
+        <span class="chip">Fresh Corner</span>
+        <span class="chip">Rashladne jedinice</span>
+        <span class="chip">Impulsna kupovina</span>
+        <span class="chip">Discover zona</span>
+        <span class="chip warn">Čeka slike iz radnje</span>
+      </div>
+    </div>
+    <div class="hero-side">
+      <span class="pill">Cilj</span>
+      <span class="num">100%</span>
+      <span class="cap">troška pumpe pokriveno iz radnje: kafa, hot dog, hrana, pića i impulsna kupovina</span>
+    </div>
+  </header>
+</div></div>
+
+<div class="quick gutter"><div class="inner">
+  <a href="#fresh"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M9 15h18v10a8 8 0 0 1-8 8h-2a8 8 0 0 1-8-8z"/><path d="M27 18h3a4 4 0 0 1 0 8h-3"/><path d="M14 6c-1 2 1 3 0 5M19 6c-1 2 1 3 0 5"/></svg>Kafa i hrana</a>
+  <a href="#frizideri"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="9" y="4" width="22" height="32" rx="2"/><path d="M9 16h22M13 9v3M13 20v6"/></svg>Frižideri</a>
+  <a href="#pivo"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M11 12h16v20a3 3 0 0 1-3 3H14a3 3 0 0 1-3-3z"/><path d="M27 16h3a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3h-3"/><path d="M11 12c0-4 3-6 6-5 1-2 5-2 6 0 3 0 4 2 4 5"/></svg>Pivo</a>
+  <a href="#impuls"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14"/><path d="M15 25l10-10M15.5 15.5h.01M24.5 24.5h.01"/></svg>Impulsna kupovina</a>
+  <a href="#kalkulator"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="9" y="5" width="22" height="30" rx="2"/><path d="M13 10h14v6H13zM14 22h.01M20 22h.01M26 22h.01M14 28h.01M20 28h.01M26 28h.01"/></svg>Kalkulator</a>
+</div></div>
+
+<div class="wrap gutter"><div class="inner">
 
 <section id="logika">
   <span class="eyebrow">01 · Zašto hrana i kafa</span>
   <h2>Logika: gorivo dovodi kupca, radnja zarađuje</h2>
   <p>Na gorivu pumpa zarađuje malo po litru i na tu cenu skoro ne može da utiče. Kupac goriva je već na stanici i već ide do kase. Svaki dinar koji ostavi pored goriva nosi višestruko veću maržu. Zato sve velike mreže (MOL, OMV, NIS Petrol, Lukoil) guraju isti model: dobra kafa, brza topla hrana i prodavnica koja prodaje "sada i ovde".</p>
   <div class="display" aria-label="Okvirne bruto marže po kategoriji">
-    <div><span class="lbl">Kafa iz aparata</span><span class="val">65–80%</span><span class="sub">najjača kategorija po marži</span></div>
+    <div><span class="lbl">Kafa iz aparata</span><span class="val"><span class="hl">65–80%</span></span><span class="sub">najjača kategorija po marži</span></div>
     <div><span class="lbl">Hot dog / viršle</span><span class="val">50–65%</span><span class="sub">signature proizvod mreže</span></div>
     <div><span class="lbl">Hladna pića</span><span class="val">25–40%</span><span class="sub">najveći promet u komadima</span></div>
     <div><span class="lbl">Grickalice, slatkiši</span><span class="val">25–35%</span><span class="sub">čista impulsna kupovina</span></div>
@@ -308,10 +356,10 @@ footer { font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--li
   <h2>Koje pivo držati i kako ga pozicionirati</h2>
   <p>Tržište piva u Srbiji drže tri kompanije sa oko 96% udela: Molson Coors (Apatinska pivara: Jelen, Nikšićko, Staropramen), Carlsberg Srbija (Lav, Tuborg, Carlsberg) i Heineken Srbija (Zaječarsko, MB, Heineken, Amstel). Potrošnja je oko 65 litara po stanovniku, ali ukupna prodaja piva poslednjih godina pada. Na pumpi zato ne treba širina, nego pravi brendovi na pravom mestu i hladni u svakom trenutku.</p>
   <div class="tiers">
-    <div class="tier"><span class="tag" style="font-family:var(--f-mono);font-size:.72rem;font-weight:700;color:var(--accent)">TIER 1</span><h3>Domaći mainstream</h3><span class="share">≈ 50–55% vrata piva</span><p>Jelen, Lav, Zaječarsko, MB. Prodaje se najviše u komadima. Kupac zna šta hoće, cena mora biti konkurentna marketu. Limenka 0,5 l na visini očiju, multipak dole.</p></div>
-    <div class="tier t2"><span class="tag" style="font-family:var(--f-mono);font-size:.72rem;font-weight:700;color:var(--amber)">TIER 2</span><h3>Premium međunarodni</h3><span class="share">≈ 25–30%</span><p>Heineken, Tuborg, Staropramen, Carlsberg, Amstel, Nikšićko, Corona. Bolja marža po komadu. Ovo ide na visinu očiju na drugim vratima, za kupce koji kupuju "za društvo" ili poklon.</p></div>
-    <div class="tier t3"><span class="tag" style="font-family:var(--f-mono);font-size:.72rem;font-weight:700;color:var(--muted)">TIER 3</span><h3>Bezalkoholno i radler</h3><span class="share">≈ 10–15%</span><p>Najbrže rastući segment i logičan za pumpu, jer je kupac često vozač. Heineken 0.0, bezalkoholne verzije domaćih brendova, radleri. Gornja polica, jasno označeno.</p></div>
-    <div class="tier t4"><span class="tag" style="font-family:var(--f-mono);font-size:.72rem;font-weight:700;color:var(--red)">TIER 4</span><h3>Kraft i Discover</h3><span class="share">≈ 5–10%</span><p>Lokalne kraft pivare (npr. Kabinet, Dogma, Salto). Malo mesta, česta rotacija, viša cena. Daje razlog za "probaj novo" i diferencira pumpu od marketa.</p></div>
+    <div class="tier"><span class="tlabel">TIER 1</span><h3>Domaći mainstream</h3><span class="share">≈ 50–55% vrata piva</span><p>Jelen, Lav, Zaječarsko, MB. Prodaje se najviše u komadima. Kupac zna šta hoće, cena mora biti konkurentna marketu. Limenka 0,5 l na visini očiju, multipak dole.</p></div>
+    <div class="tier t2"><span class="tlabel">TIER 2</span><h3>Premium međunarodni</h3><span class="share">≈ 25–30%</span><p>Heineken, Tuborg, Staropramen, Carlsberg, Amstel, Nikšićko, Corona. Bolja marža po komadu. Ovo ide na visinu očiju na drugim vratima, za kupce koji kupuju "za društvo" ili poklon.</p></div>
+    <div class="tier t3"><span class="tlabel">TIER 3</span><h3>Bezalkoholno i radler</h3><span class="share">≈ 10–15%</span><p>Najbrže rastući segment i logičan za pumpu, jer je kupac često vozač. Heineken 0.0, bezalkoholne verzije domaćih brendova, radleri. Gornja polica, jasno označeno.</p></div>
+    <div class="tier t4"><span class="tlabel">TIER 4</span><h3>Kraft i Discover</h3><span class="share">≈ 5–10%</span><p>Lokalne kraft pivare (npr. Kabinet, Dogma, Salto). Malo mesta, česta rotacija, viša cena. Daje razlog za "probaj novo" i diferencira pumpu od marketa.</p></div>
   </div>
   <ul>
     <li><strong>Udeo police prati udeo prodaje.</strong> Brend koji pravi 30% prodaje piva dobija oko 30% mesta. Svaka 4 do 6 nedelja proverimo iz kase i prilagodimo.</li>
@@ -421,9 +469,9 @@ footer { font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--li
   </div>
 </section>
 
-<footer>Radni dokument za izmenu asortimana jedne MOL pumpe. Nije zvaničan materijal kompanije MOL. Brojevi o tržištu su iz javnih izvora, marže su okvirni industrijski rasponi, a kalkulator koristi primer podatke dok ne stignu pravi.</footer>
+</div></div>
 
-</div>
+<footer class="gutter"><div class="inner">Radni dokument za izmenu asortimana jedne MOL pumpe. Nije zvaničan materijal kompanije MOL. Brojevi o tržištu su iz javnih izvora, marže su okvirni industrijski rasponi, a kalkulator koristi primer podatke dok ne stignu pravi.</div></footer>
 
 <script>
 (function () {

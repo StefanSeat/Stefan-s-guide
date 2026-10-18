@@ -66,11 +66,11 @@ p { margin: 0; }
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-areas:
     "al al fr"
-    "go pr fr"
+    "go go fr"
     "ul kf ks";
 }
 @media (max-width: 520px) {
-  .store { grid-template-columns: 1fr 1fr; grid-template-areas: "al al" "fr fr" "go pr" "ul kf" "ks ks"; padding: 10px; gap: 8px; }
+  .store { grid-template-columns: 1fr 1fr; grid-template-areas: "al al" "fr fr" "go go" "ul kf" "ks ks"; padding: 10px; gap: 8px; }
 }
 .zone {
   display: flex; flex-direction: column; gap: 8px; align-items: stretch;
@@ -86,7 +86,7 @@ p { margin: 0; }
 .num { flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; font-size: 0.8rem; }
 .zone[aria-pressed="true"] .num { background: var(--lime); color: #1f2321; }
 .flag { margin-left: auto; flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--red); }
-.pr { grid-area: pr; } .al { grid-area: al; } .fr { grid-area: fr; } .go { grid-area: go; } .kf { grid-area: kf; } .ks { grid-area: ks; } .ul { grid-area: ul; }
+.al { grid-area: al; } .fr { grid-area: fr; } .go { grid-area: go; } .kf { grid-area: kf; } .ks { grid-area: ks; } .ul { grid-area: ul; }
 
 /* crtezi u zonama */
 .doors { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; flex: 1; min-height: 90px; }
@@ -111,12 +111,6 @@ p { margin: 0; }
 .counter i:nth-child(2) { background: var(--red); } .counter i:nth-child(3) { background: #fff; }
 .counter span { margin-left: auto; font-size: 0.68rem; color: #fff; font-weight: 700; }
 .zone.ul { border: 2px dashed var(--muted); }
-.zone.pr { border: 2px dashed var(--lime); background: var(--lime-tint); }
-.zone.pr[aria-pressed="true"] { border: 2px solid var(--green); }
-.new { font-family: var(--f-display); font-size: 0.7rem; background: var(--red); color: #fff; padding: 0 6px; border-radius: 3px; letter-spacing: 0.04em; }
-.bars { display: flex; gap: 3px; }
-.bars i { flex: 1; height: 22px; border-radius: 3px; background: var(--green); }
-.bars i:nth-child(2n) { background: var(--green-dark); } .bars i:nth-child(3n) { background: #fff; }
 .zone.ul[aria-pressed="true"] { border: 2px solid var(--green); }
 .promo { height: 28px; border-radius: 4px; background: var(--red); color: #fff; font-family: var(--f-display); font-weight: 700; font-size: 0.75rem; display: grid; place-items: center; letter-spacing: 0.04em; }
 
@@ -160,8 +154,8 @@ footer { font-size: 0.8rem; color: var(--muted); }
   </div>
 
   <div class="top3" aria-label="Tri najvažnije izmene">
-    <div><b>1</b><span>Proteinska celina "Nagradi sebe"</span></div>
-    <div><b>2</b><span>Sezonski kutak za poklone: spremno za poklon, toga nema u marketu</span></div>
+    <div><b>1</b><span>Zdravije opcije: jedan frižider + "Nagradi sebe" na kasi</span></div>
+    <div><b>2</b><span>Sezonski kutak za poklone: spremno za poklon</span></div>
     <div><b>3</b><span>Hrana za doručak: bogata vitrina, miris pekare, meal deal</span></div>
   </div>
 
@@ -176,7 +170,7 @@ footer { font-size: 0.8rem; color: var(--muted); }
           </span>
         </button>
         <button class="zone fr" data-z="fr" aria-pressed="true" type="button">
-          <span class="zname"><span class="num">1</span>Frižideri</span>
+          <span class="zname"><span class="num">1</span>Frižideri<span class="flag" title="Važna izmena"></span></span>
           <span class="doors" aria-hidden="true">
             <span class="door"><i class="c-sok"></i><i class="c-sok"></i><i class="c-sok"></i><i class="c-sok"></i><small>Sokovi</small></span>
             <span class="door"><i class="c-en"></i><i class="c-en"></i><i class="c-en"></i><i class="c-iso"></i><small>Energija</small></span>
@@ -192,10 +186,6 @@ footer { font-size: 0.8rem; color: var(--muted); }
             <span class="shelfrow"><i class="s2"></i><i class="s2"></i><i class="s1"></i><i class="s4"></i><i class="s3"></i></span>
           </span>
         </button>
-        <button class="zone pr" data-z="pr" aria-pressed="false" type="button">
-          <span class="zname"><span class="num">7</span>Nagradi sebe<span class="new">NOVO</span></span>
-          <span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
-        </button>
         <button class="zone ul" data-z="ul" aria-pressed="false" type="button">
           <span class="zname"><span class="num">5</span>Ulaz</span>
           <span class="promo" aria-hidden="true">TOP PONUDA</span>
@@ -205,7 +195,7 @@ footer { font-size: 0.8rem; color: var(--muted); }
           <span class="coffee" aria-hidden="true"><span class="machine"></span><span class="pastry"><i></i><i></i><i></i></span></span>
         </button>
         <button class="zone ks" data-z="ks" aria-pressed="false" type="button">
-          <span class="zname"><span class="num">4</span>Kasa</span>
+          <span class="zname"><span class="num">4</span>Kasa<span class="flag" title="Važna izmena"></span></span>
           <span class="counter" aria-hidden="true"><i></i><i></i><i></i><span>KASA</span></span>
         </button>
       </div>
@@ -241,15 +231,16 @@ footer { font-size: 0.8rem; color: var(--muted); }
   var Z = {
     fr: { n: 1, t: "Frižideri", img: ["frizideri", "gondola"],
       now: [
-        "Četiri vrata: sokovi, energetski (Red Bull, Monster, Ultra, Joker, Guarana), izotonik, voda."
+        "Četiri vrata: sokovi, energetski (Red Bull, Monster, Ultra, Joker, Guarana), izotonik, voda.",
+        "Za brzu užinu danas su opcija praktično samo čokoladica i čips, a trend je zdravija ishrana."
       ],
       ok: [
         "Lepo osvetljeni, puni i sa cenama.",
         "Energetski imaju dovoljno mesta."
       ],
       todo: [
-        "<b>Bez većih izmena</b>, raspored ostaje.",
-        "Proteinski napici idu u celinu \"Nagradi sebe\" (zona 7), pored izotonika."
+        "<b>Jedan frižider za zdravije opcije</b>: proteinski napici, proteinski jogurti, voda, izotonik.",
+        "Ostali frižideri ostaju kakvi jesu."
       ]},
     go: { n: 2, t: "Gondola: pivo i kikiriki", img: ["gondola", "frizideri"],
       now: [
@@ -265,20 +256,6 @@ footer { font-size: 0.8rem; color: var(--muted); }
         "<b>Sve grickalice za pivo na jedno mesto</b>, ovde uz pivo.",
         "<b>Kombo cena</b> na čelu: \"multipak + kikiriki\".",
         "Mesto za brendove piva po udelu u prodaji, premium (Heineken, Carlsberg) u visini očiju."
-      ]},
-    pr: { n: 7, t: "Nagradi sebe: zdravija užina", img: ["kasa", "kasa-pult"],
-      now: [
-        "Proteinske pločice (Born Winner, Protein Bar, Corny, Coco, Nuts) rasute po gondoli kod kase, između čokoladica.",
-        "Za brzu užinu danas su opcija praktično samo čokoladica i čips, a trend je zdravija ishrana."
-      ],
-      ok: [],
-      todo: [
-        "<b>Jedna celina</b> sa svojom oznakom: \"Gorivo za auto, gorivo za tebe\".",
-        "<b>Za koga</b>: rekreativci, vozači, muškarci 20 do 40 koji paze na sebe.",
-        "<b>Gde</b>: pored frižidera sa vodom i izotonikom, da pločica i piće idu zajedno.",
-        "<b>Proteinski napici i proteinski jogurti</b> u frižideru, odmah uz pločice.",
-        "<b>Orašasti plodovi</b> u malom pakovanju (bademi, indijski orah, mešavine).",
-        "<b>Kombo</b>: pločica ili jogurt + voda po jednoj ceni."
       ]},
     kf: { n: 3, t: "Kafa i hrana", img: ["kafa", "kasa-pult"],
       now: [
@@ -296,12 +273,12 @@ footer { font-size: 0.8rem; color: var(--muted); }
         "<b>Bogata i lepo izložena hrana</b>: puna vitrina, više vrsta, lepo složeno, da izgleda kao prava alternativa pekari.",
         "<b>Jasna poruka: dobar doručak</b>, npr. \"Doručak na putu\" iznad vitrine.",
         "<b>Meal deal ponude</b> sa jednom cenom: sendvič + piće, kafa + kroasan, jogurt + pecivo.",
-        "<b>Pored velikih pakovanja keksa i slatko u jednom komadu</b>, za uz kafu odmah.",
         "<b>Meal deal na jednom velikom plakatu</b> umesto 7 malih."
       ]},
     ks: { n: 4, t: "Kasa", img: ["kasa", "kasa-pult"],
       now: [
         "Gondola puna: čokoladice, proteinske i Corny pločice, Riddle, Kinder, Pulmoll, mentos.",
+        "Proteinske pločice (Born Winner, Protein Bar, Corny, Coco, Nuts) pomešane sa čokoladicama.",
         "Na pultu dve akcije: energetski i Milka.",
         "Vitrina sa sendvičima pored kase; iza cigarete, baterije, Durex.",
         "Mini alkohol na istoj gondoli kao Kinder jaja i lizalice."
@@ -309,7 +286,8 @@ footer { font-size: 0.8rem; color: var(--muted); }
       ok: ["Uredno i dobro popunjeno, samo dve akcije na pultu."],
       todo: [
         "<b>Slatkiši za dve grupe</b>: deca dole (Kinder, lizalice), a u visini očiju \"mali luksuz\" za odrasle (Ferrero Rocher, Lindt na komad, 100 do 250 RSD).",
-        "<b>Proteinske pločice</b> izdvojiti u celinu \"Nagradi sebe\" (zona 7).",
+        "<b>\"Nagradi sebe\"</b>: proteinske pločice i orašasti plodovi izdvojeni od čokoladica, kao posebna celina sa oznakom \"Gorivo za auto, gorivo za tebe\".",
+        "<b>Za koga</b>: rekreativci, vozači, ljudi koji paze na sebe.",
         "<b>Fale gumene bombone</b>: konzumacija im raste, a jeftinije su od čokolade.",
         "<b>Fale žvake za auto</b> u većem pakovanju (bočica za držač čaše).",
         "<b>Mini alkohol</b> skloniti sa dečje gondole.",
@@ -324,7 +302,6 @@ footer { font-size: 0.8rem; color: var(--muted); }
       ok: ["Jedna jaka akcija, multipak na putu ka izlazu."],
       todo: [
         "<b>Sezona slava i praznika</b> (novembar do januara): deo sezonskog kutka (zona 6) i na ulazu.",
-        "<b>Jesen i zima</b>: tečnost za stakla, strugači, metlice.",
         "<b>Top ponuda menja se na 2 do 4 nedelje</b>."
       ]},
     al: { n: 6, t: "Pokloni i sezona", img: ["frizideri", "gondola"],

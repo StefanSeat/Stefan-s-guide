@@ -176,6 +176,7 @@ const LISTS = [
     title: "Top 10 pivo i pabovi",
     title_en: "Top 10 beer & pubs",
     icon: "🍺",
+    image: "images/lista-pivo.jpg",
     intro: "Craft pivo, Ginis i bašte za duga leta.",
     intro_en: "Craft beer, Guinness and gardens for long summers.",
     places: [

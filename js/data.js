@@ -2168,5 +2168,28 @@ const LOCATIONS = [
     "short_en": "A pub in Block 1, live music on Fridays.",
     "googleRating": 4.5,
     "googleReviews": 7122
+  },
+  {
+    "id": "draft-bar",
+    "name": "Draft Bar",
+    "category": "pice",
+    "area": "Dorćol",
+    "image": "",
+    "short": "Sam točiš pivo i vino sa preko 30 slavina, plaćaš koliko natočiš.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Žorža Klemansoa 29d, Beograd",
+    "lat": 44.8259,
+    "lng": 20.4741,
+    "mapsUrl": "",
+    "tags": [
+      "pivo"
+    ],
+    "icon": "🍺",
+    "short_en": "Pour your own beer and wine from 30+ taps and pay for what you pour.",
+    "googleRating": 4.7,
+    "googleReviews": 1013,
+    "website": "https://draftbar.rs/"
   }
 ];

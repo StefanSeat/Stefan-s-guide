@@ -184,7 +184,7 @@ const LISTS = [
       { id: "funk-and-soul-pub" },
       { id: "pivo-i-kobaja-garage" },
       { id: "central-pub" },
-      { id: "helga-s-pub-mesi-mesi" },
+      { id: "draft-bar" },
       { id: "gunners-pub" },
       { id: "badger-mug" },
       { id: "bure-piva" },

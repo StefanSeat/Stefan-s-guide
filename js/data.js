@@ -263,7 +263,9 @@ const LOCATIONS = [
     "lat": 44.817439,
     "lng": 20.456614,
     "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x0:0x632850d20984f50c",
-    "tags": []
+    "tags": [],
+    "googleRating": 4.8,
+    "googleReviews": 2280
   },
   {
     "id": "avocado-belvil",
@@ -1909,7 +1911,9 @@ const LOCATIONS = [
       "burger"
     ],
     "icon": "🍺",
-    "short_en": "Craft brewery with a beer garden and great burgers."
+    "short_en": "Craft brewery with a beer garden and great burgers.",
+    "googleRating": 4.7,
+    "googleReviews": 2437
   },
   {
     "id": "bad-guys-burgers",
@@ -1953,7 +1957,9 @@ const LOCATIONS = [
     ],
     "icon": "🍔",
     "short_en": "Burgers the Balkan way.",
-    "website": "https://makedonac.com/"
+    "website": "https://makedonac.com/",
+    "googleRating": 4.9,
+    "googleReviews": 1820
   },
   {
     "id": "fat-boys-food-co",
@@ -1973,7 +1979,9 @@ const LOCATIONS = [
       "burger"
     ],
     "icon": "🍔",
-    "short_en": "American burgers and smoked meats at the start of Strahinjića Bana."
+    "short_en": "American burgers and smoked meats at the start of Strahinjića Bana.",
+    "googleRating": 4.4,
+    "googleReviews": 1649
   },
   {
     "id": "gorilla-burger-bar",
@@ -2037,6 +2045,8 @@ const LOCATIONS = [
     ],
     "icon": "🍔",
     "short_en": "An American diner in Vračar since 2012.",
-    "website": "https://www.intergalacticdiner.com/"
+    "website": "https://www.intergalacticdiner.com/",
+    "googleRating": 4.4,
+    "googleReviews": 3513
   }
 ];

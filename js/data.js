@@ -2002,7 +2002,9 @@ const LOCATIONS = [
     ],
     "icon": "🍔",
     "short_en": "Black Angus beef burgers.",
-    "website": "https://gorillaburgerbar.com/"
+    "website": "https://gorillaburgerbar.com/",
+    "googleRating": 4.8,
+    "googleReviews": 824
   },
   {
     "id": "smash-lab-burgers",

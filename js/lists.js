@@ -36,9 +36,10 @@ const LISTS = [
   },
   {
     id: "kafa",
-    title: "Najbolja kafa",
-    title_en: "Best coffee",
+    title: "Top 10 kafa",
+    title_en: "Top 10 coffee",
     icon: "☕",
+    image: "images/lista-kafa.jpg",
     intro: "Specialty pržionice i mali kafići u koje se vraćam.",
     intro_en: "Specialty roasters and small cafés I keep going back to.",
     places: [

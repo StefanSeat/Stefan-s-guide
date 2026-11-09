@@ -1425,7 +1425,9 @@ const LOCATIONS = [
     "lat": 44.81489,
     "lng": 20.475084,
     "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x0:0x42011dc251b8c555",
-    "tags": []
+    "tags": [],
+    "googleRating": 4.8,
+    "googleReviews": 7190
   },
   {
     "id": "narodno-pozoriste",
@@ -1928,7 +1930,9 @@ const LOCATIONS = [
     ],
     "icon": "🍔",
     "short_en": "Smash burgers in Block 44.",
-    "website": "https://badguys.rs/meni/"
+    "website": "https://badguys.rs/meni/",
+    "googleRating": 4.8,
+    "googleReviews": 931
   },
   {
     "id": "makedonac-burger-bar",
@@ -2010,7 +2014,9 @@ const LOCATIONS = [
       "burger"
     ],
     "icon": "🍔",
-    "short_en": "Smash burgers in the Enjub mall."
+    "short_en": "Smash burgers in the Enjub mall.",
+    "googleRating": 4.9,
+    "googleReviews": 703
   },
   {
     "id": "intergalactic-diner-vracar",

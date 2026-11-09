@@ -116,6 +116,7 @@ const LISTS = [
     title: "Top 10 burgeri",
     title_en: "Top 10 burgers",
     icon: "🍔",
+    image: "images/lista-burgeri.jpg",
     intro: "Najbolji burgeri u gradu, od smash burgera do dinera.",
     intro_en: "The best burgers in town, from smash burgers to diners.",
     places: [

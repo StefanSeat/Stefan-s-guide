@@ -246,7 +246,9 @@ const LOCATIONS = [
     "lat": 44.788478,
     "lng": 20.423116,
     "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x0:0xa14f065b87591bc6",
-    "tags": []
+    "tags": [],
+    "googleRating": 4.7,
+    "googleReviews": 2700
   },
   {
     "id": "perlo-burgeri",
@@ -2050,5 +2052,72 @@ const LOCATIONS = [
     "website": "https://www.intergalacticdiner.com/",
     "googleRating": 4.4,
     "googleReviews": 3513
+  },
+  {
+    "id": "gunners-pub",
+    "name": "Gunners Pub",
+    "category": "pice",
+    "area": "Stari grad",
+    "image": "",
+    "short": "Pab sa velikim izborom točenih piva.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Braće Jugovića 2a, Beograd",
+    "lat": 44.8179,
+    "lng": 20.4635,
+    "mapsUrl": "",
+    "tags": [
+      "pivo"
+    ],
+    "icon": "🍺",
+    "short_en": "A pub with a big choice of beers on tap.",
+    "googleRating": 4.6,
+    "googleReviews": 3197,
+    "website": "https://www.gunnerspub.com/"
+  },
+  {
+    "id": "funk-and-soul-pub",
+    "name": "Funk & Soul Pub",
+    "category": "pice",
+    "area": "Stari grad",
+    "image": "",
+    "short": "Kraft piva i pub hrana kod Trga republike.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Nikole Spasića 1, Beograd",
+    "lat": 44.8172,
+    "lng": 20.4612,
+    "mapsUrl": "",
+    "tags": [
+      "pivo"
+    ],
+    "icon": "🍺",
+    "short_en": "Craft beer and pub food near Republic Square.",
+    "googleRating": 4.7,
+    "googleReviews": 3672
+  },
+  {
+    "id": "ok-no",
+    "name": "Ok.No",
+    "category": "pice",
+    "area": "Stari grad",
+    "image": "",
+    "short": "Retro kafić sa jeftinim točenim pivom i baštom.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Obilićev venac 17, Beograd",
+    "lat": 44.8161,
+    "lng": 20.4566,
+    "mapsUrl": "",
+    "tags": [
+      "pivo"
+    ],
+    "icon": "🍺",
+    "short_en": "A retro bar with cheap draught beer and a terrace.",
+    "googleRating": 4.5,
+    "googleReviews": 2381
   }
 ];

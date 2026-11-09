@@ -1412,7 +1412,7 @@ const LOCATIONS = [
   },
   {
     "id": "smash-burgers",
-    "name": "SMASH BURGERS",
+    "name": "Smash Burgers Takovska",
     "category": "jelo",
     "area": "Skadarlija",
     "image": "",
@@ -1888,5 +1888,149 @@ const LOCATIONS = [
     "icon": "🍕",
     "short_en": "Neapolitan pizza and Italian food next to Princess Ljubica's Residence.",
     "website": "https://trattoriacampania.com/"
+  },
+  {
+    "id": "docker-brewery",
+    "name": "Docker Brewery & Beer Garden",
+    "category": "jelo",
+    "area": "Dorćol",
+    "image": "",
+    "short": "Craft pivara sa baštom i odličnim burgerima.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Žorža Klemansoa 27B, Beograd",
+    "lat": 44.8256,
+    "lng": 20.4738,
+    "mapsUrl": "",
+    "tags": [
+      "burger"
+    ],
+    "icon": "🍺",
+    "short_en": "Craft brewery with a beer garden and great burgers."
+  },
+  {
+    "id": "bad-guys-burgers",
+    "name": "Bad Guys Burgers Novi Beograd",
+    "category": "jelo",
+    "area": "Novi Beograd",
+    "image": "",
+    "short": "Smash burgeri u Bloku 44.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Gandijeva 148a, Blok 44, Beograd",
+    "lat": 44.7927,
+    "lng": 20.3908,
+    "mapsUrl": "",
+    "tags": [
+      "burger"
+    ],
+    "icon": "🍔",
+    "short_en": "Smash burgers in Block 44.",
+    "website": "https://badguys.rs/meni/"
+  },
+  {
+    "id": "makedonac-burger-bar",
+    "name": "Makedonac Burger Bar",
+    "category": "jelo",
+    "area": "Savski venac",
+    "image": "",
+    "short": "Burgeri na balkanski način.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Sarajevska 22, Beograd",
+    "lat": 44.8057,
+    "lng": 20.4597,
+    "mapsUrl": "",
+    "tags": [
+      "burger"
+    ],
+    "icon": "🍔",
+    "short_en": "Burgers the Balkan way.",
+    "website": "https://makedonac.com/"
+  },
+  {
+    "id": "fat-boys-food-co",
+    "name": "Fat Boys Food co.",
+    "category": "jelo",
+    "area": "Dorćol",
+    "image": "",
+    "short": "Američki burgeri i dimljeno meso na početku Strahinjića Bana.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Strahinjića Bana 3, Beograd",
+    "lat": 44.8203,
+    "lng": 20.46,
+    "mapsUrl": "",
+    "tags": [
+      "burger"
+    ],
+    "icon": "🍔",
+    "short_en": "American burgers and smoked meats at the start of Strahinjića Bana."
+  },
+  {
+    "id": "gorilla-burger-bar",
+    "name": "Gorilla Burger Bar",
+    "category": "jelo",
+    "area": "Palilula",
+    "image": "",
+    "short": "Burgeri od Black Angus govedine.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Bulevar kralja Aleksandra 43, Beograd",
+    "lat": 44.8071,
+    "lng": 20.4712,
+    "mapsUrl": "",
+    "tags": [
+      "burger"
+    ],
+    "icon": "🍔",
+    "short_en": "Black Angus beef burgers.",
+    "website": "https://gorillaburgerbar.com/"
+  },
+  {
+    "id": "smash-lab-burgers",
+    "name": "Smash Lab Burgers",
+    "category": "jelo",
+    "area": "Novi Beograd",
+    "image": "",
+    "short": "Smash burgeri u TC Enjub.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Jurija Gagarina 227, TC Enjub, Beograd",
+    "lat": 44.7912,
+    "lng": 20.3868,
+    "mapsUrl": "",
+    "tags": [
+      "burger"
+    ],
+    "icon": "🍔",
+    "short_en": "Smash burgers in the Enjub mall."
+  },
+  {
+    "id": "intergalactic-diner-vracar",
+    "name": "Intergalactic Diner Vračar",
+    "category": "jelo",
+    "area": "Vračar",
+    "image": "",
+    "short": "Američki diner na Vračaru, od 2012.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Internacionalnih brigada 22, Beograd",
+    "lat": 44.7946,
+    "lng": 20.4801,
+    "mapsUrl": "",
+    "tags": [
+      "burger"
+    ],
+    "icon": "🍔",
+    "short_en": "An American diner in Vračar since 2012.",
+    "website": "https://www.intergalacticdiner.com/"
   }
 ];

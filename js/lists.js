@@ -173,8 +173,8 @@ const LISTS = [
   },
   {
     id: "pivo",
-    title: "Top 10 pivo i pabovi",
-    title_en: "Top 10 beer & pubs",
+    title: "Top 10 pabovi",
+    title_en: "Top 10 pubs",
     icon: "🍺",
     image: "images/lista-pivo.jpg",
     intro: "Craft pivo, Ginis i bašte za duga leta.",

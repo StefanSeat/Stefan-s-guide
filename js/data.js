@@ -303,7 +303,9 @@ const LOCATIONS = [
     "lat": 44.813799,
     "lng": 20.461656,
     "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x0:0xf1106025125cec59",
-    "tags": []
+    "tags": [],
+    "googleRating": 4.9,
+    "googleReviews": 365
   },
   {
     "id": "liga-pub-obilicev-venac",
@@ -691,7 +693,9 @@ const LOCATIONS = [
     "lat": 44.786789,
     "lng": 20.514824,
     "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x0:0x4f261ec772e7121",
-    "tags": []
+    "tags": [],
+    "googleRating": 4.7,
+    "googleReviews": 1007
   },
   {
     "id": "adam-stroopwafel",
@@ -2119,5 +2123,50 @@ const LOCATIONS = [
     "short_en": "A retro bar with cheap draught beer and a terrace.",
     "googleRating": 4.5,
     "googleReviews": 2381
+  },
+  {
+    "id": "pivo-i-kobaja-garage",
+    "name": "Pivo i Kobaja Garage",
+    "category": "pice",
+    "area": "Novi Beograd",
+    "image": "",
+    "short": "Veliki izbor piva i kobasice.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Bulevar umetnosti 4, Mercator centar, Beograd",
+    "lat": 44.8133,
+    "lng": 20.4205,
+    "mapsUrl": "",
+    "tags": [
+      "pivo"
+    ],
+    "icon": "🍺",
+    "short_en": "A big choice of beer, plus sausages.",
+    "googleRating": 4.5,
+    "googleReviews": 4956,
+    "website": "https://pivoikobaja.rs/"
+  },
+  {
+    "id": "central-pub",
+    "name": "Central Pub",
+    "category": "pice",
+    "area": "Novi Beograd",
+    "image": "",
+    "short": "Pab u Bloku 1, petkom živa muzika.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Bulevar Zorana Đinđića 106a, Beograd",
+    "lat": 44.8162,
+    "lng": 20.4334,
+    "mapsUrl": "",
+    "tags": [
+      "pivo"
+    ],
+    "icon": "🍺",
+    "short_en": "A pub in Block 1, live music on Fridays.",
+    "googleRating": 4.5,
+    "googleReviews": 7122
   }
 ];

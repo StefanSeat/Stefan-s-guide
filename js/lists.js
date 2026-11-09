@@ -153,9 +153,10 @@ const LISTS = [
   },
   {
     id: "kokteli",
-    title: "Kokteli",
-    title_en: "Cocktails",
+    title: "Top 10 barovi",
+    title_en: "Top 10 bars",
     icon: "🍸",
+    image: "images/lista-kokteli.jpg",
     intro: "Barovi u koje vodim ljude kad hoćemo dobar koktel.",
     intro_en: "Bars I take people to for a good cocktail.",
     places: [

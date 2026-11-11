@@ -78,7 +78,7 @@ const LISTS = [
     title: "Top 10 slatkiši",
     title_en: "Top 10 sweets",
     icon: "🍰",
-    image: "images/lista-slatko.jpg",
+    image: "images/lista-slatko.jpg?v=2",
     intro: "Kolači, sladoled i bubble tea kad zatreba šećer.",
     intro_en: "Cakes, ice cream and bubble tea when you need sugar.",
     places: [

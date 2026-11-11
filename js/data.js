@@ -2222,5 +2222,73 @@ const LOCATIONS = [
     "googleRating": 4.2,
     "googleReviews": 1057,
     "website": "https://wigglepancakes.com/"
+  },
+  {
+    "id": "fini",
+    "name": "Fini Café & Confectionery",
+    "category": "kafa",
+    "area": "Dorćol",
+    "image": "",
+    "short": "Kafe-poslastičarnica sa domaćim tortama i tartovima.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Svetozara Miletića 7, Beograd",
+    "lat": 44.8235,
+    "lng": 20.4645,
+    "mapsUrl": "",
+    "tags": [
+      "slatko"
+    ],
+    "icon": "🍰",
+    "short_en": "A café and patisserie with homemade cakes and tarts.",
+    "googleRating": 4.7,
+    "googleReviews": 503,
+    "website": "https://fini.rs/"
+  },
+  {
+    "id": "ispeci-pa-reci",
+    "name": "Ispeci pa reci",
+    "category": "kafa",
+    "area": "Dorćol",
+    "image": "",
+    "short": "Kolačići pečeni na licu mesta.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Gundulićev venac 34, Beograd",
+    "lat": 44.8193,
+    "lng": 20.4673,
+    "mapsUrl": "",
+    "tags": [
+      "slatko"
+    ],
+    "icon": "🍪",
+    "short_en": "Freshly baked cookies.",
+    "googleRating": 4.7,
+    "googleReviews": 429,
+    "website": "https://ispecipareci.rs/"
+  },
+  {
+    "id": "kaiserschmarrn",
+    "name": "Kaiserschmarrn",
+    "category": "kafa",
+    "area": "Stari grad",
+    "image": "",
+    "short": "Originalne austrijske kajzeršmarn palačinke.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Vuka Karadžića 9, Beograd",
+    "lat": 44.818,
+    "lng": 20.456,
+    "mapsUrl": "",
+    "tags": [
+      "slatko"
+    ],
+    "icon": "🥞",
+    "short_en": "Original Austrian Kaiserschmarrn pancakes.",
+    "googleRating": 4.6,
+    "googleReviews": 815
   }
 ];

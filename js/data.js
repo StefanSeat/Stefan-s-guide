@@ -712,7 +712,9 @@ const LOCATIONS = [
     "lat": 44.818262,
     "lng": 20.45454,
     "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x0:0xf46edfa4d42f4c45",
-    "tags": []
+    "tags": [],
+    "googleRating": 4.9,
+    "googleReviews": 366
   },
   {
     "id": "predji-preko",
@@ -797,7 +799,9 @@ const LOCATIONS = [
     "lat": 44.803867,
     "lng": 20.46622,
     "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x0:0x8d295946b169cc68",
-    "tags": []
+    "tags": [],
+    "googleRating": 4.6,
+    "googleReviews": 434
   },
   {
     "id": "noble-roots-cocktail-bar",
@@ -921,7 +925,9 @@ const LOCATIONS = [
     "lat": 44.800064,
     "lng": 20.466792,
     "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x0:0xb91dba5c37c0b510",
-    "tags": []
+    "tags": [],
+    "googleRating": 4.4,
+    "googleReviews": 208
   },
   {
     "id": "mali-prag",
@@ -1133,7 +1139,9 @@ const LOCATIONS = [
     "lat": 44.818632,
     "lng": 20.454694,
     "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x0:0xadc1fb6a13f02a3f",
-    "tags": []
+    "tags": [],
+    "googleRating": 4.5,
+    "googleReviews": 298
   },
   {
     "id": "billys-pizza-tavern-dorcol",
@@ -2191,5 +2199,28 @@ const LOCATIONS = [
     "googleRating": 4.7,
     "googleReviews": 1013,
     "website": "https://draftbar.rs/"
+  },
+  {
+    "id": "wiggle",
+    "name": "Wiggle",
+    "category": "kafa",
+    "area": "Stari grad",
+    "image": "",
+    "short": "Japanske sufle palačinke, pahuljaste i pravljene na licu mesta.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Pop-Lukina 1, Beograd",
+    "lat": 44.8168,
+    "lng": 20.4532,
+    "mapsUrl": "",
+    "tags": [
+      "slatko"
+    ],
+    "icon": "🥞",
+    "short_en": "Japanese soufflé pancakes, fluffy and made to order.",
+    "googleRating": 4.2,
+    "googleReviews": 1057,
+    "website": "https://wigglepancakes.com/"
   }
 ];

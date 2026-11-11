@@ -79,8 +79,8 @@ const LISTS = [
     title_en: "Top 10 sweets",
     icon: "🍰",
     image: "images/lista-slatko.jpg?v=2",
-    intro: "Kolači, sladoled i bubble tea kad zatreba šećer.",
-    intro_en: "Cakes, ice cream and bubble tea when you need sugar.",
+    intro: "Torte, kroasani, kolačići i palačinke kad zatreba šećer.",
+    intro_en: "Cakes, croissants, cookies and pancakes for when you need something sweet.",
     places: [
       { id: "sloj-dorcol" },
       { id: "fenisa" },

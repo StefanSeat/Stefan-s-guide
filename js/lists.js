@@ -89,7 +89,7 @@ const LISTS = [
       { id: "adam-stroopwafel" },
       { id: "vukov-bozicni-kutak" },
       { id: "fini" },
-      { id: "poslasticarnica-kostana" },
+      { id: "milky-dorcol" },
       { id: "wiggle" },
       { id: "kaiserschmarrn" },
     ],

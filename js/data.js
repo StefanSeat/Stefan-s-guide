@@ -2312,5 +2312,27 @@ const LOCATIONS = [
     "short_en": "Bakery and bistro with laminated pastries, croissants and cakes.",
     "googleRating": 4.5,
     "googleReviews": 1114
+  },
+  {
+    "id": "milky-dorcol",
+    "name": "Milky Dorćol",
+    "category": "kafa",
+    "area": "Dorćol",
+    "image": "",
+    "short": "Palačinkarnica sa slatkim i slanim palačinkama i šejkovima.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Kneginje Ljubice 20, Beograd",
+    "lat": 44.8193,
+    "lng": 20.4627,
+    "mapsUrl": "",
+    "tags": [
+      "slatko"
+    ],
+    "icon": "🥞",
+    "short_en": "Pancake place with sweet and savoury crêpes and shakes.",
+    "googleRating": 4.5,
+    "googleReviews": 6054
   }
 ];

@@ -2290,5 +2290,27 @@ const LOCATIONS = [
     "short_en": "Original Austrian Kaiserschmarrn pancakes.",
     "googleRating": 4.6,
     "googleReviews": 815
+  },
+  {
+    "id": "sloj-dorcol",
+    "name": "SLOJ bistro & bakery Dorćol",
+    "category": "kafa",
+    "area": "Dorćol",
+    "image": "",
+    "short": "Pekara i bistro sa slojevitim pecivom, kroasanima i kolačima.",
+    "description": "",
+    "rating": null,
+    "price": "",
+    "address": "Gospodar Jevremova 9, Beograd",
+    "lat": 44.8205,
+    "lng": 20.4618,
+    "mapsUrl": "",
+    "tags": [
+      "slatko"
+    ],
+    "icon": "🥐",
+    "short_en": "Bakery and bistro with laminated pastries, croissants and cakes.",
+    "googleRating": 4.5,
+    "googleReviews": 1114
   }
 ];
